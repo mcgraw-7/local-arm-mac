@@ -78,9 +78,3 @@ export BYPASS_CPU_CHECK=true
 export BYPASS_PREFLIGHT=true
 export CONFIG_JVM_ARGS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true"
 ```
-
-## Additional Notes
-
-1. This approach doesn't remove the zulu-8.jdk (which would require sudo)
-2. Instead, it ensures that all WebLogic operations use the Oracle JDK
-3. The standardized scripts in `~/dev/standardized-scripts/` can be copied back to your dev directory as needed
