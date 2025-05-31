@@ -71,18 +71,23 @@ local-arm-mac/
 
 ![CleanShot 2025-05-31 at 13 04 55@2x](https://github.com/user-attachments/assets/3ea128a7-583c-43d7-bb6a-ca18257db99a)
 
-<sub>after option </sub>
+<sub>after option 2</sub>
 
 
 ![CleanShot 2025-05-31 at 13 05 22@2x](https://github.com/user-attachments/assets/003dc10d-f3a0-4dc0-95e5-11472ae4cb65)
 
-<sub>after option </sub>
+<sub>after option 3</sub>
 
 
 ![CleanShot 2025-05-31 at 13 06 05@2x](https://github.com/user-attachments/assets/0b4b49f5-8905-498e-9eb0-649d82fd1927)
 
-<sub>after option </sub>
+<sub>after option 4</sub>
 
 
 ![CleanShot 2025-05-31 at 13 06 42@2x](https://github.com/user-attachments/assets/459b29ec-7b8d-4816-80b5-8a675f960b90)
+
+<sub>utility script added to .zshrc `wl_java`</sub>
+
+![CleanShot 2025-05-31 at 16 37 13@2x](https://github.com/user-attachments/assets/2ed4dcb0-f276-4e26-8b11-a0cda08da52d)
+
 
