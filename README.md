@@ -1,4 +1,5 @@
 # local-arm-mac
+<<<<<<< HEAD
 
 Configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and WebLogic/Oracle configuration for Apple Silicon (M1/M2/M3) and Intel Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
 
@@ -70,3 +71,6 @@ All scripts in this repository are designed to work without requiring sudo acces
 ## Author
 
 Created and maintained by Michael McGraw.
+=======
+configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and WebLogic/Oracle configuration for M1/M2/M3 Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
+>>>>>>> b8243bc64a1104441aaf7e1b094cb45cbf6cc181
