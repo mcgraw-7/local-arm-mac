@@ -52,8 +52,6 @@ wl_java
 
 ## Managing Java Versions
 
-Since you don't have sudo access to remove the non-compliant JDK (zulu-8.jdk), we've provided ways to ensure your WebLogic environment always uses the Oracle JDK:
-
 1. **Environment Variables**: All scripts set `JAVA_HOME` explicitly to the Oracle JDK path
 2. **PATH Precedence**: The Oracle JDK bin directory is added at the start of your PATH
 3. **Wrapper Scripts**: The `run-with-oracle-jdk.sh` script ensures Oracle JDK is used
