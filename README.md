@@ -42,11 +42,36 @@ local-arm-mac/
 - `setup-wl-java.sh` - Sets up the WebLogic Java environment
 - `weblogic-java-env-limited.sh` - Configures WebLogic-specific Java settings
 - `standardize-weblogic-scripts.sh` - Standardizes WebLogic scripts to use the correct JDK
+- `start-weblogic.sh` - Starts the WebLogic server with Oracle DB verification
+- `create-domain-m3.sh` - Creates WebLogic domain with Oracle DB verification
+- `verify-oracle-db.sh` - Verifies Oracle DB container for WebLogic operation
 
 ### Utility Scripts
 
 - `update-scripts-without-sudo.sh` - Updates scripts without requiring sudo access
 - `verify-standardization.sh` - Verifies the standardization of the environment
+- `add-va-env-function.sh` - Adds VA environment helper function to .zshrc
+- `add-va-start-weblogic-function.sh` - Adds VA start WebLogic helper function to .zshrc
+- `add-va-weblogic-status-function.sh` - Adds VA WebLogic status helper function to .zshrc
+- `add-va-deploy-vbms-function.sh` - Adds VA VBMS deployment helper function to .zshrc
+
+## Helper Functions
+
+The following helper functions are available once you've run the setup script:
+
+- `va_env()` - Activates the VA Core Development Environment
+- `va_start_weblogic()` - Starts WebLogic server after verifying Oracle DB container
+- `va_weblogic_status()` - Checks WebLogic and Oracle database container status
+- `va_deploy_vbms()` - Deploys VBMS applications to WebLogic
+
+## Oracle Database Container
+
+This environment is configured to work with Oracle Database in a Docker container. Several scripts check for and verify that the Oracle Database container is running before executing WebLogic operations that require database access.
+
+To ensure proper operation:
+1. Make sure Docker Desktop is running
+2. Verify that the Oracle database container is running
+3. Use the included helper functions to manage WebLogic and VBMS deployments
 
 ## Documentation
 

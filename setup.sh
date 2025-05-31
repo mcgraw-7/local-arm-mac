@@ -38,9 +38,14 @@ echo "2. Configure WebLogic-specific environment"
 echo "3. Verify Java standardization"
 echo "4. Update scripts (non-sudo mode)"
 echo "5. Run with Oracle JDK wrapper"
-echo "6. Exit"
+echo "6. Add VA Environment helper functions"
+echo "7. Add WebLogic status helper function"
+echo "8. Add VBMS deployment helper function" 
+echo "9. Create WebLogic domain with Oracle DB verification"
+echo "10. Verify Oracle DB container for WebLogic" 
+echo "11. Exit"
 
-echo -n "Select an option (1-6): "
+echo -n "Select an option (1-11): "
 read option
 
 case $option in
@@ -103,6 +108,31 @@ case $option in
         echo "${GREEN}✅ Created wrapper script at ~/dev/run-with-oracle-jdk.sh${NC}"
         ;;
     6)
+        echo "Adding VA Environment helper functions..."
+        echo "${BLUE}This will add the va_env() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-env-function.sh"
+        ;;
+    7)
+        echo "Adding WebLogic status helper function..."
+        echo "${BLUE}This will add the va_weblogic_status() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-weblogic-status-function.sh"
+        ;;
+    8)
+        echo "Adding VBMS deployment helper function..."
+        echo "${BLUE}This will add the va_deploy_vbms() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-deploy-vbms-function.sh"
+        ;;
+    9)
+        echo "Creating WebLogic domain with Oracle DB verification..."
+        echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
+        "$(dirname "$0")/scripts/weblogic/create-domain-m3.sh"
+        ;;
+    10)
+        echo "Verifying Oracle DB container for WebLogic..."
+        echo "${BLUE}This will check if Oracle DB is properly configured for WebLogic${NC}"
+        "$(dirname "$0")/scripts/weblogic/verify-oracle-db.sh"
+        ;;
+    11)
         echo "Exiting..."
         exit 0
         ;;
