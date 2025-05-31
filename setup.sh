@@ -45,27 +45,62 @@ read option
 
 case $option in
     1)
-        echo "Configuring Java environment..."
-        "$(dirname "$0")/scripts/java/limited-access-java-env.sh"
+        echo "${YELLOW}WARNING: This will modify multiple files including .zshrc and create Java wrapper scripts${NC}"
+        echo -n "Do you want to continue? (y/n): "
+        read confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+            echo "Configuring Java environment..."
+            "$(dirname "$0")/scripts/java/limited-access-java-env.sh"
+        else
+            echo "Operation cancelled."
+        fi
         ;;
     2)
-        echo "Configuring WebLogic-specific environment..."
-        "$(dirname "$0")/scripts/weblogic/setup-wl-java.sh"
+        echo "${YELLOW}WARNING: This will modify .zshrc and create WebLogic environment files${NC}"
+        echo "The following will be added to your .zshrc:"
+        echo "${BLUE}"
+        echo '# WebLogic Java environment helper function'
+        echo 'wl_java() {'
+        echo '    if [ -f "$HOME/.wljava_env" ]; then'
+        echo '        source "$HOME/.wljava_env"'
+        echo '        echo "WebLogic Java environment activated"'
+        echo '    else'
+        echo '        echo "ERROR: WebLogic Java environment file not found"'
+        echo '    fi'
+        echo '}'
+        echo "${NC}"
+        echo -n "Do you want to continue? (y/n): "
+        read confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+            echo "Configuring WebLogic-specific environment..."
+            "$(dirname "$0")"/scripts/weblogic/setup-wl-java.sh
+        else
+            echo "Operation cancelled."
+        fi
         ;;
     3)
         echo "Verifying Java standardization..."
         "$(dirname "$0")/scripts/utils/verify-standardization.sh"
         ;;
     4)
-        echo "Updating scripts (non-sudo mode)..."
-        "$(dirname "$0")/scripts/utils/update-scripts-without-sudo.sh"
+        echo "${YELLOW}WARNING: This will update multiple script files in your system${NC}"
+        echo -n "Do you want to continue? (y/n): "
+        read confirm
+        if [[ "$confirm" =~ ^[Yy]$ ]]; then
+            echo "Updating scripts (non-sudo mode)..."
+            "$(dirname "$0")/scripts/utils/update-scripts-without-sudo.sh"
+        else
+            echo "Operation cancelled."
+        fi
         ;;
     5)
         echo "Setting up Oracle JDK wrapper..."
+        echo "${BLUE}This will create a script at ~/dev/run-with-oracle-jdk.sh to run commands with Oracle JDK${NC}"
         "$(dirname "$0")/scripts/java/run-with-oracle-jdk.sh"
         echo "Copying run-with-oracle-jdk.sh to ~/dev for easy access..."
         cp "$(dirname "$0")/scripts/java/run-with-oracle-jdk.sh" ~/dev/
         chmod +x ~/dev/run-with-oracle-jdk.sh
+        echo "${GREEN}✅ Created wrapper script at ~/dev/run-with-oracle-jdk.sh${NC}"
         ;;
     6)
         echo "Exiting..."

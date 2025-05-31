@@ -41,20 +41,24 @@ chmod +x "$ENV_FILE"
 echo "✅ Created WebLogic Java environment file at $ENV_FILE"
 
 # Update .zshrc to include a wl_java function
-if ! grep -q "wl_java()" "$HOME/.zshrc"; then
-    cat >> "$HOME/.zshrc" << EOF
-
+WL_JAVA_FUNCTION='
 # WebLogic Java environment helper function
 wl_java() {
-    if [ -f "$ENV_FILE" ]; then
-        source "$ENV_FILE"
+    if [ -f "'$ENV_FILE'" ]; then
+        source "'$ENV_FILE'"
         echo "WebLogic Java environment activated"
     else
         echo "ERROR: WebLogic Java environment file not found"
     fi
 }
-EOF
+'
+
+if ! grep -q "wl_java()" "$HOME/.zshrc"; then
+    echo "$WL_JAVA_FUNCTION" >> "$HOME/.zshrc"
     echo "✅ Added wl_java() function to your .zshrc"
+    echo ""
+    echo "Function added:"
+    echo "${WL_JAVA_FUNCTION}" | sed 's/^/    /'
 else
     echo "ℹ️ wl_java() function already exists in .zshrc"
 fi
