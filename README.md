@@ -2,6 +2,10 @@
 
 Configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and WebLogic/Oracle configuration for Apple Silicon (M1/M2/M3) and Intel Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
 
+>> also, my understanding is if you use Homebrew to install anything created by Oracle, Homebrew will use an open source option to bypass the Oracle account creation process, which is normally very useful, but not here.
+>>
+>> You need the top shelf Oracle branded JDK.
+
 ## Repository Structure
 
 ```
@@ -89,5 +93,10 @@ local-arm-mac/
 <sub>utility script added to .zshrc `wl_java`</sub>
 
 ![CleanShot 2025-05-31 at 16 37 13@2x](https://github.com/user-attachments/assets/2ed4dcb0-f276-4e26-8b11-a0cda08da52d)
+
+<sub>`./verify-java-limited.sh`</sub>
+
+![CleanShot 2025-05-31 at 17 02 24@2x](https://github.com/user-attachments/assets/e1d5cb9a-b377-457b-ad2e-70dfdec304b5)
+
 
 
