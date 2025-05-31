@@ -151,12 +151,5 @@ If you encounter issues:
    ~/dev/verify-standardization.sh
    ```
 
-4. Visit the VA Local Setup wiki for more detailed troubleshooting guides.
 
-## Need Help?
-
-Contact the VA Core Development team:
-- Slack: #va-core-dev-help
-- Email: va-core-dev-support@va.gov
-
-Welcome to the team!
+If it takes longer than 2 hours, you're doing it wrong.
