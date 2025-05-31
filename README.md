@@ -59,17 +59,3 @@ local-arm-mac/
 - Oracle JDK 1.8.0_45 installed at `/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk`
 - WebLogic Server installation (for WebLogic-related scripts)
 
-## No Sudo Access Required
-
-All scripts in this repository are designed to work without requiring sudo access. This ensures that:
-
-1. Developers without administrative privileges can still set up their environment
-2. No system-wide changes are made that could potentially impact other applications
-3. The setup process is safe and isolated to the user's environment
-
-## Author
-
-Created and maintained by Michael McGraw.
-=======
-configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and WebLogic/Oracle configuration for M1/M2/M3 Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
->>>>>>> b8243bc64a1104441aaf7e1b094cb45cbf6cc181
