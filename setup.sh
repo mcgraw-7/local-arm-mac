@@ -8,9 +8,15 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
-echo "${BLUE}=== Java/WebLogic Environment Standardization Setup ===${NC}"
+echo "${BLUE}===================================================================${NC}"
+echo "${BLUE}         Java/WebLogic Environment Standardization Setup            ${NC}"
+echo "${BLUE}===================================================================${NC}"
+
+# All documentation is in the README.md file
+
 echo "This script will help you set up your Java environment for WebLogic development."
 
 # Detect Apple Silicon Mac
@@ -68,9 +74,10 @@ echo "12. Verify Oracle WebLogic standardized directory structure"
 echo "13. Manage Oracle Database (with Apple Silicon support)"
 echo "14. Check Apple Silicon compatibility"
 echo "15. Clean up temporary files and artifacts"
-echo "16. Exit"
+echo "16. View README Documentation"
+echo "17. Exit"
 
-echo -n "Select an option (1-16): "
+echo -n "Select an option (1-17): "
 read option
 
 case $option in
@@ -155,7 +162,8 @@ case $option in
     10)
         echo "Creating WebLogic domain with Oracle DB verification..."
         echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
-        "$(dirname "$0")/scripts/weblogic/create-domain-m3.sh"
+        echo "${YELLOW}Adding debug mode for better diagnostics. Use --debug for verbose output.${NC}"
+        "$(dirname "$0")/scripts/weblogic/create-domain-m3.sh" --debug
         ;;
     11)
         echo "Verifying Oracle DB container for WebLogic..."
@@ -183,6 +191,23 @@ case $option in
         "$(dirname "$0")/scripts/utils/cleanup-artifacts.sh"
         ;;
     16)
+        echo "Displaying README documentation..."
+        echo "${BLUE}This will display the README file with setup instructions${NC}"
+        
+        # Try to use a markdown viewer if available, otherwise use less/cat
+        if command -v glow &> /dev/null; then
+            glow "$(dirname "$0")/README.md"
+        elif command -v mdless &> /dev/null; then
+            mdless "$(dirname "$0")/README.md"
+        elif command -v bat &> /dev/null; then
+            bat "$(dirname "$0")/README.md"
+        elif command -v less &> /dev/null; then
+            less "$(dirname "$0")/README.md"
+        else
+            cat "$(dirname "$0")/README.md"
+        fi
+        ;;
+    17)
         echo "Exiting..."
         exit 0
         ;;

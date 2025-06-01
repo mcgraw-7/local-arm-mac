@@ -28,12 +28,16 @@ if [ "$(uname -m)" = "arm64" ]; then
         exit 1
     fi
     
-    # Check if Colima is running
-    if ! colima status 2>/dev/null | grep -q "Running"; then
+    # Check if Colima is running - simpler approach
+    COLIMA_STATUS=$(colima status 2>&1)
+    
+    if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
         echo "❌ Colima is not running. Oracle database requires Colima on Apple Silicon."
         echo "Run this command to start Colima with the correct settings:"
         echo "colima start -c 4 -m 12 -a x86_64"
         exit 1
+    else
+        echo "✅ Colima is running, continuing with verification"
     fi
 fi
 

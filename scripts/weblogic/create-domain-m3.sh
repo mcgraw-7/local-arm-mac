@@ -9,7 +9,19 @@ if [[ "$1" == "--dry-run" ]]; then
     echo "Running in DRY RUN mode - no changes will be made"
 fi
 
-set -e
+# Comment out set -e to prevent early exit on errors
+# set -e
+
+# Enable debug output
+DEBUG=true
+
+debug_msg() {
+    if [ "$DEBUG" = "true" ]; then
+        echo "🔍 DEBUG: $1"
+    fi
+}
+
+debug_msg "Script started"
 
 # Set important variables
 ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
@@ -23,20 +35,26 @@ ADMIN_HOST="localhost"
 ADMIN_SERVER_NAME="AdminServer"
 JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
 
+debug_msg "Variables initialized"
+
 echo "====================================================="
 echo "WebLogic Domain Creation for VBMS on M3 Mac"
 echo "====================================================="
 
 # Check if Docker is available
+debug_msg "Checking for Docker..."
 if ! command -v docker &> /dev/null; then
     echo "❌ Error: Docker is not installed or not in PATH"
     echo "Please install Docker Desktop and try again"
     exit 1
 fi
+debug_msg "Docker is installed"
 
 # Check if Oracle DB container is running
 echo "Checking Oracle database container status..."
+debug_msg "Running: docker ps | grep -i oracle | grep -i database"
 ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -i database)
+debug_msg "ORACLE_CONTAINER='$ORACLE_CONTAINER'"
 if [ -z "$ORACLE_CONTAINER" ]; then
     echo "❌ WARNING: Oracle database container is not running!"
     echo "The Oracle database is required for WebLogic domain to function properly with VBMS."
@@ -84,6 +102,9 @@ else
 fi
 
 # Check if WebLogic is installed in the standardized Oracle directory
+debug_msg "Checking WebLogic installation path: ${ORACLE_HOME}/wlserver"
+debug_msg "Directory exists: $(if [ -d "${ORACLE_HOME}/wlserver" ]; then echo "Yes"; else echo "No"; fi)"
+
 if [ ! -d "${ORACLE_HOME}/wlserver" ]; then
     echo "❌ WebLogic not installed at: ${ORACLE_HOME}/wlserver"
     echo "WebLogic must be installed in the Oracle standardized directory: ${ORACLE_HOME}"
@@ -95,10 +116,14 @@ else
 fi
 
 # Check if Java is available from specified JDK
+debug_msg "Checking for JDK at $JDK_PATH"
+debug_msg "JDK directory exists: $(if [ -d "$JDK_PATH" ]; then echo "Yes"; else echo "No"; fi)"
+
 if [ ! -d "$JDK_PATH" ]; then
     echo "❌ Specified JDK not found at: $JDK_PATH"
     
     # Try to find Java 8 as a fallback
+    debug_msg "Trying to find Java 8 as fallback"
     if /usr/libexec/java_home -v 1.8 &>/dev/null; then
         JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
         echo "✅ Using system Java 8: $JAVA_HOME"

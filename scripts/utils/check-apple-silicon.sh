@@ -46,7 +46,9 @@ else
     # Check Colima status
     echo ""
     echo "${BLUE}Checking Colima status...${NC}"
-    if ! colima status 2>/dev/null | grep -q "Running"; then
+    COLIMA_STATUS=$(colima status 2>&1)
+    
+    if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
         echo "${RED}❌ Colima is not running${NC}"
         echo "${YELLOW}Would you like to start Colima with recommended settings for Oracle? (y/n):${NC} "
         read START_COLIMA
@@ -54,6 +56,9 @@ else
         if [[ "$START_COLIMA" =~ ^[Yy]$ ]]; then
             echo "Starting Colima with recommended settings..."
             colima start -c 4 -m 12 -a x86_64
+        fi
+    else
+        echo "${GREEN}✅ Colima is running${NC}"
             
             # Check if start was successful
             if [ $? -eq 0 ]; then

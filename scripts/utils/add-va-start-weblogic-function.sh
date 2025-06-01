@@ -25,9 +25,13 @@ va_start_weblogic() {
             # Fallback to basic check if script not available
             # Check if Colima is installed and running (for Oracle DB)
             if command -v colima &> /dev/null; then
-                if ! colima status 2>/dev/null | grep -q "Running"; then
+                COLIMA_STATUS=$(colima status 2>&1)
+                
+                if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
                     echo "⚠️  Warning: Colima is not running. Oracle database might not be accessible."
                     echo "Consider running: colima start -c 4 -m 12 -a x86_64"
+                else
+                    echo "✅ Colima is running"
                 fi
             fi
         fi
