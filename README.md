@@ -2,6 +2,18 @@
 
 Configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and WebLogic/Oracle configuration for Apple Silicon (M1/M2/M3) and Intel Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
 
+## Apple Silicon Compatibility
+
+This repository includes comprehensive support for running Oracle WebLogic and Oracle Database on Apple Silicon (arm64) Macs:
+
+- **Automatic detection** of Apple Silicon architecture
+- **Colima integration** for running Oracle Database containers
+- **Environment variables** optimized for M-series chips
+- **Helper functions** that work seamlessly across architectures
+- **Special handling** of platform-specific Docker commands
+
+For detailed information, see [Apple Silicon Compatibility Guide](docs/apple-silicon-compatibility.md)
+
 <sub>this is work in progress.</sub></br>
 <sub>i've tested these scripts and provided screenshots of results</sub></br>
 <sub>please, make sure you
@@ -11,6 +23,15 @@ Configuration scripts for VA Core local development environment setup. Automates
 >> also, my understanding is if you use Homebrew to install anything created by Oracle, Homebrew will use an open source option to bypass the Oracle account creation process, which is normally very useful, but not here.
 >>
 >> You need the top shelf Oracle branded JDK.
+
+## Important Directory Structure Requirements
+
+WebLogic **must** be installed in the Oracle standardized directory:
+```
+${HOME}/dev/Oracle/Middleware/Oracle_Home
+```
+
+No deviations from this directory structure are permitted. All scripts in this repository enforce this requirement to ensure proper functionality and compatibility with VA systems.
 
 ## Repository Structure
 
@@ -55,11 +76,19 @@ local-arm-mac/
 - `start-weblogic.sh` - Starts the WebLogic server with Oracle DB verification
 - `create-domain-m3.sh` - Creates WebLogic domain with Oracle DB verification
 - `verify-oracle-db.sh` - Verifies Oracle DB container for WebLogic operation
+- `manage-oracle-db.sh` - Manages Oracle Database with Apple Silicon support
+
+### VBMS Scripts
+
+- `check-vbms-compatibility.sh` - Checks VBMS application compatibility with WebLogic on Apple Silicon
 
 ### Utility Scripts
 
 - `update-scripts-without-sudo.sh` - Updates scripts without requiring sudo access
 - `verify-standardization.sh` - Verifies the standardization of the environment
+- `verify-oracle-directory.sh` - Verifies WebLogic is installed in the standardized directory
+- `check-apple-silicon.sh` - Checks and sets up Apple Silicon compatibility for Oracle and WebLogic
+- `cleanup-artifacts.sh` - Cleans up temporary files and artifacts that shouldn't be in Git
 - `add-va-env-function.sh` - Adds VA environment helper function to .zshrc
 - `add-va-start-weblogic-function.sh` - Adds VA start WebLogic helper function to .zshrc
 - `add-va-weblogic-status-function.sh` - Adds VA WebLogic status helper function to .zshrc
@@ -70,7 +99,8 @@ local-arm-mac/
 The following helper functions are available once you've run the setup script:
 
 - `va_env()` - Activates the VA Core Development Environment
-- `va_start_weblogic()` - Starts WebLogic server after verifying Oracle DB container
+- `va_start_weblogic()` - Starts WebLogic server after verifying Oracle DB container with Apple Silicon support
+- `va_start_oracle_db()` - Starts Oracle Database container with Colima support for Apple Silicon
 - `va_weblogic_status()` - Checks WebLogic and Oracle database container status
 - `va_deploy_vbms()` - Deploys VBMS applications to WebLogic
 
@@ -78,10 +108,28 @@ The following helper functions are available once you've run the setup script:
 
 This environment is configured to work with Oracle Database in a Docker container. Several scripts check for and verify that the Oracle Database container is running before executing WebLogic operations that require database access.
 
-To ensure proper operation:
+### Standard Setup (Intel Macs)
+To ensure proper operation on Intel Macs:
 1. Make sure Docker Desktop is running
 2. Verify that the Oracle database container is running
 3. Use the included helper functions to manage WebLogic and VBMS deployments
+
+### Apple Silicon Setup (M1/M2/M3 Macs)
+For Apple Silicon Macs, the process is slightly different:
+1. Run the compatibility check script: `./scripts/utils/check-apple-silicon.sh`
+2. Install Colima if needed: `brew install colima` 
+3. Start Colima with proper settings: `colima start -c 4 -m 12 -a x86_64`
+4. Use the `manage-oracle-db.sh` script or `va_start_oracle_db()` helper function which handles platform-specific requirements
+5. All Oracle database containers will be created with `--platform linux/amd64` flag automatically
+
+The `check-apple-silicon.sh` script will detect your environment and recommend any necessary changes for optimal compatibility. It will:
+- Verify Colima installation and configuration
+- Check Docker setup for compatibility 
+- Verify Rosetta 2 installation
+- Validate Oracle JDK compatibility
+- Provide a comprehensive compatibility report
+
+You can manage all Oracle Database operations through option 13 in the setup menu, which provides a comprehensive interface with Apple Silicon support.
 
 ## Documentation
 

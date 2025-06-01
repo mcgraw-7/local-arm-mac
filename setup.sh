@@ -11,7 +11,27 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 echo "${BLUE}=== Java/WebLogic Environment Standardization Setup ===${NC}"
-echo "This script will help you set up your Java environment for WebLogic development on Apple Silicon Mac."
+echo "This script will help you set up your Java environment for WebLogic development."
+
+# Detect Apple Silicon Mac
+if [ "$(uname -m)" = "arm64" ]; then
+    echo "${YELLOW}==============================================${NC}"
+    echo "${YELLOW}⚠️  DETECTED APPLE SILICON MAC (M1/M2/M3) ⚠️${NC}"
+    echo "${YELLOW}==============================================${NC}"
+    echo "Running WebLogic on Apple Silicon requires special configuration."
+    echo ""
+    echo "${BLUE}Recommendations for Apple Silicon:${NC}"
+    echo "• Use option 14 to check your Apple Silicon compatibility now"
+    echo "• Use option 13 to manage Oracle DB with Colima support"
+    echo "• Verify Rosetta 2 is installed (softwareupdate --install-rosetta)"
+    echo "• Ensure you have at least 16GB RAM for optimal performance"
+    echo "• For detailed guidance, see: ${BLUE}docs/apple-silicon-compatibility.md${NC}"
+    echo ""
+fi
+
+echo "${YELLOW}IMPORTANT:${NC} WebLogic must be installed in the Oracle standardized directory:"
+echo "${HOME}/dev/Oracle/Middleware/Oracle_Home"
+echo "No deviations from this directory structure are permitted."
 
 # Check if Oracle JDK exists
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
@@ -40,12 +60,17 @@ echo "4. Update scripts (non-sudo mode)"
 echo "5. Run with Oracle JDK wrapper"
 echo "6. Add VA Environment helper functions"
 echo "7. Add WebLogic status helper function"
-echo "8. Add VBMS deployment helper function" 
-echo "9. Create WebLogic domain with Oracle DB verification"
-echo "10. Verify Oracle DB container for WebLogic" 
-echo "11. Exit"
+echo "8. Add VBMS deployment helper function"
+echo "9. Add WebLogic start with Oracle DB verification helper functions" 
+echo "10. Create WebLogic domain with Oracle DB verification"
+echo "11. Verify Oracle DB container for WebLogic" 
+echo "12. Verify Oracle WebLogic standardized directory structure"
+echo "13. Manage Oracle Database (with Apple Silicon support)"
+echo "14. Check Apple Silicon compatibility"
+echo "15. Clean up temporary files and artifacts"
+echo "16. Exit"
 
-echo -n "Select an option (1-11): "
+echo -n "Select an option (1-16): "
 read option
 
 case $option in
@@ -123,16 +148,41 @@ case $option in
         "$(dirname "$0")/scripts/utils/add-va-deploy-vbms-function.sh"
         ;;
     9)
+        echo "Adding WebLogic start with Oracle DB verification helper functions..."
+        echo "${BLUE}This will add va_start_weblogic() and va_start_oracle_db() functions to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-start-weblogic-function.sh"
+        ;;
+    10)
         echo "Creating WebLogic domain with Oracle DB verification..."
         echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
         "$(dirname "$0")/scripts/weblogic/create-domain-m3.sh"
         ;;
-    10)
+    11)
         echo "Verifying Oracle DB container for WebLogic..."
         echo "${BLUE}This will check if Oracle DB is properly configured for WebLogic${NC}"
         "$(dirname "$0")/scripts/weblogic/verify-oracle-db.sh"
         ;;
-    11)
+    12)
+        echo "Verifying Oracle WebLogic standardized directory structure..."
+        echo "${BLUE}This will check if WebLogic is installed in the standardized directory${NC}"
+        "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
+        ;;
+    13)
+        echo "Managing Oracle Database (with Apple Silicon support)..."
+        echo "${BLUE}This will help you manage Oracle Database with specific support for Apple Silicon${NC}"
+        "$(dirname "$0")/scripts/weblogic/manage-oracle-db.sh"
+        ;;
+    14)
+        echo "Checking Apple Silicon compatibility..."
+        echo "${BLUE}This will check your environment for Apple Silicon compatibility with Oracle and WebLogic${NC}"
+        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+        ;;
+    15)
+        echo "Cleaning up temporary files and artifacts..."
+        echo "${BLUE}This will help remove temporary files that should not be in the Git repository${NC}"
+        "$(dirname "$0")/scripts/utils/cleanup-artifacts.sh"
+        ;;
+    16)
         echo "Exiting..."
         exit 0
         ;;

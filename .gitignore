@@ -1,0 +1,39 @@
+# Ignore build artifacts, logs, and temporary files
+
+# Yarn related files
+yarn.lock
+yarn-error.log
+
+# WebLogic related files
+hazelcastLog.txt
+*.bak
+fmw_*.jar
+*.html
+
+# Local configuration files
+local.properties
+
+# Log files
+ajcore.*.txt
+*.log
+
+# Backup files
+*.bak
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp

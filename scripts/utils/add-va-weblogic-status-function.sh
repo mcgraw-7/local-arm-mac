@@ -44,13 +44,16 @@ va_weblogic_status() {
     echo "❌ WebLogic server is not running"
     
     # Check if domain exists
-    DOMAIN_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home/user_projects/domains/P2-DEV"
+    ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
+    DOMAIN_HOME="${ORACLE_HOME}/user_projects/domains/P2-DEV"
     if [ -d "$DOMAIN_HOME" ]; then
       echo "✅ WebLogic domain exists at: $DOMAIN_HOME"
       echo "To start WebLogic, run: va_start_weblogic"
     else
       echo "❌ WebLogic domain not found at: $DOMAIN_HOME"
       echo "Please create a domain first using: ${HOME}/dev/local-arm-mac/scripts/weblogic/create-domain-m3.sh"
+      echo "WebLogic must be installed in the Oracle standardized directory: ${ORACLE_HOME}"
+      echo "No deviations from this directory structure are permitted."
     fi
   fi
 }

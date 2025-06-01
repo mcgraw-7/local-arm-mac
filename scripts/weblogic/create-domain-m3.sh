@@ -2,6 +2,13 @@
 # WebLogic Domain Creation Script for VBMS on M3 Mac with Oracle DB Verification
 # This script creates a WebLogic domain after successful installation
 
+# Parse command line arguments
+DRY_RUN=false
+if [[ "$1" == "--dry-run" ]]; then
+    DRY_RUN=true
+    echo "Running in DRY RUN mode - no changes will be made"
+fi
+
 set -e
 
 # Set important variables
@@ -44,15 +51,25 @@ if [ -z "$ORACLE_CONTAINER" ]; then
         else
             echo "No existing Oracle database container found, checking for VBMS Oracle image..."
             
-            # Check if the VBMS Oracle image exists
-            if docker images | grep -q "vbms/oracle"; then
-                echo "Found VBMS Oracle image, starting new container..."
-                docker run -d --name oracle-database -p 1521:1521 vbms/oracle:latest
+            # Check if the Oracle image exists
+            if docker images | grep -q -E "oracle.*19\.3\.0|vbms/oracle"; then
+                echo "Found Oracle database image, starting new container..."
+                
+                # Try to use the standard Oracle image first, then fallback to VBMS image
+                if docker images | grep -q "oracledb19c/oracle.19.3.0-ee"; then
+                    echo "Using official Oracle 19c image..."
+                    docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee
+                elif docker images | grep -q "vbms/oracle"; then
+                    echo "Using VBMS Oracle image..."
+                    docker run -d --name oracle-database -p 1521:1521 vbms/oracle:latest
+                fi
                 echo "✅ Started new Oracle database container"
             else
-                echo "❌ VBMS Oracle database image not found"
-                echo "Please build or pull the Oracle database image first"
-                echo "Continuing domain creation, but some features may not work"
+                echo "❌ Oracle database image not found"
+                echo "You only need to download the image once with:"
+                echo "docker pull -a oracledb19c/oracle.19.3.0-ee"
+                echo ""
+                echo "Continuing domain creation, but database features won't work"
             fi
         fi
         
@@ -66,10 +83,12 @@ else
     echo "✅ Oracle database container is running: $ORACLE_CONTAINER"
 fi
 
-# Check if WebLogic is installed
+# Check if WebLogic is installed in the standardized Oracle directory
 if [ ! -d "${ORACLE_HOME}/wlserver" ]; then
     echo "❌ WebLogic not installed at: ${ORACLE_HOME}/wlserver"
-    echo "Please run the installation script first."
+    echo "WebLogic must be installed in the Oracle standardized directory: ${ORACLE_HOME}"
+    echo "No deviations from this directory structure are permitted."
+    echo "Please install WebLogic in the correct location first."
     exit 1
 else
     echo "✅ Found WebLogic installation at: ${ORACLE_HOME}/wlserver"
@@ -107,16 +126,21 @@ java -version
 # Check if domain already exists
 if [ -f "${DOMAIN_HOME}/config/config.xml" ]; then
     echo "⚠️ WebLogic domain already exists at ${DOMAIN_HOME}"
-    echo "Would you like to remove it and create a new one? [y/n]:"
-    read -r REMOVE_DOMAIN
-    
-    if [[ "$REMOVE_DOMAIN" == "y" ]]; then
-        echo "Removing existing domain..."
-        rm -rf "${DOMAIN_HOME}"
-        echo "✅ Removed existing domain"
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "DRY RUN - would prompt to remove existing domain"
+        CREATE_DOMAIN=true
     else
-        echo "Using existing domain (skipping domain creation)"
-        CREATE_DOMAIN=false
+        echo "Would you like to remove it and create a new one? [y/n]:"
+        read -r REMOVE_DOMAIN
+        
+        if [[ "$REMOVE_DOMAIN" == "y" ]]; then
+            echo "Removing existing domain..."
+            rm -rf "${DOMAIN_HOME}"
+            echo "✅ Removed existing domain"
+        else
+            echo "Using existing domain (skipping domain creation)"
+            CREATE_DOMAIN=false
+        fi
     fi
 else
     CREATE_DOMAIN=true
@@ -133,7 +157,11 @@ if [ "$CREATE_DOMAIN" != "false" ]; then
     echo "====================================================="
     
     # Create domain parent directories
-    mkdir -p "${DOMAIN_HOME}"
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "DRY RUN - would create directory: ${DOMAIN_HOME}"
+    else
+        mkdir -p "${DOMAIN_HOME}"
+    fi
     
     # Find weblogic.jar in the expected location
     WEBLOGIC_JAR="${WL_HOME}/server/lib/weblogic.jar"
@@ -208,10 +236,19 @@ EOF
     fi
     
     # Run the WLST script to create the domain
-    ${ORACLE_HOME}/oracle_common/common/bin/wlst.sh ${DOMAIN_SCRIPT}
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "✅ DRY RUN - not executing WLST script"
+    else
+        ${ORACLE_HOME}/oracle_common/common/bin/wlst.sh ${DOMAIN_SCRIPT}
+    fi
     
     # Check if domain creation was successful
-    if [ -f "${DOMAIN_HOME}/config/config.xml" ]; then
+    if [ "$DRY_RUN" = "true" ]; then
+        echo "✅ DRY RUN - domain would be created at: ${DOMAIN_HOME}"
+        echo "✅ DRY RUN - would create apps directory at: ${APPS_DIR}"
+        echo "✅ DRY RUN - would create boot.properties for automatic login"
+        echo "✅ DRY RUN - would set execute permissions on domain scripts"
+    elif [ -f "${DOMAIN_HOME}/config/config.xml" ]; then
         echo "✅ Domain created successfully at: ${DOMAIN_HOME}"
         
         # Create apps directory if it doesn't exist

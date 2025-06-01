@@ -14,10 +14,34 @@ if ! docker info &>/dev/null; then
     exit 1
 fi
 
+# Check if running on Apple Silicon and Colima is installed/running
+if [ "$(uname -m)" = "arm64" ]; then
+    echo "Detected Apple Silicon Mac"
+    
+    # Check for Colima
+    if ! command -v colima &> /dev/null; then
+        echo "❌ Colima is not installed, which is required for Oracle on Apple Silicon"
+        echo "Please follow the installation guide at:"
+        echo "https://github.com/department-of-veterans-affairs/bip-developer-guides/wiki/Oracle-Database-On-M-Series-Macs"
+        echo ""
+        echo "You can install Colima with: brew install colima"
+        exit 1
+    fi
+    
+    # Check if Colima is running
+    if ! colima status 2>/dev/null | grep -q "Running"; then
+        echo "❌ Colima is not running. Oracle database requires Colima on Apple Silicon."
+        echo "Run this command to start Colima with the correct settings:"
+        echo "colima start -c 4 -m 12 -a x86_64"
+        exit 1
+    fi
+fi
+
 # Check if WebLogic domain exists
 if [ ! -f "${DOMAIN_HOME}/config/config.xml" ]; then
     echo "❌ WebLogic domain not found at: ${DOMAIN_HOME}"
     echo "Please create the domain first using create-domain-m3.sh"
+    echo "WebLogic must be installed in the Oracle standardized directory: ${ORACLE_HOME}"
     exit 1
 fi
 
@@ -64,7 +88,12 @@ if [ -z "$ORACLE_CONTAINER" ]; then
                 echo ""
                 echo "Please run the appropriate docker run command to start a container"
             else
-                echo "❌ No Oracle database images found. Please obtain an appropriate Oracle database image."
+                echo "❌ No Oracle database images found."
+                echo "You only need to download the image once with:"
+                echo "docker pull -a oracledb19c/oracle.19.3.0-ee"
+                echo ""
+                echo "After downloading, you can create and start a container with:"
+                echo "docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
             fi
         fi
     fi

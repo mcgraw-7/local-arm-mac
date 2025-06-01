@@ -74,6 +74,12 @@ va_deploy_vbms() {
   
   # Deploy using WLST
   ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
+  # Check if Oracle Home exists in the standardized location
+  if [ ! -d "${ORACLE_HOME}" ]; then
+    echo "❌ Oracle Home not found at standardized location: ${ORACLE_HOME}"
+    echo "WebLogic must be installed in the Oracle standardized directory. No deviations allowed."
+    return 1
+  fi
   echo "Starting deployment using WLST..."
   
   # Create temporary deployment script

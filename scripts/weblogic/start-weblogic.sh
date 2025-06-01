@@ -18,9 +18,25 @@ if [ -z "$ORACLE_CONTAINER" ]; then
     read -p "Do you want to start the Oracle database container now? (y/n): " START_DB
     if [[ "$START_DB" =~ ^[Yy]$ ]]; then
         echo "Starting Oracle database container..."
-        # You may need to adjust this command based on your specific Oracle DB container setup
-        # This is a generic example
-        docker start oracle-database || docker run -d --name oracle-database -p 1521:1521 oracle/database:latest
+        # First try to start existing stopped container
+        if ! docker start oracle-database 2>/dev/null; then
+            echo "No existing container found, checking for Oracle database images..."
+            
+            # Check if we have the Oracle 19c image
+            if docker images | grep -q "oracledb19c/oracle.19.3.0-ee"; then
+                echo "Found Oracle 19c image, creating new container..."
+                docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee
+            # Fallback to VBMS image if available
+            elif docker images | grep -q "vbms/oracle"; then
+                echo "Found VBMS Oracle image, creating new container..."
+                docker run -d --name oracle-database -p 1521:1521 vbms/oracle:latest
+            else
+                echo "❌ No Oracle database image found"
+                echo "You need to pull the image once with:"
+                echo "docker pull -a oracledb19c/oracle.19.3.0-ee"
+                echo "Continuing without Oracle database..."
+            fi
+        fi
         
         echo "Waiting 30 seconds for database to initialize..."
         sleep 30
@@ -48,6 +64,8 @@ DOMAIN_HOME="${DOMAIN_HOME:-"$ORACLE_HOME/user_projects/domains/P2-DEV"}"
 if [ ! -d "$DOMAIN_HOME" ]; then
     echo "❌ ERROR: WebLogic domain not found at $DOMAIN_HOME"
     echo "Please create a WebLogic domain first using the domain creation script"
+    echo "WebLogic must be installed in the Oracle standardized directory: ${ORACLE_HOME}"
+    echo "No deviations from this directory structure are permitted."
     exit 1
 fi
 
