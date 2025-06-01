@@ -11,17 +11,6 @@ ${HOME}/dev/Oracle/Middleware/Oracle_Home
 
 No deviations from this directory structure are permitted. All scripts in this repository enforce this requirement to ensure proper functionality and compatibility with VA systems.
 
-## Recent Improvements
-
-### Enhanced WebLogic Domain Creation (June 2025)
-The domain creation script (`scripts/weblogic/create-domain-m3.sh`) has been improved with:
-- Robust error handling and diagnostics
-- Comprehensive logging to `/tmp/create-domain-$$.log`
-- Better Colima detection for Apple Silicon Macs
-- Fixed JDK detection and validation
-- Added `--debug` flag for troubleshooting
-- Support for `--dry-run` mode to test without making changes
-
 To use debug mode:
 ```bash
 ./scripts/weblogic/create-domain-m3.sh --debug
