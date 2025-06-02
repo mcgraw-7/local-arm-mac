@@ -34,7 +34,7 @@ Apple Silicon Macs use ARM64 architecture which requires special configuration f
 
 4. Start Colima with proper settings for Oracle:
    ```bash
-   colima start -c 4 -m 12 -a x86_64
+   colima start -c 4 -m 12 --arch x86_64
    ```
 
 5. Use the standardized scripts in this repository for all WebLogic operations
