@@ -188,12 +188,23 @@ if [ "$CREATE_DOMAIN" != "false" ]; then
         mkdir -p "${DOMAIN_HOME}"
     fi
     
-    # Find weblogic.jar in the expected location
+    # Find weblogic.jar in possible locations
     WEBLOGIC_JAR="${WL_HOME}/server/lib/weblogic.jar"
     
     if [ ! -f "$WEBLOGIC_JAR" ]; then
-        echo "❌ Could not find weblogic.jar at ${WEBLOGIC_JAR}"
-        exit 1
+        # Try alternate location
+        WEBLOGIC_JAR="${ORACLE_HOME}/server/lib/weblogic.jar"
+        if [ ! -f "$WEBLOGIC_JAR" ]; then
+            # Search for weblogic.jar
+            echo "Searching for weblogic.jar in Oracle Home..."
+            FOUND_JAR=$(find "${ORACLE_HOME}" -name "weblogic.jar" | head -1)
+            if [ -n "$FOUND_JAR" ]; then
+                WEBLOGIC_JAR="$FOUND_JAR"
+            else
+                echo "❌ Could not find weblogic.jar anywhere in ${ORACLE_HOME}"
+                exit 1
+            fi
+        fi
     fi
     echo "Found weblogic.jar at: $WEBLOGIC_JAR"
     

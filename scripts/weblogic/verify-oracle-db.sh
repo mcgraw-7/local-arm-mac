@@ -34,7 +34,7 @@ if [ "$(uname -m)" = "arm64" ]; then
     if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
         echo "❌ Colima is not running. Oracle database requires Colima on Apple Silicon."
         echo "Run this command to start Colima with the correct settings:"
-        echo "colima start -c 4 -m 12 -a x86_64"
+        echo "colima start --arch x86_64 -c 4 -m 12"
         exit 1
     else
         echo "✅ Colima is running, continuing with verification"

@@ -55,10 +55,7 @@ else
         
         if [[ "$START_COLIMA" =~ ^[Yy]$ ]]; then
             echo "Starting Colima with recommended settings..."
-            colima start -c 4 -m 12 -a x86_64
-        fi
-    else
-        echo "${GREEN}✅ Colima is running${NC}"
+            colima start --arch x86_64 -c 4 -m 12
             
             # Check if start was successful
             if [ $? -eq 0 ]; then
@@ -66,9 +63,6 @@ else
             else
                 echo "${RED}❌ Failed to start Colima${NC}"
             fi
-        else
-            echo "You can start Colima manually with:"
-            echo "colima start -c 4 -m 12 -a x86_64"
         fi
     else
         echo "${GREEN}✅ Colima is running${NC}"
@@ -80,7 +74,7 @@ else
             echo "${RED}⚠️  Warning: Colima might not be running with x86_64 architecture${NC}"
             echo "Oracle database requires x86_64 architecture on Apple Silicon"
             echo "Consider restarting Colima with:"
-            echo "colima stop && colima start -c 4 -m 12 -a x86_64"
+            echo "colima stop && colima start --arch x86_64 -c 4 -m 12"
         fi
     fi
 fi
@@ -126,8 +120,10 @@ fi
 echo ""
 echo "${BLUE}Checking for Oracle JDK compatibility...${NC}"
 
-# Check for standard Oracle JDK location
+# Check for standard Oracle JDK locations
 ORACLE_JDK_PATH="${HOME}/dev/Oracle/jdk1.8.0_45"
+SYSTEM_JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk"
+
 if [ -d "$ORACLE_JDK_PATH" ]; then
     echo "${GREEN}✅ Found Oracle JDK at expected location: ${ORACLE_JDK_PATH}${NC}"
     
@@ -136,9 +132,17 @@ if [ -d "$ORACLE_JDK_PATH" ]; then
         echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
         echo "This should work but might have performance implications"
     fi
+elif [ -d "$SYSTEM_JDK_PATH" ]; then
+    echo "${GREEN}✅ Found Oracle JDK at system location: ${SYSTEM_JDK_PATH}${NC}"
+    
+    # Check architecture compatibility
+    if file "$SYSTEM_JDK_PATH/Contents/Home/bin/java" | grep -q "x86_64"; then
+        echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
+        echo "This should work but might have performance implications"
+    fi
 else
-    echo "${YELLOW}⚠️  Oracle JDK not found at standard location: ${ORACLE_JDK_PATH}${NC}"
-    echo "Make sure Oracle JDK is installed correctly"
+    echo "${RED}❌ Oracle JDK not found at known locations${NC}"
+    echo "Please install Oracle JDK 1.8.0_45"
 fi
 
 # Summary
@@ -150,7 +154,7 @@ echo "${BLUE}====================================================${NC}"
 echo "For optimal WebLogic and Oracle Database setup on Apple Silicon:"
 echo ""
 echo "1. Use Colima with x86_64 architecture for Oracle Database"
-echo "   colima start -c 4 -m 12 -a x86_64"
+echo "   colima start --arch x86_64 -c 4 -m 12"
 echo ""
 echo "2. Make sure Docker uses the --platform flag for Oracle images"
 echo "   docker run --platform linux/amd64 ..."
