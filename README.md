@@ -174,7 +174,7 @@ va_weblogic_status
 </details>
 
 <details>
-<summary><h2>🔧 Updating Existing Configuration Scripts</h2></summary>
+<summary><h2>☠️ Updating Existing Configuration Scripts</h2></summary>
 
 These scripts modify your existing environment configuration.
 
