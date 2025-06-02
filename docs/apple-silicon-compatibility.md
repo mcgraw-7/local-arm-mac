@@ -34,7 +34,7 @@ Apple Silicon Macs use ARM64 architecture which requires special configuration f
 
 4. Start Colima with proper settings for Oracle:
    ```bash
-   colima start -c 4 -m 12 -a x86_64
+   colima start -c 4 -m 12 --arch x86_64
    ```
 
 5. Use the standardized scripts in this repository for all WebLogic operations
@@ -60,7 +60,8 @@ Oracle Database requires x86_64 emulation through Colima:
 
 1. **Use Colima with x86_64 architecture**:
    ```bash
-   colima start -c 4 -m 12 -a x86_64
+   colima start -c 4 -m 12 --arch x86_64
+   # use --arch flag not the shorthand -a, shorthand did not work for me
    ```
 
 2. **Platform flag for Docker**:
@@ -97,7 +98,7 @@ The output should show:
    - Use the `manage-oracle-db.sh` script which handles platform compatibility issues
 
 3. **Performance issues**
-   - Increase memory allocation for Colima: `colima start -c 4 -m 16 -a x86_64`
+   - Increase memory allocation for Colima: `colima start -c 4 -m 16 --arch x86_64`
    - Close unused applications to free up system resources
    - Consider running resource-intensive operations on a remote server
 
