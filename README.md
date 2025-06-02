@@ -643,28 +643,6 @@ For detailed information, see [Apple Silicon Compatibility Guide](docs/apple-sil
 > **Note:** If you use Homebrew to install anything created by Oracle, Homebrew will use an open source option to bypass the Oracle account creation process, which is normally very useful, but not here. You need the official Oracle branded JDK.
 </details>
 
-## Repository Structure
-
-<details>
-<summary><strong>Directory and File Organization</strong></summary>
-
-```
-local-arm-mac/
-├── scripts/
-│   ├── java/         # Java environment configuration scripts
-│   ├── weblogic/     # WebLogic-specific configuration scripts
-│   └── utils/        # Utility scripts for maintenance and verification
-├── docs/             # Documentation files
-├── config/           # Configuration templates
-├── templates/        # Template files for environment setup
-└── setup.sh          # Main setup script (entry point)
-```
-
-### Documentation Files
-
-- `docs/java-standardization-docs.md` - Detailed documentation of Java standardization
-- `docs/apple-silicon-compatibility.md` - Information about compatibility with Apple Silicon (ARM) Macs
-
 ### Helper Functions
 
 The following helper functions are available once you've run the setup script:
