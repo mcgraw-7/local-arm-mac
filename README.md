@@ -666,11 +666,11 @@ The following helper functions are available once you've run the setup script:
 <details>
 <summary><strong>Setup and Configuration Screenshots</strong></summary>
 
-<sub>After initializing setup.sh</sub>
+<sub>initializing ./setup.sh</sub>
 
 ![CleanShot 2025-05-31 at 13 03 56@2x](https://github.com/user-attachments/assets/f0a6e1cd-6201-4ec8-944f-8676f6b476a4)
 
-<sub>After option 1</sub>
+<sub>Check Java Configuration: `./verify-java-limited.sh`</sub>
 
 ![CleanShot 2025-05-31 at 13 04 55@2x](https://github.com/user-attachments/assets/3ea128a7-583c-43d7-bb6a-ca18257db99a)
 
@@ -682,7 +682,7 @@ The following helper functions are available once you've run the setup script:
 
 ![CleanShot 2025-05-31 at 13 06 05@2x](https://github.com/user-attachments/assets/0b4b49f5-8905-498e-9eb0-649d82fd1927)
 
-<sub>After option 4</sub>
+<sub></sub>
 
 ![CleanShot 2025-05-31 at 13 06 42@2x](https://github.com/user-attachments/assets/459b29ec-7b8d-4816-80b5-8a675f960b90)
 
