@@ -2,7 +2,7 @@
 # Script to update WebLogic scripts to use the standardized JDK
 # This script creates updated versions of scripts in a separate directory
 
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 DEV_DIR="${HOME}/dev"
 UPDATED_DIR="${DEV_DIR}/standardized-scripts"
 

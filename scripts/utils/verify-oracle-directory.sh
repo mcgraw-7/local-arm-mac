@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
 WLSERVER="${ORACLE_HOME}/wlserver"
 DOMAIN_HOME="${ORACLE_HOME}/user_projects/domains/P2-DEV"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
 echo "${BLUE}=== Oracle WebLogic Directory Standardization Verification ===${NC}"
 echo "This script checks that WebLogic is installed in the standardized location."

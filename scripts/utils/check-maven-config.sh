@@ -48,41 +48,48 @@ if [ -f "$USER_SETTINGS_PATH" ]; then
     if [ "$PROXY_COUNT" -gt 0 ]; then
         echo "${GREEN}Found $PROXY_COUNT proxy configuration(s)${NC}"
         
-        # Use awk to extract proxy information
-        awk '/<proxy>/,/<\/proxy>/ {
-            if ($0 ~ /<id>/) {
-                match($0, /<id>(.*)<\/id>/, id)
-                proxy_id = id[1]
-                printf "Proxy ID: %s\n", proxy_id
-            }
-            if ($0 ~ /<active>/) {
-                match($0, /<active>(.*)<\/active>/, active)
-                printf "  Active: %s\n", active[1]
-            }
-            if ($0 ~ /<protocol>/) {
-                match($0, /<protocol>(.*)<\/protocol>/, protocol)
-                printf "  Protocol: %s\n", protocol[1]
-            }
-            if ($0 ~ /<host>/) {
-                match($0, /<host>(.*)<\/host>/, host)
-                printf "  Host: %s\n", host[1]
-            }
-            if ($0 ~ /<port>/) {
-                match($0, /<port>(.*)<\/port>/, port)
-                printf "  Port: %s\n", port[1]
-            }
-            if ($0 ~ /<username>/) {
-                match($0, /<username>(.*)<\/username>/, username)
-                printf "  Username: %s\n", username[1]
-            }
-            if ($0 ~ /<password>/) {
-                printf "  Password: [HIDDEN]\n"
-            }
-            if ($0 ~ /<nonProxyHosts>/) {
-                match($0, /<nonProxyHosts>(.*)<\/nonProxyHosts>/, nonProxy)
-                printf "  Non-Proxy Hosts: %s\n\n", nonProxy[1]
-            }
-        }' "$USER_SETTINGS_PATH"
+        # Use a more compatible approach to extract proxy information
+        awk '
+/<proxy>/,/<\/proxy>/ {
+    if ($0 ~ /<id>/) {
+        gsub(/<id>|<\/id>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "Proxy ID: " $0
+    }
+    if ($0 ~ /<active>/) {
+        gsub(/<active>|<\/active>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Active: " $0
+    }
+    if ($0 ~ /<protocol>/) {
+        gsub(/<protocol>|<\/protocol>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Protocol: " $0
+    }
+    if ($0 ~ /<host>/) {
+        gsub(/<host>|<\/host>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Host: " $0
+    }
+    if ($0 ~ /<port>/) {
+        gsub(/<port>|<\/port>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Port: " $0
+    }
+    if ($0 ~ /<username>/) {
+        gsub(/<username>|<\/username>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Username: " $0
+    }
+    if ($0 ~ /<password>/) {
+        print "  Password: [HIDDEN]"
+    }
+    if ($0 ~ /<nonProxyHosts>/) {
+        gsub(/<nonProxyHosts>|<\/nonProxyHosts>/, "", $0)
+        gsub(/^[ \t]+|[ \t]+$/, "", $0)
+        print "  Non-Proxy Hosts: " $0 "\n"
+    }
+}' "$USER_SETTINGS_PATH"
     else
         echo "${YELLOW}⚠️  No proxy configurations found in settings.xml${NC}"
     fi
@@ -91,9 +98,13 @@ if [ -f "$USER_SETTINGS_PATH" ]; then
     echo ""
     echo "${BLUE}Active profiles in settings.xml:${NC}"
     if grep -q "<activeProfile>" "$USER_SETTINGS_PATH"; then
-        grep -A 1 "<activeProfile>" "$USER_SETTINGS_PATH" | grep -v "<activeProfile>" | sed 's/<\/activeProfile>//' | sed 's/[ \t]*//' | while read profile; do
-            echo "  - $profile"
-        done
+        awk '
+        /<activeProfile>/,/<\/activeProfile>/ {
+            if ($0 !~ /<activeProfile>/ && $0 !~ /<\/activeProfile>/) {
+                gsub(/^[ \t]+|[ \t]+$/, "", $0)
+                print "  - " $0
+            }
+        }' "$USER_SETTINGS_PATH"
     else
         echo "${YELLOW}⚠️  No active profiles found in settings.xml${NC}"
     fi
@@ -102,7 +113,14 @@ if [ -f "$USER_SETTINGS_PATH" ]; then
     echo ""
     echo "${BLUE}Available profiles in settings.xml:${NC}"
     if grep -q "<profile>" "$USER_SETTINGS_PATH"; then
-        grep -A 1 "<profile>" "$USER_SETTINGS_PATH" | grep "<id>" | sed 's/.*<id>/  - /' | sed 's/<\/id>//' 
+        awk '
+        /<profile>/ {in_profile=1; next}
+        in_profile && /<id>/ {
+            gsub(/<id>|<\/id>/, "", $0)
+            gsub(/^[ \t]+|[ \t]+$/, "", $0)
+            print "  - " $0
+            in_profile=0
+        }' "$USER_SETTINGS_PATH"
     else
         echo "${YELLOW}⚠️  No profiles found in settings.xml${NC}"
     fi
@@ -133,6 +151,17 @@ else
     echo "${RED}❌ Connection to Maven Central failed${NC}"
 fi
 
+# Test VA repositories with SSL validation disabled
+echo ""
+echo "Testing connection to VA repositories with SSL validation disabled..."
+mvn -Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true dependency:get -Dartifact=org.apache.commons:commons-lang3:3.12.0 -DrepoUrl=https://artifacts.devops.va.gov/artifactory/libs-release -q > /dev/null 2>&1
+if [ $? -eq 0 ]; then
+    echo "${GREEN}✅ Connection to VA repository successful with SSL validation disabled${NC}"
+else
+    echo "${RED}❌ Connection to VA repository failed even with SSL validation disabled${NC}"
+    echo "${YELLOW}⚠️  This could indicate proxy configuration issues or network connectivity problems${NC}"
+fi
+
 echo ""
 echo "${BLUE}====================================================${NC}"
 echo "${BLUE}Maven Effective Settings${NC}"
@@ -141,30 +170,45 @@ echo "${YELLOW}Note: This shows your effective Maven settings with passwords mas
 echo ""
 
 # Get effective settings and highlight proxy sections
-mvn help:effective-settings | awk '
-    /Effective user settings:/ {print; in_settings=1; next}
-    in_settings {
-        if (/^<!DOCTYPE/ || /<\?xml/) next
-        if (/<proxy>/) {
-            in_proxy=1
-            print "\033[1;34m" $0 "\033[0m"
-            next
-        }
-        if (in_proxy && /<\/proxy>/) {
-            in_proxy=0
-            print "\033[1;34m" $0 "\033[0m"
-            next
-        }
-        if (in_proxy) {
-            if (/<password>.*<\/password>/) {
-                gsub(/<password>.*<\/password>/, "<password>[HIDDEN]</password>")
+# Capture the effective settings and process them
+mvn help:effective-settings > /tmp/maven_effective_settings.tmp 2>&1
+
+# Check if the command was successful
+if [ $? -eq 0 ]; then
+    # Process the file with awk for highlighting and password masking
+    cat /tmp/maven_effective_settings.tmp | awk '
+        /Effective user settings:/ {print; in_settings=1; next}
+        in_settings {
+            if (/^<!DOCTYPE/ || /<\?xml/) next
+            if (/<proxy>/) {
+                in_proxy=1
+                print "\033[1;34m" $0 "\033[0m"
+                next
             }
-            print "\033[1;34m" $0 "\033[0m"
-        } else {
-            print
+            if (in_proxy && /<\/proxy>/) {
+                in_proxy=0
+                print "\033[1;34m" $0 "\033[0m"
+                next
+            }
+            if (in_proxy) {
+                if (/<password>.*<\/password>/) {
+                    gsub(/<password>.*<\/password>/, "<password>[HIDDEN]</password>")
+                }
+                print "\033[1;34m" $0 "\033[0m"
+            } else {
+                print
+            }
         }
-    }
-'
+    '
+    # Clean up temporary file
+    rm /tmp/maven_effective_settings.tmp
+else
+    echo "${RED}❌ Failed to retrieve effective settings${NC}"
+    echo "${YELLOW}Common reasons:${NC}"
+    echo "  - Network connectivity issues"
+    echo "  - Proxy misconfiguration"
+    echo "  - SSL certificate validation problems"
+fi
 
 echo ""
 echo "${BLUE}====================================================${NC}"

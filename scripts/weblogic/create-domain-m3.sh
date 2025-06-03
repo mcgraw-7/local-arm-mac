@@ -33,7 +33,7 @@ ADMIN_PASSWORD="weblogic1"
 ADMIN_PORT="7001"
 ADMIN_HOST="localhost"
 ADMIN_SERVER_NAME="AdminServer"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
 debug_msg "Variables initialized"
 

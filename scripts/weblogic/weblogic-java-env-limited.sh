@@ -3,7 +3,7 @@
 # This script applies WebLogic-specific Java environment settings
 
 # Standard Oracle JDK path
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
 # Export required environment variables
 export JAVA_HOME="$JDK_PATH"

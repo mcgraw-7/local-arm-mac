@@ -2,7 +2,7 @@
 # Simple WebLogic Java Environment Setup (No Sudo Required)
 # This script creates a .wljava_env file in your home directory that can be sourced before running WebLogic
 
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 ENV_FILE="${HOME}/.wljava_env"
 
 echo "=== Setting up WebLogic Java environment ==="

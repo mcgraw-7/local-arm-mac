@@ -121,8 +121,8 @@ echo ""
 echo "${BLUE}Checking for Oracle JDK compatibility...${NC}"
 
 # Check for standard Oracle JDK locations
-ORACLE_JDK_PATH="${HOME}/dev/Oracle/jdk1.8.0_45"
-SYSTEM_JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk"
+ORACLE_JDK_PATH="${HOME}/dev/Oracle/jdk1.8.0_202"
+SYSTEM_JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
 
 if [ -d "$ORACLE_JDK_PATH" ]; then
     echo "${GREEN}✅ Found Oracle JDK at expected location: ${ORACLE_JDK_PATH}${NC}"

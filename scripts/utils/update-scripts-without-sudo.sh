@@ -2,14 +2,14 @@
 # Script to update JAVA_HOME in WebLogic shell scripts without sudo
 # This script creates a new version of each script with updated JAVA_HOME
 
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 SCRIPT_DIR="/Users/michaelmcgraw/dev"
 UPDATED_DIR="${SCRIPT_DIR}/updated-scripts-$(date +%Y%m%d-%H%M%S)"
 
 # Check if Oracle JDK exists
 if [ ! -d "$JDK_PATH" ]; then
     echo "ERROR: Oracle JDK not found at $JDK_PATH"
-    echo "Please ensure jdk1.8.0_45.jdk is installed at the specified location."
+    echo "Please ensure jdk1.8.0_202.jdk is installed at the specified location."
     exit 1
 fi
 

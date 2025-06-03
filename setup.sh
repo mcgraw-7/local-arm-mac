@@ -40,7 +40,7 @@ echo "${HOME}/dev/Oracle/Middleware/Oracle_Home"
 echo "No deviations from this directory structure are permitted."
 
 # Check if Oracle JDK exists
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 echo -n "Checking Oracle JDK installation: "
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}✅ FOUND${NC}"

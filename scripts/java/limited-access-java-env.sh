@@ -3,14 +3,14 @@
 # This script configures the Java environment for WebLogic without requiring sudo access
 
 # Standard Oracle JDK path
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
 echo "=== Java Environment Configuration (Limited Access) ==="
 
 # Check if Oracle JDK exists
 if [ ! -d "$JDK_PATH" ]; then
     echo "❌ ERROR: Required Oracle JDK not found at $JDK_PATH"
-    echo "Please contact your system administrator to ensure jdk1.8.0_45.jdk is properly installed."
+    echo "Please contact your system administrator to ensure jdk1.8.0_202.jdk is properly installed."
     exit 1
 fi
 

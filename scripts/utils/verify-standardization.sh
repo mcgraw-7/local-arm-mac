@@ -9,7 +9,7 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 STANDARDIZED_SCRIPTS="${HOME}/dev/standardized-scripts"
 WL_ENV_FILE="${HOME}/.wljava_env"
 
@@ -62,11 +62,11 @@ fi
 
 echo -n "Java version: "
 CURRENT_JAVA=$(java -version 2>&1 | head -1)
-if [[ "$CURRENT_JAVA" == *"1.8.0_45"* ]]; then
+if [[ "$CURRENT_JAVA" == *"1.8.0_202"* ]]; then
     echo "${GREEN}$CURRENT_JAVA${NC} ✅"
 else
     echo "${RED}$CURRENT_JAVA${NC} ❌"
-    echo "  Expected: java version \"1.8.0_45\""
+    echo "  Expected: java version \"1.8.0_202\""
     echo "  Run 'source $WL_ENV_FILE' to use the correct Java version"
 fi
 
@@ -87,7 +87,7 @@ fi
 
 echo ""
 echo "${BLUE}=== Verification Summary ===${NC}"
-echo "Your WebLogic Java environment is set up to use Oracle JDK 1.8.0_45."
+echo "Your WebLogic Java environment is set up to use Oracle JDK 1.8.0_202."
 echo ""
 echo "To run WebLogic scripts with the correct Java environment:"
 echo "  1. ${YELLOW}source ${HOME}/.wljava_env${NC}"

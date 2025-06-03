@@ -2,7 +2,7 @@
 # Java Configuration Verification Script (Limited Access)
 # Verifies that the correct Oracle JDK is configured for use
 
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 
 echo "=== Java Configuration Verification ==="
 echo "Checking Oracle JDK installation at $JDK_PATH..."

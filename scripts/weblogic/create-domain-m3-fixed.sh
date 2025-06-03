@@ -26,7 +26,7 @@ ADMIN_PASSWORD="weblogic1"
 ADMIN_PORT="7001"
 ADMIN_HOST="localhost"
 ADMIN_SERVER_NAME="AdminServer"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 LOG_FILE="/tmp/create-domain-$$.log"
 
 # Debug function with timestamps
@@ -388,7 +388,7 @@ adminName = getEnv('ADMIN_SERVER_NAME', 'AdminServer')
 adminUsername = getEnv('ADMIN_USERNAME', 'weblogic')
 adminPassword = getEnv('ADMIN_PASSWORD', 'weblogic1')
 adminPort = int(getEnv('ADMIN_PORT', '7001'))
-javaHome = getEnv('JAVA_HOME', '/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home')
+javaHome = getEnv('JAVA_HOME', '/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home')
 
 print('Creating domain with:')
 print('Domain Home: ' + domainHome)
