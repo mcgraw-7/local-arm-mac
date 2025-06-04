@@ -86,14 +86,15 @@ echo "18. Create WebLogic Domain with Oracle DB Verification"
 echo "19. Manage Oracle Database (with Apple Silicon Support)"
 echo "20. Start WebLogic with Checks"
 echo "21. Clean Up Temporary Files and Artifacts"
-echo "22. Clean Up Untracked Files"
+echo "22. Clean Up Untracked Files" 
 echo "23. WebLogic Java Environment (Limited Access)"
+echo "24. Check WebLogic Status & Diagnostics"
 
 echo "${BLUE}--- Other Options ---${NC}"
-echo "24. View README Documentation"
-echo "25. Exit"
+echo "25. View README Documentation"
+echo "26. Exit"
 
-echo -n "Select an option (1-25): "
+echo -n "Select an option (1-26): "
 read option
 
 case $option in
@@ -256,9 +257,14 @@ case $option in
         echo "${BLUE}This will set up a limited access WebLogic Java environment${NC}"
         "$(dirname "$0")/scripts/weblogic/weblogic-java-env-limited.sh"
         ;;
+    24)
+        echo "Running WebLogic comprehensive status check & diagnostics..."
+        echo "${BLUE}This will analyze WebLogic status, Java compatibility, and diagnose common errors${NC}"
+        "$(dirname "$0")/scripts/weblogic/check-weblogic-status.sh"
+        ;;
         
     # Other Options
-    24)
+    25)
         echo "Displaying README documentation..."
         echo "${BLUE}This will display the README file with setup instructions${NC}"
         
@@ -275,7 +281,7 @@ case $option in
             cat "$(dirname "$0")/README.md"
         fi
         ;;
-    25)
+    26)
         echo "Exiting..."
         exit 0
         ;;

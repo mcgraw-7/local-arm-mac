@@ -12,13 +12,135 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Set important variables
-ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
+# Status message functions
+function print_banner() {
+    echo ""
+    echo "${BLUE}====================================================${NC}"
+    echo "${BLUE}$1${NC}"
+    echo "${BLUE}====================================================${NC}"
+    echo ""
+}
+
+function print_section() {
+    echo "${CYAN}----------------------------------------------------${NC}"
+    echo "${CYAN}$1${NC}"
+    echo "${CYAN}----------------------------------------------------${NC}"
+}
+
+function print_success() {
+    echo "${GREEN}✅ $1${NC}"
+}
+
+function print_error() {
+    echo "${RED}❌ $1${NC}"
+}
+
+function print_warning() {
+    echo "${YELLOW}⚠️ $1${NC}"
+}
+
+function print_info() {
+    echo "${BLUE}ℹ️ $1${NC}"
+}
+
+# Check if file exists and is readable
+function check_file() {
+    if [[ -r "$1" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Dynamically determine Oracle Middleware and WebLogic paths
+# Check for common installation patterns
+function detect_oracle_paths() {
+    local possible_paths=(
+        "${HOME}/dev/Oracle/Middleware/Oracle_Home"
+        "${HOME}/dev/Oracle/Middleware"
+        "${HOME}/Oracle/Middleware/Oracle_Home"
+        "${HOME}/Oracle/Middleware"
+        "/u01/oracle/middleware"
+    )
+    
+    for path in "${possible_paths[@]}"; do
+        if [[ -d "$path" ]]; then
+            echo "$path"
+            return 0
+        fi
+    done
+    
+    # If we can't find a standard path, try to detect from running processes
+    local wl_proc_path=$(ps -ef | grep java | grep weblogic | grep -v grep | awk '{print $8}' | xargs dirname 2>/dev/null || echo "")
+    if [[ -n "$wl_proc_path" ]]; then
+        # Try to get Oracle home from the running process
+        local detected_path=$(echo "$wl_proc_path" | sed -E 's|(.*Middleware).*|\1|')
+        if [[ -d "$detected_path" ]]; then
+            echo "$detected_path"
+            return 0
+        fi
+    fi
+    
+    # Default to the most common path if we can't detect it
+    echo "${HOME}/dev/Oracle/Middleware"
+}
+
+# Dynamically determine domain path
+function detect_domain_path() {
+    local oracle_home="$1"
+    local possible_domain_dirs=(
+        "${oracle_home}/user_projects/domains"
+        "${oracle_home}/Oracle_Home/user_projects/domains"
+        "${oracle_home}/../domains"
+        "${HOME}/dev/Oracle/domains"
+    )
+    
+    # First check for domains directory
+    local domains_dir=""
+    for dir in "${possible_domain_dirs[@]}"; do
+        if [[ -d "$dir" ]]; then
+            domains_dir="$dir"
+            break
+        fi
+    done
+    
+    if [[ -z "$domains_dir" ]]; then
+        # Default
+        domains_dir="${oracle_home}/user_projects/domains"
+    fi
+    
+    # Now look for P2-DEV domain
+    if [[ -d "${domains_dir}/P2-DEV" ]]; then
+        echo "${domains_dir}/P2-DEV"
+    elif [[ -d "${domains_dir}/base_domain" ]]; then
+        echo "${domains_dir}/base_domain"
+    else
+        # Try to find any domain directory
+        local first_domain=$(find "${domains_dir}" -maxdepth 1 -type d -not -path "${domains_dir}" | head -1)
+        if [[ -n "$first_domain" ]]; then
+            echo "$first_domain"
+        else
+            # Default
+            echo "${domains_dir}/P2-DEV"
+        fi
+    fi
+}
+
+# Set important variables with auto-detection
+ORACLE_HOME=$(detect_oracle_paths)
 WL_HOME="${ORACLE_HOME}/wlserver"
-DOMAIN_HOME="${ORACLE_HOME}/user_projects/domains/P2-DEV"
-DOMAIN_NAME="P2-DEV"
+if [[ ! -d "$WL_HOME" ]]; then
+    WL_HOME="${ORACLE_HOME}/Oracle_Home/wlserver"
+fi
+DOMAIN_HOME=$(detect_domain_path "$ORACLE_HOME")
+DOMAIN_NAME=$(basename "$DOMAIN_HOME")
 ADMIN_SERVER="AdminServer"
 ADMIN_PORT=7001
+
+print_info "Using Oracle Home: $ORACLE_HOME"
+print_info "Using WebLogic Home: $WL_HOME"
+print_info "Using Domain Home: $DOMAIN_HOME"
+
 LOG_DIR="${DOMAIN_HOME}/servers/${ADMIN_SERVER}/logs"
 SERVER_LOG="${LOG_DIR}/${ADMIN_SERVER}.log"
 SERVER_OUT="${LOG_DIR}/${ADMIN_SERVER}.out"
