@@ -134,6 +134,36 @@ function filterScripts() {
 
 <div class="script-grid">
 <div class="script-card">
+  <h3>check-weblogic-status.sh</h3>
+  <div class="script-description">Comprehensive WebLogic Status & Diagnostics Script for Apple Silicon Compatibility Issues</div>
+  
+  <details>
+    <summary>Usage & Details</summary>
+    <div class="script-details">
+      <h4>Usage</h4>
+      <p>Run this script to get a comprehensive diagnostic report of your WebLogic server, including status, configuration, Java compatibility, and common error detection focused on Apple Silicon compatibility issues.</p>
+      
+      <h4>Key Features</h4>
+      <ul>
+        <li>Detects BouncyCastle cryptography library compatibility issues</li>
+        <li>Analyzes deployment failures and NullPointerExceptions</li>
+        <li>Checks Java version and JVM compatibility with Apple Silicon</li>
+        <li>Monitors system resources and WebLogic process health</li>
+        <li>Provides specific remediation steps for common errors</li>
+      </ul>
+      
+      <h4>Run Command</h4>
+      <div class="command-box">
+        <code>./scripts/weblogic/check-weblogic-status.sh</code>
+        <button class="copy-btn" onclick="copyToClipboard(this)">
+          <span class="copy-icon">📋</span>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+    </div>
+  </details>
+</div>
+<div class="script-card">
   <h3>create-domain-m3.sh</h3>
   <div class="script-description">WebLogic Domain Creation Script for VBMS on M3 Mac with Oracle DB Verification</div>
   

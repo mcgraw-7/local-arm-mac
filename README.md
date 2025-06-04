@@ -171,31 +171,6 @@ After setup, you can check WebLogic status with:
 va_weblogic_status
 ```
 </details>
-
-<details>
-<summary><strong>Comprehensive WebLogic Status Diagnostic Tool</strong></summary>
-
-In-depth diagnostic tool for WebLogic servers on Apple Silicon (M1/M2/M3) Macs.
-
-**What it does:**
-- Performs comprehensive WebLogic server health checks
-- Analyzes JVM heap and memory usage in detail
-- Detects BouncyCastle library version conflicts that cause ClassCastException
-- Monitors thread states and identifies deadlocks
-- Scans log files for critical errors
-- Verifies application deployment status
-- Checks HTTP endpoints for all deployed applications
-- Provides interactive diagnostics for advanced troubleshooting
-
-**Script:** `scripts/weblogic/check-weblogic-status.sh`
-
-**Usage:**
-```bash
-./scripts/weblogic/check-weblogic-status.sh
-```
-
-This tool is especially useful for diagnosing memory issues, BouncyCastle library conflicts, and other problems common when running WebLogic on Apple Silicon Macs.
-</details>
 </details>
 
 <details>
