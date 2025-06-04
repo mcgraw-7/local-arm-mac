@@ -1,5 +1,6 @@
 #!/bin/zsh
 # Script to verify WebLogic domain configuration with Oracle Database
+# Updated June 4, 2025 - Fixed container detection for vbms-dev-docker-19c
 
 ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
 DOMAIN_HOME="${ORACLE_HOME}/user_projects/domains/P2-DEV"
@@ -34,7 +35,7 @@ if [ "$(uname -m)" = "arm64" ]; then
     if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
         echo "❌ Colima is not running. Oracle database requires Colima on Apple Silicon."
         echo "Run this command to start Colima with the correct settings:"
-        echo "colima start --arch x86_64 -c 4 -m 12"
+        echo "colima start -c 4 -m 12 -a x86_64"
         exit 1
     else
         echo "✅ Colima is running, continuing with verification"
@@ -51,24 +52,26 @@ fi
 
 # Check Oracle DB container running status
 echo "Checking Oracle database container status..."
-ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -i database)
+# Updated pattern to detect vbms-dev-docker-19c container
+ORACLE_CONTAINER=$(docker ps | grep -i -E 'oracle|vbms')
 if [ -z "$ORACLE_CONTAINER" ]; then
     echo "❌ Oracle database container is NOT running"
     echo "This will cause issues with VBMS applications that require database access"
     
     # Check if container exists but is stopped
-    STOPPED_CONTAINER=$(docker ps -a | grep -i oracle | grep -i database)
+    STOPPED_CONTAINER=$(docker ps -a | grep -i -E 'oracle|vbms')
     if [ -n "$STOPPED_CONTAINER" ]; then
         echo "Found stopped Oracle database container:"
         echo "$STOPPED_CONTAINER"
         echo ""
-        echo "To start it, run: docker start $(echo "$STOPPED_CONTAINER" | awk '{print $1}')"
-        CONTAINER_NAME=$(echo "$STOPPED_CONTAINER" | awk '{print $1}')
+        CONTAINER_NAME=$(echo "$STOPPED_CONTAINER" | awk '{print $NF}')
+        echo "To start it, run: docker start $CONTAINER_NAME"
     else
         echo "No Oracle database container found. You may need to create one."
     fi
     
-    read -p "Would you like to start the Oracle database container now? (y/n): " START_DB
+    echo -n "Would you like to start the Oracle database container now? (y/n): "
+    read START_DB
     if [[ "$START_DB" =~ ^[Yy]$ ]]; then
         if [ -n "$CONTAINER_NAME" ]; then
             echo "Starting container: $CONTAINER_NAME"
@@ -85,7 +88,7 @@ if [ -z "$ORACLE_CONTAINER" ]; then
             echo "No existing container to start. Looking for Oracle database images..."
             
             # Check for Oracle database images
-            ORACLE_IMAGES=$(docker images | grep -i oracle)
+            ORACLE_IMAGES=$(docker images | grep -i -E 'oracle|oracledb|vbms')
             if [ -n "$ORACLE_IMAGES" ]; then
                 echo "Found Oracle images:"
                 echo "$ORACLE_IMAGES"
@@ -93,16 +96,16 @@ if [ -z "$ORACLE_CONTAINER" ]; then
                 echo "Please run the appropriate docker run command to start a container"
             else
                 echo "❌ No Oracle database images found."
-                echo "You only need to download the image once with:"
-                echo "docker pull -a oracledb19c/oracle.19.3.0-ee"
+                echo "You need to download the official Oracle Database image."
                 echo ""
                 echo "After downloading, you can create and start a container with:"
-                echo "docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
+                echo "docker run -d --name vbms-dev-docker-19c -p 1521:1521 <oracle_image_name>"
             fi
         fi
     fi
 else
-    echo "✅ Oracle database container is running: $ORACLE_CONTAINER"
+    echo "✅ Oracle database container is running:"
+    echo "$ORACLE_CONTAINER"
     
     # Get container port mappings
     CONTAINER_ID=$(echo "$ORACLE_CONTAINER" | awk '{print $1}')
@@ -115,13 +118,22 @@ fi
 echo ""
 echo "Checking WebLogic JDBC configuration..."
 if [ -d "${DOMAIN_HOME}/config/jdbc" ]; then
-    JDBC_FILES=$(ls -1 "${DOMAIN_HOME}/config/jdbc")
-    if [ -n "$JDBC_FILES" ]; then
+    JDBC_FILES=$(ls -1 "${DOMAIN_HOME}/config/jdbc" 2>/dev/null)
+    if [ -n "$JDBC_FILES" ] && ! grep -q "readme" <<< "$JDBC_FILES"; then
         echo "✅ JDBC configurations found:"
         echo "$JDBC_FILES"
     else
-        echo "❌ No JDBC configurations found in domain"
-        echo "Your applications might not be able to connect to the database"
+        echo "❌ No valid JDBC configurations found"
+        echo "Found a readme.txt file, but no actual JDBC connection files"
+        echo "You need to configure JDBC data sources for your applications"
+        echo ""
+        echo "To create JDBC data sources for WebLogic:"
+        echo "1. Make sure WebLogic Admin Server is running"
+        echo "2. Use the provided script: ${HOME}/dev/configure-jdbc.sh"
+        echo "   OR"
+        echo "3. Configure manually in WebLogic Admin Console"
+        echo "   - Access at: http://localhost:7001/console"
+        echo "   - Navigate to Services > Data Sources > New"
     fi
 else
     echo "❌ No JDBC configuration directory found"

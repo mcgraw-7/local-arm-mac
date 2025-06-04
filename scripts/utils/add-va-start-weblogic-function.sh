@@ -29,7 +29,7 @@ va_start_weblogic() {
                 
                 if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
                     echo "⚠️  Warning: Colima is not running. Oracle database might not be accessible."
-                    echo "Consider running: colima start --arch x86_64 -c 4 -m 12"
+                    echo "Consider running: colima start -c 4 -m 12 -a x86_64"
                 else
                     echo "✅ Colima is running"
                 fi
@@ -76,7 +76,7 @@ va_start_oracle_db() {
         if [ "$(uname -m)" = "arm64" ]; then
             if command -v colima &> /dev/null; then
                 echo "Detected Apple Silicon Mac. Starting Colima..."
-                colima start --arch x86_64 -c 4 -m 12
+                colima start -c 4 -m 12 -a x86_64
                 
                 if [ $? -ne 0 ]; then
                     echo "❌ Failed to start Colima. Cannot proceed."

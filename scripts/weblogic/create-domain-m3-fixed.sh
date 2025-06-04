@@ -26,7 +26,7 @@ ADMIN_PASSWORD="weblogic1"
 ADMIN_PORT="7001"
 ADMIN_HOST="localhost"
 ADMIN_SERVER_NAME="AdminServer"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
 LOG_FILE="/tmp/create-domain-$$.log"
 
 # Debug function with timestamps
@@ -91,7 +91,7 @@ if ! docker info &>/dev/null; then
     # Check if running on Apple Silicon and suggest Colima
     if [ "$(uname -m)" = "arm64" ]; then
         echo "On Apple Silicon Mac, make sure Colima is running:" | tee -a $LOG_FILE
-        echo "colima start --arch x86_64 -c 4 -m 12" | tee -a $LOG_FILE
+        echo "colima start -c 4 -m 12 -a x86_64" | tee -a $LOG_FILE
     else
         echo "Make sure Docker Desktop is running" | tee -a $LOG_FILE
     fi
@@ -120,7 +120,7 @@ if [ "$(uname -m)" = "arm64" ]; then
             
             if [[ "$START_COLIMA" =~ ^[Yy]$ ]]; then
                 echo "Starting Colima with recommended settings..." | tee -a $LOG_FILE
-                colima start --arch x86_64 -c 4 -m 12
+                colima start -c 4 -m 12 -a x86_64
                 
                 # Verify Colima started successfully
                 if [ $? -eq 0 ]; then
@@ -388,7 +388,7 @@ adminName = getEnv('ADMIN_SERVER_NAME', 'AdminServer')
 adminUsername = getEnv('ADMIN_USERNAME', 'weblogic')
 adminPassword = getEnv('ADMIN_PASSWORD', 'weblogic1')
 adminPort = int(getEnv('ADMIN_PORT', '7001'))
-javaHome = getEnv('JAVA_HOME', '/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home')
+javaHome = getEnv('JAVA_HOME', '/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home')
 
 print('Creating domain with:')
 print('Domain Home: ' + domainHome)
