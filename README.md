@@ -37,6 +37,38 @@ The repository is divided into three main categories of scripts:
 These scripts help you test, verify, and diagnose your current environment without making changes.
 
 <details>
+<summary><strong>Show Complete Configuration</strong></summary>
+
+Displays a comprehensive report of your entire configuration including OS details, Java, WebLogic, Maven, and environment variables.
+
+**What it does:**
+- Shows detailed system information (OS, architecture, memory)
+- Reports all Java-related configuration and paths
+- Displays WebLogic installation and domain information
+- Lists Maven configuration and repository settings
+- Shows all relevant environment variables
+- Displays host configuration and network settings
+
+**Script:** `scripts/utils/show-complete-configuration.sh`
+</details>
+
+<details>
+<summary><strong>Compare Configuration</strong></summary>
+
+Provides a side-by-side comparison between your current configuration and the required configuration for a properly set up environment.
+
+**What it does:**
+- Compares OS requirements with your current system
+- Shows Java version and path comparison
+- Validates WebLogic directory structure and paths
+- Checks Maven configuration against requirements
+- Reports any mismatches or potential issues
+- Uses color-coded indicators for pass/warn/fail status
+
+**Script:** `scripts/utils/compare-configuration.sh`
+</details>
+
+<details>
 <summary><strong>Verify Java Standardization</strong></summary>
 
 Verifies that the Java environment is correctly standardized for WebLogic development.

@@ -4,13 +4,13 @@
 # Checks server status, analyzes common errors, and provides remediation steps
 # ==========================================================================
 
-# Import utility functions from shared module
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR}/../../../weblogic-utils.sh"
-
-# Display script version
-WL_STATUS_VERSION="2.0.0"
-print_info "WebLogic Status Checker v${WL_STATUS_VERSION}"
+# Set color codes for output formatting
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
 
 # Status message functions
 function print_banner() {
@@ -382,50 +382,10 @@ function check_configuration() {
         # Check for JVM settings that might affect compatibility
         JVM_ARGS_FILE="${DOMAIN_HOME}/bin/setDomainEnv.sh"
         if check_file "$JVM_ARGS_FILE"; then
-            # Get all JVM settings from the file
-            JVM_SETTINGS=$(grep -E "MEM_ARGS|JAVA_OPTIONS|JVM_ARGS|EXTRA_JAVA_OPTIONS" "$JVM_ARGS_FILE" | grep -v "^#")
-            
-            if [[ -n "$JVM_SETTINGS" ]]; then
-                print_info "JVM Memory Settings Summary:"
-                
-                # Extract heap settings
-                HEAP_MIN=$(echo "$JVM_SETTINGS" | grep -oE "\-Xms[0-9]+[kmgKMG]?" | head -1)
-                HEAP_MAX=$(echo "$JVM_SETTINGS" | grep -oE "\-Xmx[0-9]+[kmgKMG]?" | head -1)
-                
-                # Extract metaspace settings
-                METASPACE_SIZE=$(echo "$JVM_SETTINGS" | grep -oE "\-XX:(Meta)?spaceSize=[0-9]+[kmgKMG]?" | head -1)
-                METASPACE_MAX=$(echo "$JVM_SETTINGS" | grep -oE "\-XX:Max(Meta)?spaceSize=[0-9]+[kmgKMG]?" | head -1)
-                
-                # Extract GC settings
-                GC_COLLECTOR=$(echo "$JVM_SETTINGS" | grep -oE "\-XX:\+Use[A-Za-z0-9]+" | head -1)
-                
-                # Print memory settings in a clean format
-                echo "┌─────────────────────────────────────────────┐"
-                echo "│ Heap Memory:                                │"
-                echo "│   Initial Heap Size:   ${HEAP_MIN:-Not specified}            │"
-                echo "│   Maximum Heap Size:   ${HEAP_MAX:-Not specified}            │"
-                echo "├─────────────────────────────────────────────┤"
-                echo "│ Metaspace Memory:                           │"
-                echo "│   Initial Size:        ${METASPACE_SIZE:-Not specified}    │"
-                echo "│   Maximum Size:        ${METASPACE_MAX:-Not specified}    │"
-                echo "├─────────────────────────────────────────────┤"
-                echo "│ Garbage Collection:                         │"
-                echo "│   Collector:           ${GC_COLLECTOR:-Default JVM GC}        │"
-                echo "└─────────────────────────────────────────────┘"
-                
-                # Check for memory issues
-                if [[ -z "$HEAP_MIN" || -z "$HEAP_MAX" ]]; then
-                    print_warning "Some heap memory settings are missing. This might affect server performance."
-                fi
-                
-                # Provide an option to see all JVM settings
-                print_info "Additional JVM Options:"
-                echo "$JVM_SETTINGS" | grep -vE "^\s*$" | while read line; do
-                    # Format the output for better readability
-                    SETTING_NAME=$(echo "$line" | cut -d '=' -f1)
-                    SETTING_VALUE=$(echo "$line" | cut -d '=' -f2-)
-                    echo "  $SETTING_NAME = $SETTING_VALUE"
-                done
+            JVM_MEM_SETTINGS=$(grep -E "MEM_ARGS|JAVA_OPTIONS" "$JVM_ARGS_FILE" | grep -v "^#")
+            if [[ -n "$JVM_MEM_SETTINGS" ]]; then
+                print_info "JVM Memory Settings:"
+                echo "$JVM_MEM_SETTINGS"
             fi
         fi
     else

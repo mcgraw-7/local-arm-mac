@@ -68,33 +68,35 @@ echo "4. Verify Oracle DB Container for WebLogic"
 echo "5. Verify Oracle WebLogic Standardized Directory Structure"
 echo "6. Check VBMS Compatibility"
 echo "7. WebLogic Status Checker"
+echo "8. Show Complete Configuration Report"
+echo "9. Compare Current vs Required Configuration"
 
 echo "${BLUE}--- Updating Existing Configuration ---${NC}"
-echo "8. Configure Java Environment (Limited Access, No Sudo)"
-echo "9. Configure WebLogic-specific Environment"
-echo "10. Update Scripts (Non-Sudo Mode)"
-echo "11. Run with Oracle JDK Wrapper"
-echo "12. Add VA Environment Helper Functions"
-echo "13. Add WebLogic Status Helper Function"
-echo "14. Add VBMS Deployment Helper Function"
-echo "15. Add WebLogic Start with Oracle DB Verification Functions"
-echo "16. Fix JDK Path"
-echo "17. Standardize WebLogic Scripts"
+echo "10. Configure Java Environment (Limited Access, No Sudo)"
+echo "11. Configure WebLogic-specific Environment"
+echo "12. Update Scripts (Non-Sudo Mode)"
+echo "13. Run with Oracle JDK Wrapper"
+echo "14. Add VA Environment Helper Functions"
+echo "15. Add WebLogic Status Helper Function"
+echo "16. Add VBMS Deployment Helper Function"
+echo "17. Add WebLogic Start with Oracle DB Verification Functions"
+echo "18. Fix JDK Path"
+echo "19. Standardize WebLogic Scripts"
 
 echo "${BLUE}--- Utility Scripts & Functions ---${NC}"
-echo "18. Create WebLogic Domain with Oracle DB Verification"
-echo "19. Manage Oracle Database (with Apple Silicon Support)"
-echo "20. Start WebLogic with Checks"
-echo "21. Clean Up Temporary Files and Artifacts"
-echo "22. Clean Up Untracked Files" 
-echo "23. WebLogic Java Environment (Limited Access)"
-echo "24. Check WebLogic Status & Diagnostics"
+echo "20. Create WebLogic Domain with Oracle DB Verification"
+echo "21. Manage Oracle Database (with Apple Silicon Support)"
+echo "22. Start WebLogic with Checks"
+echo "23. Clean Up Temporary Files and Artifacts"
+echo "24. Clean Up Untracked Files" 
+echo "25. WebLogic Java Environment (Limited Access)"
+echo "26. Check WebLogic Status & Diagnostics"
 
 echo "${BLUE}--- Other Options ---${NC}"
-echo "25. View README Documentation"
-echo "26. Exit"
+echo "27. View README Documentation"
+echo "28. Exit"
 
-echo -n "Select an option (1-26): "
+echo -n "Select an option (1-28): "
 read option
 
 case $option in
@@ -138,9 +140,19 @@ case $option in
             echo "Please run 'source ~/.zshrc' and try again."
         fi
         ;;
+    8)
+        echo "Showing complete configuration report..."
+        echo "${BLUE}This will display a comprehensive report of your entire environment configuration${NC}"
+        "$(dirname "$0")/scripts/utils/show-complete-configuration.sh"
+        ;;
+    9)
+        echo "Comparing current configuration with required configuration..."
+        echo "${BLUE}This will compare your current setup with the required configuration${NC}"
+        "$(dirname "$0")/scripts/utils/compare-configuration.sh"
+        ;;
         
     # Updating Existing Configuration
-    8)
+    10)
         echo "${YELLOW}WARNING: This will modify multiple files including .zshrc and create Java wrapper scripts${NC}"
         echo -n "Do you want to continue? (y/n): "
         read confirm
@@ -264,7 +276,7 @@ case $option in
         ;;
         
     # Other Options
-    25)
+    27)
         echo "Displaying README documentation..."
         echo "${BLUE}This will display the README file with setup instructions${NC}"
         
@@ -281,7 +293,7 @@ case $option in
             cat "$(dirname "$0")/README.md"
         fi
         ;;
-    26)
+    28)
         echo "Exiting..."
         exit 0
         ;;
