@@ -91,7 +91,7 @@ if ! docker info &>/dev/null; then
     # Check if running on Apple Silicon and suggest Colima
     if [ "$(uname -m)" = "arm64" ]; then
         echo "On Apple Silicon Mac, make sure Colima is running:" | tee -a $LOG_FILE
-        echo "colima start -c 4 -m 12 -a x86_64" | tee -a $LOG_FILE
+        echo "colima start --arch x86_64 -c 4 -m 12" | tee -a $LOG_FILE
     else
         echo "Make sure Docker Desktop is running" | tee -a $LOG_FILE
     fi
@@ -120,7 +120,7 @@ if [ "$(uname -m)" = "arm64" ]; then
             
             if [[ "$START_COLIMA" =~ ^[Yy]$ ]]; then
                 echo "Starting Colima with recommended settings..." | tee -a $LOG_FILE
-                colima start -c 4 -m 12 -a x86_64
+                colima start --arch x86_64 -c 4 -m 12
                 
                 # Verify Colima started successfully
                 if [ $? -eq 0 ]; then

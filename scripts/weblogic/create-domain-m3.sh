@@ -33,7 +33,7 @@ ADMIN_PASSWORD="weblogic1"
 ADMIN_PORT="7001"
 ADMIN_HOST="localhost"
 ADMIN_SERVER_NAME="AdminServer"
-JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+JDK_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
 
 debug_msg "Variables initialized"
 
@@ -188,23 +188,12 @@ if [ "$CREATE_DOMAIN" != "false" ]; then
         mkdir -p "${DOMAIN_HOME}"
     fi
     
-    # Find weblogic.jar in possible locations
+    # Find weblogic.jar in the expected location
     WEBLOGIC_JAR="${WL_HOME}/server/lib/weblogic.jar"
     
     if [ ! -f "$WEBLOGIC_JAR" ]; then
-        # Try alternate location
-        WEBLOGIC_JAR="${ORACLE_HOME}/server/lib/weblogic.jar"
-        if [ ! -f "$WEBLOGIC_JAR" ]; then
-            # Search for weblogic.jar
-            echo "Searching for weblogic.jar in Oracle Home..."
-            FOUND_JAR=$(find "${ORACLE_HOME}" -name "weblogic.jar" | head -1)
-            if [ -n "$FOUND_JAR" ]; then
-                WEBLOGIC_JAR="$FOUND_JAR"
-            else
-                echo "❌ Could not find weblogic.jar anywhere in ${ORACLE_HOME}"
-                exit 1
-            fi
-        fi
+        echo "❌ Could not find weblogic.jar at ${WEBLOGIC_JAR}"
+        exit 1
     fi
     echo "Found weblogic.jar at: $WEBLOGIC_JAR"
     

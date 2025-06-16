@@ -49,7 +49,7 @@ case $OPTION in
     1)  # Check Oracle database container status
         echo "${BLUE}Checking Oracle database container status...${NC}"
         
-        ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -e "database\|vbms-dev-docker")
+        ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -i database)
         if [ -n "$ORACLE_CONTAINER" ]; then
             echo "${GREEN}✅ Oracle database container is running: ${NC}"
             echo "$ORACLE_CONTAINER"
@@ -68,7 +68,7 @@ case $OPTION in
             echo "${RED}❌ No running Oracle database container found${NC}"
             
             # Check for stopped containers
-            STOPPED_CONTAINER=$(docker ps -a | grep -i oracle | grep -e "database\|vbms-dev-docker")
+            STOPPED_CONTAINER=$(docker ps -a | grep -i oracle | grep -i database)
             if [ -n "$STOPPED_CONTAINER" ]; then
                 echo ""
                 echo "${YELLOW}Found stopped Oracle database container:${NC}"
@@ -114,8 +114,7 @@ case $OPTION in
     3)  # Start existing Oracle database container
         echo "${BLUE}Checking for stopped Oracle database containers...${NC}"
         
-        # Look for both standard Oracle database containers and the vbms-dev-docker-19c container
-        STOPPED_CONTAINER=$(docker ps -a | grep -i oracle | grep -e "database\|vbms-dev-docker" | grep -i exited)
+        STOPPED_CONTAINER=$(docker ps -a | grep -i oracle | grep -i database | grep -i exited)
         if [ -n "$STOPPED_CONTAINER" ]; then
             CONTAINER_ID=$(echo "$STOPPED_CONTAINER" | awk '{print $1}')
             echo "${YELLOW}Found stopped Oracle database container: $CONTAINER_ID${NC}"

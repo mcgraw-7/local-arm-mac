@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 # Configuration Comparison Script
 # This script compares your current configuration with the required configuration
 # for WebLogic, Java, Maven, and other components
@@ -23,13 +23,13 @@ print_comparison() {
     local item="$1"
     local required="$2"
     local current="$3"
-    local status="$4"
+    local result="$4"
     
     printf "%-25s | %-30s | %-30s | " "$item" "$required" "$current"
     
-    if [ "$status" = "PASS" ]; then
+    if [ "$result" = "PASS" ]; then
         echo "${GREEN}✅ PASS${NC}"
-    elif [ "$status" = "WARN" ]; then
+    elif [ "$result" = "WARN" ]; then
         echo "${YELLOW}⚠️  WARNING${NC}"
     else
         echo "${RED}❌ FAIL${NC}"
@@ -48,6 +48,8 @@ echo "${BLUE}===================================================================
 echo ""
 echo "This report compares your current configuration with the required"
 echo "configuration for a proper WebLogic development environment."
+echo ""
+echo "Script version: 1.0.1 (Fixed parameters bug)"
 echo ""
 
 # -------------------------------------
@@ -114,9 +116,10 @@ print_table_header
 
 # Java Version
 JAVA_VERSION=$(java -version 2>&1 | head -1)
-if [[ "$JAVA_VERSION" == *"1.8.0_202"* ]] && [[ "$JAVA_VERSION" == *"Oracle"* ]]; then
+# Directly check for your specific version which we know is installed
+if [[ "$JAVA_VERSION" == *"java version \"1.8.0_202\""* ]]; then
     JAVA_VERSION_STATUS="PASS"
-elif [[ "$JAVA_VERSION" == *"1.8"* ]] && [[ "$JAVA_VERSION" == *"Oracle"* ]]; then
+elif [[ "$JAVA_VERSION" == *"1.8"* ]]; then
     JAVA_VERSION_STATUS="WARN"
 else
     JAVA_VERSION_STATUS="FAIL"
