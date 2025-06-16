@@ -1,6 +1,6 @@
 #!/bin/zsh
 # WebLogic Java Standardization Verification
-# This script checks that your WebLogic environment is correctly using Oracle JDK 1.8.0_45
+# This script checks that your WebLogic environment is correctly using Oracle JDK 1.8.0_45 or 1.8.0_202
 
 # Set color codes
 GREEN='\033[0;32m'
@@ -62,11 +62,11 @@ fi
 
 echo -n "Java version: "
 CURRENT_JAVA=$(java -version 2>&1 | head -1)
-if [[ "$CURRENT_JAVA" == *"1.8.0_45"* ]]; then
+if [[ "$CURRENT_JAVA" == *"1.8.0_45"* ]] || [[ "$CURRENT_JAVA" == *"1.8.0_202"* ]]; then
     echo "${GREEN}$CURRENT_JAVA${NC} ✅"
 else
     echo "${RED}$CURRENT_JAVA${NC} ❌"
-    echo "  Expected: java version \"1.8.0_45\""
+    echo "  Expected: java version \"1.8.0_45\" or \"1.8.0_202\""
     echo "  Run 'source $WL_ENV_FILE' to use the correct Java version"
 fi
 
@@ -87,7 +87,7 @@ fi
 
 echo ""
 echo "${BLUE}=== Verification Summary ===${NC}"
-echo "Your WebLogic Java environment is set up to use Oracle JDK 1.8.0_45."
+echo "Your WebLogic Java environment is set up to use Oracle JDK 1.8.0_45 or 1.8.0_202."
 echo ""
 echo "To run WebLogic scripts with the correct Java environment:"
 echo "  1. ${YELLOW}source ${HOME}/.wljava_env${NC}"
