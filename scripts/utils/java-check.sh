@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 # Basic Java version check
 echo "Current Java version:"

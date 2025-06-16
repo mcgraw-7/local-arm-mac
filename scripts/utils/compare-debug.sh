@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # Debug script for configuration comparison
 
 # Set color codes for output

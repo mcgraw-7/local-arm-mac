@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # Test script to validate Java version switching and WebLogic compatibility
 
 # Define color codes

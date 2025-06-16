@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # Configuration Comparison Script
 # This script compares your current configuration with the required configuration
 # for WebLogic, Java, Maven, and other components

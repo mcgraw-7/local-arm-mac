@@ -6,99 +6,153 @@ permalink: /docs/quick-start/
 
 # Quick Start Guide
 
-This guide provides step-by-step instructions for getting started with the local-arm-mac environment for WebLogic development.
+This guide provides a quick overview of setting up your Java/WebLogic development environment on Apple Silicon Macs.
 
 ## Prerequisites
 
-- macOS (Intel or Apple Silicon M1/M2/M3 Mac)
-- Oracle JDK 1.8.0_45 installed at `/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk`
-- Docker Desktop (Intel Macs) or Colima (Apple Silicon Macs)
-- Git
-- ZSH shell (default on modern macOS)
+- Apple Silicon Mac (M1/M2/M3)
+- Oracle JDK 1.8.0_45
+- WebLogic 12.2.1.4.0
+- Oracle Database (container)
+- Rosetta 2 installed
 
-## Installation Steps
+## Initial Setup
 
-### 1. Clone the Repository
+1. **Verify Apple Silicon Compatibility**
 
-```bash
-mkdir -p ~/dev
-cd ~/dev
-git clone https://github.com/department-of-veterans-affairs/local-arm-mac.git
-cd local-arm-mac
+   ```bash
+   ./setup.sh
+   # Select option 14
+   ```
+
+2. **Configure Java Environment**
+
+   ```bash
+   ./setup.sh
+   # Select option 1
+   ```
+
+3. **Set Up WebLogic Environment**
+
+   ```bash
+   ./setup.sh
+   # Select option 2
+   ```
+
+4. **Verify Standardization**
+   ```bash
+   ./setup.sh
+   # Select option 3
+   ```
+
+## WebLogic Setup
+
+1. **Configure Java for WebLogic**
+
+   ```bash
+   ./setup.sh
+   # Select option 5
+   ```
+
+2. **Add Helper Functions**
+
+   ```bash
+   ./setup.sh
+   # Select options 6-9
+   ```
+
+3. **Verify Oracle DB**
+
+   ```bash
+   ./setup.sh
+   # Select option 11
+   ```
+
+4. **Create WebLogic Domain**
+   ```bash
+   ./setup.sh
+   # Select option 10
+   ```
+
+## Directory Structure
+
+```
+scripts/
+├── java/           # Java environment configuration
+├── weblogic/       # WebLogic configuration and management
+├── utils/          # Utility scripts and helper functions
+└── vbms/           # VBMS-specific scripts
 ```
 
-### 2. Run the Setup Script
+## Helper Functions
+
+After setup, you'll have access to these helper functions:
+
+- `va_env()` - Set up VA environment
+- `va_weblogic_status()` - Check WebLogic status
+- `va_deploy_vbms()` - Deploy VBMS applications
+- `va_start_weblogic()` - Start WebLogic with DB verification
+- `va_start_oracle_db()` - Start Oracle DB
+
+## Common Tasks
+
+### Start WebLogic
 
 ```bash
-chmod +x setup.sh
+va_start_weblogic
+```
+
+### Check Status
+
+```bash
+va_weblogic_status
+```
+
+### Deploy VBMS
+
+```bash
+va_deploy_vbms
+```
+
+### Clean Up
+
+```bash
 ./setup.sh
+# Select option 15
 ```
-
-### 3. Follow the Setup Menu
-
-The setup script will display a menu of options. For a new installation, follow these steps in order:
-
-1. **Option 1**: Configure Java environment (limited access, no sudo)
-2. **Option 2**: Configure WebLogic-specific environment
-3. **Option 3**: Verify Java standardization
-
-### 4. Set Up Helper Functions
-
-For convenience, add these helper functions to your environment:
-
-4. **Option 6**: Add VA Environment helper functions
-5. **Option 9**: Add WebLogic start with Oracle DB verification helper functions
-6. **Option 7**: Add WebLogic status helper function
-
-### 5. Set Up Oracle Database
-
-If you need Oracle Database for your development:
-
-1. **Option 13**: Manage Oracle Database (with Apple Silicon support)
-2. Select the appropriate options to download and create a new Oracle database container
-
-### 6. Apple Silicon Mac Users
-
-If you're using an Apple Silicon Mac (M1/M2/M3):
-
-1. **Option 14**: Check Apple Silicon compatibility
-2. Follow the recommendations for installing and configuring Colima
-
-## Using the Environment
-
-After setup, you can use the following helper functions:
-
-- `va_env` - Activate the VA Core Development Environment
-- `va_start_oracle_db` - Start the Oracle Database container
-- `va_start_weblogic` - Start WebLogic server with Oracle DB verification
-- `va_weblogic_status` - Check WebLogic server status
-- `wl_java` - Activate the WebLogic Java environment
-
-## Creating a WebLogic Domain
-
-Once your environment is set up:
-
-1. Run **Option 10**: Create WebLogic domain with Oracle DB verification
-2. Wait for the domain creation process to complete
-
-## Verifying Your Setup
-
-At any time, you can verify your setup using:
-
-- **Option 3**: Verify Java standardization
-- **Option 11**: Verify Oracle DB container for WebLogic
-- **Option 12**: Verify Oracle WebLogic standardized directory structure
-
-## Additional Resources
-
-- [Java Standardization Documentation](/docs/java-standardization-docs.html)
-- [Apple Silicon Compatibility Guide](/docs/apple-silicon-compatibility.html)
 
 ## Troubleshooting
 
-If you encounter issues:
+1. **Java Issues**
 
-1. Verify your Java environment with **Option 3**
-2. Check the Oracle DB container with **Option 11**
-3. Ensure WebLogic is installed in the standardized directory with **Option 12**
-4. Clean up temporary files with **Option 15** if needed
+   ```bash
+   ./setup.sh
+   # Select option 3
+   ```
+
+2. **WebLogic Issues**
+
+   ```bash
+   ./setup.sh
+   # Select option 12
+   ```
+
+3. **Oracle DB Issues**
+   ```bash
+   ./setup.sh
+   # Select option 11
+   ```
+
+## Documentation
+
+- `setup-options.md` - Detailed setup options
+- `script-reference.md` - Script documentation
+- `apple-silicon-compatibility.md` - Apple Silicon guide
+
+## Support
+
+For detailed information, refer to:
+
+- `README.md` - Main documentation
+- `docs/` - Detailed guides
+- `scripts/utils/` - Utility scripts

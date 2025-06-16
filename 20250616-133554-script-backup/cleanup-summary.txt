@@ -1,0 +1,50 @@
+Script Cleanup Summary
+=====================
+Date: Mon Jun 16 13:35:56 EDT 2025
+Backup Directory: 20250616-133554-script-backup
+
+Remaining Scripts:
+- ./setup.sh
+- ./20250616-133306-script-backup/run-with-oracle-jdk.sh
+- ./20250616-133306-script-backup/old-check-weblogic-status.sh
+- ./20250616-133306-script-backup/create-domain-m3.sh
+- ./scripts/vbms/check-vbms-compatibility.sh
+- ./scripts/weblogic/create-domain-m3-fixed.sh
+- ./scripts/weblogic/standardize-weblogic-scripts.sh
+- ./scripts/weblogic/cleanup-weblogic.sh
+- ./scripts/weblogic/weblogic-java-env-limited.sh
+- ./scripts/weblogic/start-weblogic.sh
+- ./scripts/weblogic/check-weblogic-status.sh
+- ./scripts/weblogic/verify-oracle-db.sh
+- ./scripts/weblogic/setup-wl-java.sh
+- ./scripts/weblogic/manage-oracle-db.sh
+- ./scripts/cleanup-scripts.sh
+- ./scripts/java/limited-access-java-env.sh
+- ./scripts/java/verify-java-limited.sh
+- ./scripts/utils/add-va-weblogic-status-function.sh
+- ./scripts/utils/compare-debug.sh
+- ./scripts/utils/add-va-deploy-vbms-function.sh
+- ./scripts/utils/update-java-paths.sh
+- ./scripts/utils/check-maven-config.sh
+- ./scripts/utils/java-check.sh
+- ./scripts/utils/add-va-start-weblogic-function.sh
+- ./scripts/utils/test-java-weblogic-compatibility.sh
+- ./scripts/utils/cleanup-artifacts.sh
+- ./scripts/utils/check-apple-silicon.sh
+- ./scripts/utils/update-scripts-without-sudo.sh
+- ./scripts/utils/verify-oracle-directory.sh
+- ./scripts/utils/add-va-env-function.sh
+- ./scripts/utils/show-complete-configuration.sh
+- ./scripts/utils/cleanup-untracked-files.sh
+- ./scripts/utils/cleanup-github-pages.sh
+- ./scripts/utils/compare-configuration.sh
+- ./scripts/utils/verify-standardization.sh
+- ./scripts/utils/java-versions.sh
+- ./scripts/utils/test-java-switching.sh
+- ./scripts/cleanup-all-scripts.sh
+
+Recommendations:
+1. Consider consolidating Java environment scripts
+2. Review WebLogic startup scripts for redundancy
+3. Standardize configuration verification scripts
+4. Combine similar cleanup utilities

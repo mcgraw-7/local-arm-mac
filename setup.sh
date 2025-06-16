@@ -63,7 +63,7 @@ echo "1. Configure Java environment (limited access, no sudo)"
 echo "2. Configure WebLogic-specific environment"
 echo "3. Verify Java standardization"
 echo "4. Update scripts (non-sudo mode)"
-echo "5. Run with Oracle JDK wrapper"
+echo "5. Configure Java environment for WebLogic"
 echo "6. Add VA Environment helper functions"
 echo "7. Add WebLogic status helper function"
 echo "8. Add VBMS deployment helper function"
@@ -131,13 +131,9 @@ case $option in
         fi
         ;;
     5)
-        echo "Setting up Oracle JDK wrapper..."
-        echo "${BLUE}This will create a script at ~/dev/run-with-oracle-jdk.sh to run commands with Oracle JDK${NC}"
-        "$(dirname "$0")/scripts/java/run-with-oracle-jdk.sh"
-        echo "Copying run-with-oracle-jdk.sh to ~/dev for easy access..."
-        cp "$(dirname "$0")/scripts/java/run-with-oracle-jdk.sh" ~/dev/
-        chmod +x ~/dev/run-with-oracle-jdk.sh
-        echo "${GREEN}✅ Created wrapper script at ~/dev/run-with-oracle-jdk.sh${NC}"
+        echo "Configuring Java environment for WebLogic..."
+        echo "${BLUE}This will set up the Java environment specifically for WebLogic${NC}"
+        "$(dirname "$0")/scripts/weblogic/weblogic-java-env-limited.sh"
         ;;
     6)
         echo "Adding VA Environment helper functions..."
@@ -162,7 +158,7 @@ case $option in
     10)
         echo "Creating WebLogic domain with Oracle DB verification..."
         echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
-        "$(dirname "$0")/scripts/weblogic/create-domain-m3.sh"
+        "$(dirname "$0")/scripts/weblogic/create-domain-m3-fixed.sh"
         ;;
     11)
         echo "Verifying Oracle DB container for WebLogic..."

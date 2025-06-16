@@ -3,10 +3,228 @@ layout: default
 title: Script Reference
 ---
 
-# Script Reference
+# Script Reference Documentation
 
-This page documents all available scripts in the repository with detailed usage instructions and examples.
-The scripts are organized by category for easier navigation.
+This document provides detailed information about each script in the repository, their purposes, and usage.
+
+## Directory Structure
+
+```
+scripts/
+├── java/           # Java environment configuration
+├── weblogic/       # WebLogic configuration and management
+├── utils/          # Utility scripts and helper functions
+└── vbms/           # VBMS-specific scripts
+```
+
+## Java Environment Scripts
+
+### `scripts/java/limited-access-java-env.sh`
+
+- **Purpose**: Configures Java environment without sudo access
+- **Usage**: Run during initial setup
+- **Changes**: Modifies `.zshrc` and creates Java wrapper scripts
+- **Dependencies**: Oracle JDK 1.8.0_45
+
+### `scripts/java/verify-java-limited.sh`
+
+- **Purpose**: Verifies Java environment configuration
+- **Usage**: Run after environment setup
+- **Checks**: Java version, paths, and environment variables
+
+## WebLogic Scripts
+
+### `scripts/weblogic/create-domain-m3-fixed.sh`
+
+- **Purpose**: Creates WebLogic domain for M3 Macs
+- **Usage**: Run after Oracle DB is verified
+- **Prerequisites**: Oracle DB container running
+- **Features**: ARM64 compatibility, Oracle DB verification
+
+### `scripts/weblogic/check-weblogic-status.sh`
+
+- **Purpose**: Checks WebLogic server status
+- **Usage**: Run to verify server health
+- **Checks**: Server status, ports, and connections
+
+### `scripts/weblogic/start-weblogic.sh`
+
+- **Purpose**: Starts WebLogic server
+- **Usage**: Run to start the server
+- **Features**: Environment verification, error handling
+
+### `scripts/weblogic/verify-oracle-db.sh`
+
+- **Purpose**: Verifies Oracle DB configuration
+- **Usage**: Run before domain creation
+- **Checks**: Container status, connection, and configuration
+
+### `scripts/weblogic/manage-oracle-db.sh`
+
+- **Purpose**: Manages Oracle Database
+- **Usage**: Run to start/stop/verify database
+- **Features**: Apple Silicon support, Colima integration
+
+### `scripts/weblogic/setup-wl-java.sh`
+
+- **Purpose**: Configures Java for WebLogic
+- **Usage**: Run during initial setup
+- **Changes**: Sets up WebLogic-specific Java environment
+
+### `scripts/weblogic/weblogic-java-env-limited.sh`
+
+- **Purpose**: Sets up limited-access Java environment for WebLogic
+- **Usage**: Run after Java environment setup
+- **Features**: No sudo required, standardized paths
+
+### `scripts/weblogic/cleanup-weblogic.sh`
+
+- **Purpose**: Cleans up WebLogic artifacts
+- **Usage**: Run to remove temporary files
+- **Scope**: WebLogic-specific cleanup
+
+## Utility Scripts
+
+### `scripts/utils/verify-standardization.sh`
+
+- **Purpose**: Verifies environment standardization
+- **Usage**: Run to check configuration
+- **Checks**: Java, WebLogic, and Oracle DB configuration
+
+### `scripts/utils/check-apple-silicon.sh`
+
+- **Purpose**: Verifies Apple Silicon compatibility
+- **Usage**: Run during setup and after updates
+- **Checks**: Architecture, Rosetta 2, system requirements
+
+### `scripts/utils/verify-oracle-directory.sh`
+
+- **Purpose**: Verifies WebLogic directory structure
+- **Usage**: Run to check installation
+- **Standard Path**: `${HOME}/dev/Oracle/Middleware/Oracle_Home`
+
+### `scripts/utils/show-complete-configuration.sh`
+
+- **Purpose**: Shows complete environment configuration
+- **Usage**: Run to view all settings
+- **Output**: Detailed configuration report
+
+### `scripts/utils/update-scripts-without-sudo.sh`
+
+- **Purpose**: Updates scripts without sudo
+- **Usage**: Run to update script files
+- **Features**: No sudo required, safe updates
+
+### `scripts/utils/cleanup-artifacts.sh`
+
+- **Purpose**: Cleans up temporary files
+- **Usage**: Run before commits
+- **Scope**: Git repository cleanup
+
+### Helper Function Scripts
+
+#### `scripts/utils/add-va-env-function.sh`
+
+- **Purpose**: Adds VA environment function
+- **Function**: `va_env()`
+- **Usage**: Run during setup
+
+#### `scripts/utils/add-va-weblogic-status-function.sh`
+
+- **Purpose**: Adds WebLogic status function
+- **Function**: `va_weblogic_status()`
+- **Usage**: Run during setup
+
+#### `scripts/utils/add-va-deploy-vbms-function.sh`
+
+- **Purpose**: Adds VBMS deployment function
+- **Function**: `va_deploy_vbms()`
+- **Usage**: Run during setup
+
+#### `scripts/utils/add-va-start-weblogic-function.sh`
+
+- **Purpose**: Adds WebLogic startup functions
+- **Functions**: `va_start_weblogic()`, `va_start_oracle_db()`
+- **Usage**: Run during setup
+
+## VBMS Scripts
+
+### `scripts/vbms/check-vbms-compatibility.sh`
+
+- **Purpose**: Verifies VBMS compatibility
+- **Usage**: Run to check VBMS setup
+- **Checks**: VBMS-specific requirements
+
+## Best Practices
+
+1. **Script Execution Order**:
+
+   - Start with environment verification
+   - Configure Java environment
+   - Set up WebLogic
+   - Verify Oracle DB
+   - Create domain
+
+2. **Environment Setup**:
+
+   - Use limited-access scripts when possible
+   - Verify standardization regularly
+   - Check Apple Silicon compatibility
+
+3. **Maintenance**:
+   - Clean up artifacts regularly
+   - Update scripts as needed
+   - Verify configuration after changes
+
+## Troubleshooting
+
+1. **Common Issues**:
+
+   - Java version mismatches
+   - WebLogic directory structure
+   - Oracle DB connection problems
+   - Apple Silicon compatibility
+
+2. **Resolution Steps**:
+   - Run verification scripts
+   - Check error logs
+   - Verify prerequisites
+   - Consult specific script documentation
+
+## Script Dependencies
+
+- Oracle JDK 1.8.0_45
+- WebLogic 12.2.1.4.0
+- Oracle Database (container)
+- Apple Silicon Mac with Rosetta 2
+
+## Security Considerations
+
+1. **Limited Access**:
+
+   - Scripts designed to work without sudo
+   - Environment-specific permissions
+   - Secure credential handling
+
+2. **Best Practices**:
+   - Regular verification
+   - Cleanup of sensitive data
+   - Proper error handling
+
+## Maintenance
+
+1. **Regular Tasks**:
+
+   - Verify standardization
+   - Clean up artifacts
+   - Check compatibility
+   - Update scripts
+
+2. **Update Process**:
+   - Use update scripts
+   - Verify changes
+   - Test functionality
+   - Document updates
 
 <div class="script-search-container">
   <input type="text" id="scriptSearchInput" placeholder="Search for scripts..." onkeyup="filterScripts()">

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 echo "=== Testing Java Version Switching ==="
 echo ""

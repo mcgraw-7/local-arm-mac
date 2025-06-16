@@ -3,10 +3,168 @@ layout: default
 title: Setup Options
 ---
 
-# Setup Options
+# Setup Options Documentation
 
-This page provides a comprehensive guide to all available options in the WebLogic Environment Setup Tool.
-Use the links below to navigate to specific options, or browse through the complete list.
+This document details all available options in the main setup script (`setup.sh`) and their purposes.
+
+## Overview
+
+The setup script provides a comprehensive set of tools for configuring and managing your Java/WebLogic development environment on Apple Silicon Macs. Each option is designed to handle a specific aspect of the setup process.
+
+## Available Options
+
+### 1. Configure Java Environment (Limited Access, No Sudo)
+
+- **Script**: `scripts/java/limited-access-java-env.sh`
+- **Purpose**: Sets up Java environment without requiring sudo access
+- **Changes**: Modifies `.zshrc` and creates Java wrapper scripts
+- **Warning**: This will modify multiple files including `.zshrc`
+
+### 2. Configure WebLogic-specific Environment
+
+- **Script**: `scripts/weblogic/setup-wl-java.sh`
+- **Purpose**: Configures environment specifically for WebLogic
+- **Changes**: Modifies `.zshrc` and creates WebLogic environment files
+- **Warning**: This will modify `.zshrc`
+
+### 3. Verify Java Standardization
+
+- **Script**: `scripts/utils/verify-standardization.sh`
+- **Purpose**: Verifies that Java environment is properly standardized
+- **Checks**: Java version, paths, and configuration
+
+### 4. Update Scripts (Non-sudo Mode)
+
+- **Script**: `scripts/utils/update-scripts-without-sudo.sh`
+- **Purpose**: Updates script files without requiring sudo access
+- **Warning**: This will update multiple script files
+
+### 5. Configure Java Environment for WebLogic
+
+- **Script**: `scripts/weblogic/weblogic-java-env-limited.sh`
+- **Purpose**: Sets up Java environment specifically for WebLogic
+- **Changes**: Configures Java environment variables and paths
+
+### 6. Add VA Environment Helper Functions
+
+- **Script**: `scripts/utils/add-va-env-function.sh`
+- **Purpose**: Adds VA environment helper functions to `.zshrc`
+- **Function**: `va_env()`
+
+### 7. Add WebLogic Status Helper Function
+
+- **Script**: `scripts/utils/add-va-weblogic-status-function.sh`
+- **Purpose**: Adds WebLogic status checking function to `.zshrc`
+- **Function**: `va_weblogic_status()`
+
+### 8. Add VBMS Deployment Helper Function
+
+- **Script**: `scripts/utils/add-va-deploy-vbms-function.sh`
+- **Purpose**: Adds VBMS deployment helper function to `.zshrc`
+- **Function**: `va_deploy_vbms()`
+
+### 9. Add WebLogic Start with Oracle DB Verification
+
+- **Script**: `scripts/utils/add-va-start-weblogic-function.sh`
+- **Purpose**: Adds WebLogic startup functions with Oracle DB verification
+- **Functions**: `va_start_weblogic()`, `va_start_oracle_db()`
+
+### 10. Create WebLogic Domain with Oracle DB Verification
+
+- **Script**: `scripts/weblogic/create-domain-m3-fixed.sh`
+- **Purpose**: Creates WebLogic domain after verifying Oracle DB
+- **Prerequisites**: Oracle DB container must be running
+
+### 11. Verify Oracle DB Container for WebLogic
+
+- **Script**: `scripts/weblogic/verify-oracle-db.sh`
+- **Purpose**: Verifies Oracle DB container configuration
+- **Checks**: Container status, connection, and configuration
+
+### 12. Verify Oracle WebLogic Directory Structure
+
+- **Script**: `scripts/utils/verify-oracle-directory.sh`
+- **Purpose**: Verifies WebLogic installation directory structure
+- **Standard Path**: `${HOME}/dev/Oracle/Middleware/Oracle_Home`
+
+### 13. Manage Oracle Database (Apple Silicon Support)
+
+- **Script**: `scripts/weblogic/manage-oracle-db.sh`
+- **Purpose**: Manages Oracle Database with Apple Silicon support
+- **Features**: Start, stop, and verify database operations
+
+### 14. Check Apple Silicon Compatibility
+
+- **Script**: `scripts/utils/check-apple-silicon.sh`
+- **Purpose**: Verifies Apple Silicon compatibility
+- **Checks**: Architecture, Rosetta 2, and system requirements
+
+### 15. Clean Up Temporary Files and Artifacts
+
+- **Script**: `scripts/utils/cleanup-artifacts.sh`
+- **Purpose**: Removes temporary files and artifacts
+- **Scope**: Git repository cleanup
+
+### 16. View README Documentation
+
+- **Purpose**: Displays README documentation
+- **Formats**: Supports multiple markdown viewers (glow, mdless, bat, less)
+
+## Script Organization
+
+The scripts are organized into the following directories:
+
+### `/scripts/java/`
+
+- Java environment configuration scripts
+- Java verification tools
+
+### `/scripts/weblogic/`
+
+- WebLogic configuration and management scripts
+- Domain creation and verification tools
+
+### `/scripts/utils/`
+
+- Helper functions and utility scripts
+- Environment verification tools
+- Cleanup and maintenance scripts
+
+### `/scripts/vbms/`
+
+- VBMS-specific scripts and tools
+- Compatibility verification
+
+## Best Practices
+
+1. **Order of Operations**:
+
+   - Start with option 14 to verify Apple Silicon compatibility
+   - Configure Java environment (option 1)
+   - Set up WebLogic environment (option 2)
+   - Verify standardization (option 3)
+
+2. **Environment Setup**:
+
+   - Use option 5 for WebLogic-specific Java configuration
+   - Add helper functions (options 6-9) for easier management
+   - Verify Oracle DB before domain creation
+
+3. **Maintenance**:
+   - Regularly verify standardization (option 3)
+   - Clean up artifacts (option 15) before commits
+   - Check Apple Silicon compatibility after system updates
+
+## Troubleshooting
+
+If you encounter issues:
+
+1. Run option 14 to verify Apple Silicon compatibility
+2. Use option 3 to check Java standardization
+3. Verify Oracle DB with option 11
+4. Check WebLogic directory structure with option 12
+
+For detailed troubleshooting, refer to the specific script documentation in `script-reference.md`.
 
 <div class="quick-nav">
   <h2>Quick Navigation</h2>
