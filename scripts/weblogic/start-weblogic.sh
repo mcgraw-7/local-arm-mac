@@ -10,7 +10,7 @@ if ! command -v docker &> /dev/null; then
 fi
 
 # Check if Oracle DB container is running
-ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -i database)
+ORACLE_CONTAINER=$(docker ps | grep -E 'vbms-dev-docker-19c|oracle.*database')
 if [ -z "$ORACLE_CONTAINER" ]; then
     echo "❌ WARNING: Oracle database container is not running!"
     echo "The Oracle database is required for WebLogic domain creation and operation."
@@ -19,17 +19,17 @@ if [ -z "$ORACLE_CONTAINER" ]; then
     if [[ "$START_DB" =~ ^[Yy]$ ]]; then
         echo "Starting Oracle database container..."
         # First try to start existing stopped container
-        if ! docker start oracle-database 2>/dev/null; then
+        if ! docker start vbms-dev-docker-19c 2>/dev/null; then
             echo "No existing container found, checking for Oracle database images..."
             
             # Check if we have the Oracle 19c image
             if docker images | grep -q "oracledb19c/oracle.19.3.0-ee"; then
                 echo "Found Oracle 19c image, creating new container..."
-                docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee
+                docker run -d --name vbms-dev-docker-19c -p 1521:1521 oracledb19c/oracle.19.3.0-ee
             # Fallback to VBMS image if available
             elif docker images | grep -q "vbms/oracle"; then
                 echo "Found VBMS Oracle image, creating new container..."
-                docker run -d --name oracle-database -p 1521:1521 vbms/oracle:latest
+                docker run -d --name vbms-dev-docker-19c -p 1521:1521 vbms/oracle:latest
             else
                 echo "❌ No Oracle database image found"
                 echo "You need to pull the image once with:"

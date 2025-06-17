@@ -5,11 +5,65 @@ Configuration scripts for VA Core local development environment setup. Automates
 ## Important Directory Structure Requirements
 
 WebLogic **must** be installed in the Oracle standardized directory:
+
 ```
 ${HOME}/dev/Oracle/Middleware/Oracle_Home
 ```
 
 No deviations from this directory structure are permitted. All scripts in this repository enforce this requirement to ensure proper functionality and compatibility with VA systems.
+
+## Script Organization
+
+The scripts in this repository are organized into three main categories:
+
+### 1. Java Scripts (`scripts/java/`)
+
+Scripts related to Java environment setup and management:
+
+- `limited-access-java-env.sh` - Configures Java environment without sudo access
+- `verify-java-limited.sh` - Verifies Java environment configuration
+- `java-versions.sh` - Shows available Java versions
+- `java-check.sh` - Basic Java environment checks
+- `update-java-paths.sh` - Updates Java path configurations
+- `test-java-switching.sh` - Tests Java version switching
+
+### 2. WebLogic Scripts (`scripts/weblogic/`)
+
+Scripts for WebLogic server and domain management:
+
+- `start-weblogic.sh` - Starts WebLogic server
+- `standardize-weblogic-scripts.sh` - Standardizes WebLogic configurations
+- `create-domain-m3-fixed.sh` - Creates WebLogic domain
+- `manage-oracle-db.sh` - Manages Oracle database
+- `check-weblogic-status.sh` - Checks WebLogic server status
+- `verify-oracle-db.sh` - Verifies Oracle database configuration
+- `setup-wl-java.sh` - Sets up WebLogic Java environment
+- `weblogic-java-env-limited.sh` - Limited access WebLogic Java setup
+- `cleanup-weblogic.sh` - Cleans up WebLogic resources
+- `check-vbms-compatibility.sh` - Checks VBMS compatibility
+
+### 3. Utility Scripts (`scripts/utils/`)
+
+General utility and helper scripts:
+
+- `verify-standardization.sh` - Verifies environment standardization
+- `compare-configuration.sh` - Compares different configurations
+- `test-java-weblogic-compatibility.sh` - Tests Java-WebLogic compatibility
+- `compare-debug.sh` - Debug comparison tool
+- `show-complete-configuration.sh` - Shows complete environment configuration
+- `check-maven-config.sh` - Checks Maven configuration
+- `add-va-start-weblogic-function.sh` - Adds WebLogic start function
+- `check-apple-silicon.sh` - Checks Apple Silicon compatibility
+- `verify-oracle-directory.sh` - Verifies Oracle directory structure
+- `update-scripts-without-sudo.sh` - Updates scripts without sudo
+- `cleanup-github-pages.sh` - Cleans up GitHub pages
+- `cleanup-artifacts.sh` - Cleans up build artifacts
+- `cleanup-untracked-files.sh` - Cleans up untracked files
+- `add-va-deploy-vbms-function.sh` - Adds VBMS deployment function
+- `add-va-weblogic-status-function.sh` - Adds WebLogic status function
+- `add-va-env-function.sh` - Adds VA environment function
+- `cleanup-all-scripts.sh` - Cleans up all scripts
+- `cleanup-scripts.sh` - Basic script cleanup
 
 ## Getting Started
 
@@ -32,6 +86,7 @@ No deviations from this directory structure are permitted. All scripts in this r
 Configures the Java environment for WebLogic development without requiring sudo access.
 
 **What it does:**
+
 - Creates a Java environment wrapper script
 - Sets up environment variables for the Oracle JDK
 - Adds necessary entries to your `.zshrc` file
@@ -40,6 +95,7 @@ Configures the Java environment for WebLogic development without requiring sudo 
 **Script:** `scripts/java/limited-access-java-env.sh`
 
 **Warning:** This will modify multiple files including .zshrc and create Java wrapper scripts.
+
 </details>
 
 <details>
@@ -48,6 +104,7 @@ Configures the Java environment for WebLogic development without requiring sudo 
 Sets up the WebLogic-specific environment settings and helper functions.
 
 **What it does:**
+
 - Creates WebLogic environment configuration files
 - Sets up required environment variables for WebLogic
 - Adds the `wl_java()` function to your `.zshrc` file
@@ -57,11 +114,13 @@ Sets up the WebLogic-specific environment settings and helper functions.
 
 **Usage:**
 After setup, you can activate the WebLogic environment with:
+
 ```bash
 wl_java
 ```
 
 **Warning:** This will modify `.zshrc` and create WebLogic environment files.
+
 </details>
 
 <details>
@@ -70,12 +129,14 @@ wl_java
 Verifies that the Java environment is correctly standardized for WebLogic development.
 
 **What it does:**
+
 - Checks for the correct Oracle JDK version
 - Ensures that environment variables are properly configured
 - Validates that Java wrapper scripts are correctly set up
 - Verifies that the WebLogic environment can access the Oracle JDK
 
 **Script:** `scripts/utils/verify-standardization.sh`
+
 </details>
 
 <details>
@@ -84,6 +145,7 @@ Verifies that the Java environment is correctly standardized for WebLogic develo
 Updates scripts without requiring sudo access.
 
 **What it does:**
+
 - Updates various WebLogic and Java configuration scripts
 - Applies standardized headers and environment checks
 - Updates environment variable handling
@@ -92,6 +154,7 @@ Updates scripts without requiring sudo access.
 **Script:** `scripts/utils/update-scripts-without-sudo.sh`
 
 **Warning:** This will update multiple script files in your system.
+
 </details>
 
 <details>
@@ -100,6 +163,7 @@ Updates scripts without requiring sudo access.
 Sets up a command wrapper to run arbitrary commands with the Oracle JDK environment.
 
 **What it does:**
+
 - Creates a script at `~/dev/run-with-oracle-jdk.sh`
 - Allows running any command with the Oracle JDK environment variables
 - Ensures consistent Java environment for WebLogic-related tasks
@@ -107,9 +171,11 @@ Sets up a command wrapper to run arbitrary commands with the Oracle JDK environm
 **Script:** `scripts/java/run-with-oracle-jdk.sh`
 
 **Usage:**
+
 ```bash
 ~/dev/run-with-oracle-jdk.sh [your command]
 ```
+
 </details>
 
 <details>
@@ -118,6 +184,7 @@ Sets up a command wrapper to run arbitrary commands with the Oracle JDK environm
 Adds the VA Environment helper function to your shell configuration.
 
 **What it does:**
+
 - Adds the `va_env()` function to your `.zshrc` file
 - Enables easy activation of the VA Core Development Environment
 - Sets up required environment variables for VA development
@@ -126,9 +193,11 @@ Adds the VA Environment helper function to your shell configuration.
 
 **Usage:**
 After setup, you can activate the VA environment with:
+
 ```bash
 va_env
 ```
+
 </details>
 
 <details>
@@ -137,6 +206,7 @@ va_env
 Adds a function to check WebLogic server status.
 
 **What it does:**
+
 - Adds the `va_weblogic_status()` function to your `.zshrc` file
 - Provides an easy way to check if WebLogic is running
 - Shows status information about the WebLogic server and its components
@@ -145,9 +215,11 @@ Adds a function to check WebLogic server status.
 
 **Usage:**
 After setup, you can check WebLogic status with:
+
 ```bash
 va_weblogic_status
 ```
+
 </details>
 
 <details>
@@ -156,6 +228,7 @@ va_weblogic_status
 Adds a helper function for deploying VBMS applications.
 
 **What it does:**
+
 - Adds the `va_deploy_vbms()` function to your `.zshrc` file
 - Simplifies the process of deploying VBMS applications to WebLogic
 - Includes checks for WebLogic status before deployment
@@ -164,9 +237,11 @@ Adds a helper function for deploying VBMS applications.
 
 **Usage:**
 After setup, you can deploy VBMS applications with:
+
 ```bash
 va_deploy_vbms
 ```
+
 </details>
 
 <details>
@@ -175,6 +250,7 @@ va_deploy_vbms
 Adds functions to start WebLogic with Oracle DB verification.
 
 **What it does:**
+
 - Adds the `va_start_weblogic()` and `va_start_oracle_db()` functions to your `.zshrc` file
 - Ensures Oracle DB is running before starting WebLogic
 - Handles Apple Silicon compatibility automatically
@@ -184,10 +260,12 @@ Adds functions to start WebLogic with Oracle DB verification.
 
 **Usage:**
 After setup, you can start WebLogic with Oracle DB verification:
+
 ```bash
 va_start_oracle_db  # Start Oracle DB if needed
 va_start_weblogic   # Start WebLogic with verification
 ```
+
 </details>
 
 <details>
@@ -196,6 +274,7 @@ va_start_weblogic   # Start WebLogic with verification
 Creates a WebLogic domain after verifying that Oracle DB is properly configured.
 
 **What it does:**
+
 - Checks if Oracle DB container is running
 - Creates a WebLogic domain with the proper configuration
 - Ensures the domain is created in the standardized directory
@@ -204,6 +283,7 @@ Creates a WebLogic domain after verifying that Oracle DB is properly configured.
 **Script:** `scripts/weblogic/create-domain-m3.sh`
 
 **Note:** This requires WebLogic to be installed in the standardized Oracle directory.
+
 </details>
 
 <details>
@@ -212,6 +292,7 @@ Creates a WebLogic domain after verifying that Oracle DB is properly configured.
 Verifies that the Oracle DB container is properly configured for WebLogic.
 
 **What it does:**
+
 - Checks if Docker/Colima is running
 - Verifies the Oracle DB container status
 - Displays container port mappings
@@ -219,6 +300,7 @@ Verifies that the Oracle DB container is properly configured for WebLogic.
 - Offers to start the container if it's not running
 
 **Script:** `scripts/weblogic/verify-oracle-db.sh`
+
 </details>
 
 <details>
@@ -227,11 +309,13 @@ Verifies that the Oracle DB container is properly configured for WebLogic.
 Verifies that WebLogic is installed in the standardized directory structure.
 
 **What it does:**
+
 - Checks if WebLogic is installed in `${HOME}/dev/Oracle/Middleware/Oracle_Home`
 - Validates the domain directory structure
 - Ensures all required components are in the correct locations
 
 **Script:** `scripts/utils/verify-oracle-directory.sh`
+
 </details>
 
 <details>
@@ -240,6 +324,7 @@ Verifies that WebLogic is installed in the standardized directory structure.
 Comprehensive interface for managing Oracle Database with specific support for Apple Silicon.
 
 **What it does:**
+
 - Checks Docker/Colima status
 - Provides options to download Oracle database images
 - Creates, starts, and stops Oracle containers
@@ -250,6 +335,7 @@ Comprehensive interface for managing Oracle Database with specific support for A
 **Script:** `scripts/weblogic/manage-oracle-db.sh`
 
 **Features:**
+
 - Automatically detects Apple Silicon and configures Colima
 - Uses `--platform linux/amd64` flag for Oracle containers on Apple Silicon
 - Manages container lifecycle and shows status information
@@ -261,6 +347,7 @@ Comprehensive interface for managing Oracle Database with specific support for A
 Checks and sets up Apple Silicon compatibility for Oracle and WebLogic.
 
 **What it does:**
+
 - Detects Apple Silicon architecture
 - Verifies Colima installation and configuration
 - Checks Docker setup for compatibility
@@ -269,6 +356,7 @@ Checks and sets up Apple Silicon compatibility for Oracle and WebLogic.
 - Provides a comprehensive compatibility report with recommendations
 
 **Script:** `scripts/utils/check-apple-silicon.sh`
+
 </details>
 
 <details>
@@ -277,12 +365,14 @@ Checks and sets up Apple Silicon compatibility for Oracle and WebLogic.
 Helps remove temporary files and artifacts that should not be in the Git repository.
 
 **What it does:**
+
 - Searches for common WebLogic artifact files
 - Identifies log files, backup files, and installer artifacts
 - Provides options to remove these files
 - Cleans up various temporary files that should be ignored by Git
 
 **Script:** `scripts/utils/cleanup-artifacts.sh`
+
 </details>
 
 ## Apple Silicon Compatibility
@@ -301,13 +391,15 @@ This repository includes comprehensive support for running Oracle WebLogic and O
 For detailed information, see [Apple Silicon Compatibility Guide](docs/apple-silicon-compatibility.md)
 
 **Special considerations for Apple Silicon:**
+
 1. Run the compatibility check script: `./scripts/utils/check-apple-silicon.sh`
-2. Install Colima if needed: `brew install colima` 
+2. Install Colima if needed: `brew install colima`
 3. Start Colima with proper settings: `colima start -c 4 -m 12 -a x86_64`
 4. Use the `manage-oracle-db.sh` script or `va_start_oracle_db()` helper function which handles platform-specific requirements
 5. All Oracle database containers will be created with `--platform linux/amd64` flag automatically
 
 > **Note:** If you use Homebrew to install anything created by Oracle, Homebrew will use an open source option to bypass the Oracle account creation process, which is normally very useful, but not here. You need the official Oracle branded JDK.
+
 </details>
 
 ## Repository Structure
@@ -382,4 +474,5 @@ The following helper functions are available once you've run the setup script:
 <sub>`./verify-java-limited.sh`</sub>
 
 ![CleanShot 2025-05-31 at 17 02 24@2x](https://github.com/user-attachments/assets/e1d5cb9a-b377-457b-ad2e-70dfdec304b5)
+
 </details>
