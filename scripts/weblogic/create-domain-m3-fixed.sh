@@ -147,7 +147,10 @@ debug_msg "ORACLE_CONTAINER='$ORACLE_CONTAINER'"
 if [ -z "$ORACLE_CONTAINER" ]; then
     warn_msg "Oracle database container is not running!"
     echo "The Oracle database is required for WebLogic domain to function properly with VBMS." | tee -a $LOG_FILE
-    
+    echo "You have two options:" | tee -a $LOG_FILE
+    echo "1. Start the Oracle database container now (recommended)" | tee -a $LOG_FILE
+    echo "2. Continue without the database (not recommended for VBMS development)" | tee -a $LOG_FILE
+    echo "" | tee -a $LOG_FILE
     echo "Do you want to start the Oracle database container now? [y/n]:" | tee -a $LOG_FILE
     read -r START_DB
     if [[ "$START_DB" =~ ^[Yy]$ ]]; then
@@ -163,9 +166,16 @@ if [ -z "$ORACLE_CONTAINER" ]; then
             
             if [ $? -eq 0 ]; then
                 success_msg "Started existing Oracle database container"
+                echo "Waiting for database initialization..." | tee -a $LOG_FILE
+                echo "This may take a few minutes..." | tee -a $LOG_FILE
+                sleep 30
             else
                 error_msg "Failed to start existing Oracle container"
-                # Continue anyway as this is not fatal
+                echo "Would you like to try creating a new container? [y/n]:" | tee -a $LOG_FILE
+                read -r CREATE_NEW
+                if [[ ! "$CREATE_NEW" =~ ^[Yy]$ ]]; then
+                    warn_msg "Proceeding without Oracle database. Some WebLogic features may not work properly."
+                fi
             fi
         else
             debug_msg "No existing Oracle container found, checking for images"
@@ -186,24 +196,45 @@ if [ -z "$ORACLE_CONTAINER" ]; then
                 
                 if [ $? -eq 0 ]; then
                     success_msg "Started new Oracle database container"
+                    echo "Waiting for database initialization..." | tee -a $LOG_FILE
+                    echo "This may take several minutes..." | tee -a $LOG_FILE
+                    echo "You can check the container logs with: docker logs oracle-database" | tee -a $LOG_FILE
+                    sleep 60
                 else
                     error_msg "Failed to start new Oracle container"
-                    # Continue anyway as this is not fatal
+                    echo "Would you like to continue without the database? [y/n]:" | tee -a $LOG_FILE
+                    read -r CONTINUE_ANYWAY
+                    if [[ ! "$CONTINUE_ANYWAY" =~ ^[Yy]$ ]]; then
+                        echo "Please resolve the database container issue and try again." | tee -a $LOG_FILE
+                        exit 1
+                    else
+                        warn_msg "Proceeding without Oracle database. Some WebLogic features may not work properly."
+                    fi
                 fi
-                
-                echo "Waiting for database initialization..." | tee -a $LOG_FILE
-                echo "This may take some time..." | tee -a $LOG_FILE
-                sleep 20
             else
                 warn_msg "Oracle database image not found"
-                echo "You only need to download the image once with:" | tee -a $LOG_FILE
-                echo "docker pull -a oracledb19c/oracle.19.3.0-ee" | tee -a $LOG_FILE
+                echo "You need to download the Oracle database image first:" | tee -a $LOG_FILE
+                echo "1. For official Oracle image:" | tee -a $LOG_FILE
+                echo "   docker pull oracledb19c/oracle.19.3.0-ee" | tee -a $LOG_FILE
+                echo "2. Or for VBMS-specific image:" | tee -a $LOG_FILE
+                echo "   docker pull vbms/oracle:latest" | tee -a $LOG_FILE
                 echo "" | tee -a $LOG_FILE
-                warn_msg "Continuing domain creation, but database features won't work"
+                echo "Would you like to continue without the database? [y/n]:" | tee -a $LOG_FILE
+                read -r CONTINUE_ANYWAY
+                if [[ ! "$CONTINUE_ANYWAY" =~ ^[Yy]$ ]]; then
+                    echo "Please download the Oracle database image and try again." | tee -a $LOG_FILE
+                    exit 1
+                else
+                    warn_msg "Proceeding without Oracle database. Some WebLogic features may not work properly."
+                fi
             fi
         fi
     else
         warn_msg "Proceeding without Oracle database. Some WebLogic features may not work properly."
+        echo "You can start the database later using:" | tee -a $LOG_FILE
+        echo "va_start_oracle_db" | tee -a $LOG_FILE
+        echo "or" | tee -a $LOG_FILE
+        echo "$(dirname "$0")/manage-oracle-db.sh" | tee -a $LOG_FILE
     fi
 else
     success_msg "Oracle database container is running: $ORACLE_CONTAINER"

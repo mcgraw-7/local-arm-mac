@@ -4,8 +4,19 @@
 
 echo "=== Adding VA Start WebLogic Function ==="
 
-# Define the function to add
-VA_START_WEBLOGIC_FUNCTION='
+# Check if function already exists
+if grep -q "va_start_weblogic()" ~/.zshrc; then
+    echo "Checking for existing va_start_weblogic() function in ~/.zshrc..."
+    echo "Function already exists. Updating with latest version..."
+    # Remove existing function
+    sed -i.bak '/va_start_weblogic()/,/^}/d' ~/.zshrc
+fi
+
+# Add the updated function
+echo "Adding va_start_weblogic() function to ~/.zshrc..."
+
+cat >> ~/.zshrc << 'EOF'
+
 # VA WebLogic Server start helper function with Oracle DB verification and Apple Silicon support
 va_start_weblogic() {
     echo "Starting WebLogic server with environment verification..."
@@ -61,6 +72,7 @@ va_start_weblogic() {
     else
         echo "❌ ERROR: start-weblogic.sh script not found"
         echo "Please ensure you have the local-arm-mac repository in your ~/dev directory"
+        return 1
     fi
 }
 
@@ -109,6 +121,7 @@ va_start_oracle_db() {
             if [ $? -eq 0 ]; then
                 echo "✅ Oracle database container started successfully"
                 echo "The database may take a minute to fully initialize..."
+                echo "You can check the container logs with: docker logs $CONTAINER_ID"
             else
                 echo "❌ Failed to start Oracle database container"
                 return 1
@@ -116,30 +129,24 @@ va_start_oracle_db() {
         fi
     else
         echo "❌ No Oracle database container found"
-        echo "Run Oracle database management script first: option 12 in setup.sh"
+        echo "You need to create an Oracle database container first."
+        echo "Options:"
+        echo "1. Run Oracle database management script:"
+        echo "   $HOME/dev/local-arm-mac/scripts/weblogic/manage-oracle-db.sh"
+        echo "2. Or pull and run the official Oracle image:"
+        echo "   docker pull oracledb19c/oracle.19.3.0-ee"
+        echo "   docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
         return 1
     fi
 }
-'
 
-# Check if function already exists in .zshrc
-echo "Checking for existing va_start_weblogic() function in $HOME/.zshrc..."
-if grep -q "va_start_weblogic()" "$HOME/.zshrc"; then
-    echo "✅ va_start_weblogic() function already exists in .zshrc"
-else
-    # Add function to .zshrc
-    echo "Adding va_start_weblogic() function to $HOME/.zshrc..."
-    echo "$VA_START_WEBLOGIC_FUNCTION" >> "$HOME/.zshrc"
-    echo "✅ Added va_start_weblogic() function to .zshrc"
-    
-    # Show what was added
-    echo ""
-    echo "Function added:"
-    echo "${VA_START_WEBLOGIC_FUNCTION}" | sed 's/^/    /'
-fi
+EOF
 
-echo ""
-echo "=== Usage ==="
+echo "✅ Added va_start_weblogic() function to .zshrc"
+
+echo "\n=== Usage ==="
 echo "To start WebLogic server, run:"
 echo "  source ~/.zshrc   # To reload your shell configuration"
-echo "  va_start_weblogic  # To start the WebLogic server"
+echo "  va_start_oracle_db  # To start the Oracle database (if needed)"
+echo "  va_start_weblogic   # To start the WebLogic server"
+echo "\nSetup completed!"
