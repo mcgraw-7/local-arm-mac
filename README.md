@@ -27,7 +27,7 @@ No deviations from this directory structure are permitted. All scripts in this r
 ## Features and Functions
 
 <details>
-<summary><strong>1. Configure Java Environment (Limited Access, No Sudo)</strong></summary>
+<summary><strong>1. Configure Java Environment</strong></summary>
 
 Configures the Java environment for WebLogic development without requiring sudo access.
 
