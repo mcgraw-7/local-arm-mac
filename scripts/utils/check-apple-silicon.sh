@@ -56,9 +56,6 @@ else
         if [[ "$START_COLIMA" =~ ^[Yy]$ ]]; then
             echo "Starting Colima with recommended settings..."
             colima start -c 4 -m 12 -a x86_64
-        fi
-    else
-        echo "${GREEN}✅ Colima is running${NC}"
             
             # Check if start was successful
             if [ $? -eq 0 ]; then
@@ -123,19 +120,49 @@ fi
 echo ""
 echo "${BLUE}Checking for Oracle JDK compatibility...${NC}"
 
-# Check for standard Oracle JDK location
-ORACLE_JDK_PATH="${HOME}/dev/Oracle/jdk1.8.0_45"
-if [ -d "$ORACLE_JDK_PATH" ]; then
-    echo "${GREEN}✅ Found Oracle JDK at expected location: ${ORACLE_JDK_PATH}${NC}"
-    
-    # Check architecture compatibility
-    if file "$ORACLE_JDK_PATH/bin/java" | grep -q "x86_64"; then
-        echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
-        echo "This should work but might have performance implications"
+# Check for Oracle JDK in multiple locations
+ORACLE_JDK_PATHS=(
+    "${HOME}/dev/Oracle/jdk1.8.0_45"
+    "${HOME}/dev/Oracle/jdk1.8.0_202"
+    "/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+    "/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+)
+
+JDK_FOUND=false
+for JDK_PATH in "${ORACLE_JDK_PATHS[@]}"; do
+    if [ -d "$JDK_PATH" ]; then
+        echo "${GREEN}✅ Found Oracle JDK at: ${JDK_PATH}${NC}"
+        JDK_FOUND=true
+        
+        # Check architecture compatibility
+        if file "$JDK_PATH/bin/java" 2>/dev/null | grep -q "x86_64"; then
+            echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
+            echo "This should work but might have performance implications"
+        fi
+        break
     fi
-else
-    echo "${YELLOW}⚠️  Oracle JDK not found at standard location: ${ORACLE_JDK_PATH}${NC}"
-    echo "Make sure Oracle JDK is installed correctly"
+done
+
+if [ "$JDK_FOUND" = false ]; then
+    echo "${YELLOW}⚠️  Oracle JDK not found in standard locations${NC}"
+    echo "Checking for any Java 8 installation..."
+    
+    # Try to find any Java 8 installation
+    if /usr/libexec/java_home -v 1.8 &>/dev/null; then
+        JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+        echo "${GREEN}✅ Found Java 8 at: ${JAVA_HOME}${NC}"
+        
+        # Check if it's Oracle JDK
+        if [[ "$JAVA_HOME" == *"Oracle"* ]] || [[ "$JAVA_HOME" == *"oracle"* ]]; then
+            echo "${GREEN}✅ This appears to be an Oracle JDK installation${NC}"
+        else
+            echo "${YELLOW}⚠️  This is not an Oracle JDK installation${NC}"
+            echo "For best compatibility with WebLogic, consider installing Oracle JDK 8"
+        fi
+    else
+        echo "${RED}❌ No Java 8 installation found${NC}"
+        echo "Please install Oracle JDK 8 for WebLogic compatibility"
+    fi
 fi
 
 # Summary

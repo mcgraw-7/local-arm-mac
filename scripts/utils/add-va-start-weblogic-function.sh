@@ -4,12 +4,16 @@
 
 echo "=== Adding VA Start WebLogic Function ==="
 
+# Create a temporary file for the new content
+TEMP_FILE=$(mktemp)
+
 # Check if function already exists
 if grep -q "va_start_weblogic()" ~/.zshrc; then
     echo "Checking for existing va_start_weblogic() function in ~/.zshrc..."
     echo "Function already exists. Updating with latest version..."
     # Remove existing function
-    sed -i.bak '/va_start_weblogic()/,/^}/d' ~/.zshrc
+    sed '/va_start_weblogic()/,/^}/d' ~/.zshrc > "$TEMP_FILE"
+    mv "$TEMP_FILE" ~/.zshrc
 fi
 
 # Add the updated function
@@ -17,7 +21,7 @@ echo "Adding va_start_weblogic() function to ~/.zshrc..."
 
 cat >> ~/.zshrc << 'EOF'
 
-# VA WebLogic Server start helper function with Oracle DB verification and Apple Silicon support
+# VA WebLogic Server start helper function
 va_start_weblogic() {
     echo "Starting WebLogic server with environment verification..."
     
@@ -27,31 +31,15 @@ va_start_weblogic() {
         export BYPASS_CPU_CHECK=true
         export BYPASS_PREFLIGHT=true
         export CONFIG_JVM_ARGS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true"
-        
-        # Run quick Apple Silicon compatibility check
-        if [ -f "$HOME/dev/local-arm-mac/scripts/utils/check-apple-silicon.sh" ]; then
-            echo "Running Apple Silicon compatibility check..."
-            "$HOME/dev/local-arm-mac/scripts/utils/check-apple-silicon.sh"
-        else
-            # Fallback to basic check if script not available
-            # Check if Colima is installed and running (for Oracle DB)
-            if command -v colima &> /dev/null; then
-                COLIMA_STATUS=$(colima status 2>&1)
-                
-                if [[ "$COLIMA_STATUS" == *"not running"* ]]; then
-                    echo "⚠️  Warning: Colima is not running. Oracle database might not be accessible."
-                    echo "Consider running: colima start -c 4 -m 12 -a x86_64"
-                else
-                    echo "✅ Colima is running"
-                fi
-            fi
-        fi
     fi
     
     # Verify Oracle DB container is running before starting WebLogic
     echo "Verifying Oracle DB container status..."
-    ORACLE_CONTAINER=$(docker ps 2>/dev/null | grep -i oracle | grep -i database)
-    if [ -z "$ORACLE_CONTAINER" ]; then
+    
+    # Simple, direct check for the container
+    if docker ps | grep -q "vbms-dev-docker-19c"; then
+        echo "✅ Oracle database container is running"
+    else
         echo "⚠️  Warning: Oracle database container is NOT running"
         echo "This will cause issues with applications that require database access"
         echo "Consider starting Oracle DB first with: va_start_oracle_db"
@@ -62,8 +50,6 @@ va_start_weblogic() {
             echo "WebLogic startup cancelled."
             return 1
         fi
-    else
-        echo "✅ Oracle database container is running"
     fi
     
     # Check if the repository exists
@@ -106,15 +92,12 @@ va_start_oracle_db() {
     fi
     
     # Look for Oracle container
-    ORACLE_CONTAINER=$(docker ps -a | grep -i oracle | grep -i database)
-    if [ -n "$ORACLE_CONTAINER" ]; then
-        CONTAINER_ID=$(echo "$ORACLE_CONTAINER" | awk "{ print \$1 }")
-        
-        # Check if already running
-        RUNNING=$(docker ps | grep "$CONTAINER_ID")
-        if [ -n "$RUNNING" ]; then
-            echo "✅ Oracle database container is already running: $CONTAINER_ID"
-        else
+    if docker ps | grep -q "vbms-dev-docker-19c"; then
+        echo "✅ Oracle database container is already running"
+    else
+        # Check if container exists but is stopped
+        CONTAINER_ID=$(docker ps -a | grep "vbms-dev-docker-19c" | awk '{print $1}')
+        if [ -n "$CONTAINER_ID" ]; then
             echo "Starting stopped Oracle container: $CONTAINER_ID"
             docker start "$CONTAINER_ID"
             
@@ -126,17 +109,17 @@ va_start_oracle_db() {
                 echo "❌ Failed to start Oracle database container"
                 return 1
             fi
+        else
+            echo "❌ No Oracle database container found"
+            echo "You need to create an Oracle database container first."
+            echo "Options:"
+            echo "1. Run Oracle database management script:"
+            echo "   $HOME/dev/local-arm-mac/scripts/weblogic/manage-oracle-db.sh"
+            echo "2. Or pull and run the official Oracle image:"
+            echo "   docker pull oracledb19c/oracle.19.3.0-ee"
+            echo "   docker run -d --name vbms-dev-docker-19c -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
+            return 1
         fi
-    else
-        echo "❌ No Oracle database container found"
-        echo "You need to create an Oracle database container first."
-        echo "Options:"
-        echo "1. Run Oracle database management script:"
-        echo "   $HOME/dev/local-arm-mac/scripts/weblogic/manage-oracle-db.sh"
-        echo "2. Or pull and run the official Oracle image:"
-        echo "   docker pull oracledb19c/oracle.19.3.0-ee"
-        echo "   docker run -d --name oracle-database -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
-        return 1
     fi
 }
 
@@ -149,4 +132,4 @@ echo "To start WebLogic server, run:"
 echo "  source ~/.zshrc   # To reload your shell configuration"
 echo "  va_start_oracle_db  # To start the Oracle database (if needed)"
 echo "  va_start_weblogic   # To start the WebLogic server"
-echo "\nSetup completed!"
+echo "\nSetup completed!" 
