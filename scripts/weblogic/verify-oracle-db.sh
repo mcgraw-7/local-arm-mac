@@ -51,9 +51,21 @@ if [ ! -f "${DOMAIN_HOME}/config/config.xml" ]; then
 fi
 
 # Check Oracle DB container running status
+# Updated pattern to detect Oracle DB containers
 echo "Checking Oracle database container status..."
-# Updated pattern to detect vbms-dev-docker-19c container
-ORACLE_CONTAINER=$(docker ps | grep -i -E 'oracle|vbms')
+if [ "$(uname -m)" = "arm64" ]; then
+    DOCKER_CONTEXT=$(docker context show 2>/dev/null)
+    if [ "$DOCKER_CONTEXT" != "colima" ]; then
+        echo "⚠️  Docker context is '$DOCKER_CONTEXT', but should be 'colima' for Apple Silicon!"
+        echo "Run: docker context use colima"
+    fi
+fi
+# Find any running container exposing port 1521
+ORACLE_CONTAINER=$(docker ps --filter 'publish=1521' --format '{{.ID}} {{.Names}} {{.Image}}')
+if [ -z "$ORACLE_CONTAINER" ]; then
+    # Fallback: match common names
+    ORACLE_CONTAINER=$(docker ps | grep -i -E 'oracle|database|vbms|oracledb')
+fi
 if [ -z "$ORACLE_CONTAINER" ]; then
     echo "❌ Oracle database container is NOT running"
     echo "This will cause issues with VBMS applications that require database access"
@@ -106,12 +118,18 @@ if [ -z "$ORACLE_CONTAINER" ]; then
 else
     echo "✅ Oracle database container is running:"
     echo "$ORACLE_CONTAINER"
-    
-    # Get container port mappings
     CONTAINER_ID=$(echo "$ORACLE_CONTAINER" | awk '{print $1}')
     PORT_MAPPINGS=$(docker port "$CONTAINER_ID")
     echo "Database port mappings:"
     echo "$PORT_MAPPINGS"
+    # Check for readiness in logs
+    DB_READY=$(docker logs $CONTAINER_ID 2>&1 | grep -c 'DATABASE IS READY TO USE')
+    if [ "$DB_READY" -eq 0 ]; then
+        echo "⚠️  Database container is running but may not be ready yet."
+        echo "Check logs with: docker logs $CONTAINER_ID | grep -i 'ready'"
+    else
+        echo "✅ Database is ready to use"
+    fi
 fi
 
 # Check if WebLogic has JDBC data sources configured

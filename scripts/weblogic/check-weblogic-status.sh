@@ -227,10 +227,27 @@ function check_server_status() {
 # Check Oracle database connection
 function check_database() {
     print_section "Oracle Database Status"
-    
-    ORACLE_CONTAINER=$(docker ps | grep -i "oracle\|vbms-dev-docker" | grep -v grep)
+    if [ "$(uname -m)" = "arm64" ]; then
+        DOCKER_CONTEXT=$(docker context show 2>/dev/null)
+        if [ "$DOCKER_CONTEXT" != "colima" ]; then
+            print_warning "Docker context is '$DOCKER_CONTEXT', but should be 'colima' for Apple Silicon!"
+            print_info "Run: docker context use colima"
+        fi
+    fi
+    ORACLE_CONTAINER=$(docker ps --filter 'publish=1521' --format '{{.ID}} {{.Names}} {{.Image}}')
+    if [ -z "$ORACLE_CONTAINER" ]; then
+        ORACLE_CONTAINER=$(docker ps | grep -i -E 'oracle|database|vbms|oracledb')
+    fi
     if [ -n "$ORACLE_CONTAINER" ]; then
         print_success "Oracle Database is running: $(echo $ORACLE_CONTAINER | awk '{print $NF}')"
+        CONTAINER_ID=$(echo "$ORACLE_CONTAINER" | awk '{print $1}')
+        DB_READY=$(docker logs $CONTAINER_ID 2>&1 | grep -c 'DATABASE IS READY TO USE')
+        if [ "$DB_READY" -eq 0 ]; then
+            print_warning "Database container is running but may not be ready yet."
+            print_info "Check logs with: docker logs $CONTAINER_ID | grep -i 'ready'"
+        else
+            print_success "Database is ready to use"
+        fi
     else
         print_error "Oracle Database is NOT RUNNING"
         print_info "Start the database with: docker-compose up -d"

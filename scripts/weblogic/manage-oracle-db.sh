@@ -48,22 +48,40 @@ read OPTION
 case $OPTION in
     1)  # Check Oracle database container status
         echo "${BLUE}Checking Oracle database container status...${NC}"
-        
-        ORACLE_CONTAINER=$(docker ps | grep -i oracle | grep -i database)
+
+        # On Apple Silicon, check Docker context
+        if [ "$(uname -m)" = "arm64" ]; then
+            DOCKER_CONTEXT=$(docker context show 2>/dev/null)
+            if [ "$DOCKER_CONTEXT" != "colima" ]; then
+                echo "${YELLOW}⚠️  Docker context is '$DOCKER_CONTEXT', but should be 'colima' for Apple Silicon!${NC}"
+                echo "Run: docker context use colima"
+            fi
+        fi
+
+        # Find any running container exposing port 1521
+        ORACLE_CONTAINER=$(docker ps --filter 'publish=1521' --format '{{.ID}} {{.Names}} {{.Image}}')
+        if [ -z "$ORACLE_CONTAINER" ]; then
+            # Fallback: match common names
+            ORACLE_CONTAINER=$(docker ps | grep -i -E 'oracle|database|vbms|oracledb')
+        fi
         if [ -n "$ORACLE_CONTAINER" ]; then
             echo "${GREEN}✅ Oracle database container is running: ${NC}"
             echo "$ORACLE_CONTAINER"
-            
-            # Get container details
             CONTAINER_ID=$(echo "$ORACLE_CONTAINER" | awk '{print $1}')
             echo ""
             echo "${BLUE}Container details:${NC}"
             docker inspect --format='{{.Name}} - {{.Config.Image}} - {{.State.Status}} - Started: {{.State.StartedAt}}' $CONTAINER_ID
-            
-            # Get port mappings
             echo ""
             echo "${BLUE}Port mappings:${NC}"
             docker port $CONTAINER_ID
+            # Check for readiness in logs
+            DB_READY=$(docker logs $CONTAINER_ID 2>&1 | grep -c 'DATABASE IS READY TO USE')
+            if [ "$DB_READY" -eq 0 ]; then
+                echo "${YELLOW}⚠️  Database container is running but may not be ready yet.${NC}"
+                echo "Check logs with: docker logs $CONTAINER_ID | grep -i 'ready'"
+            else
+                echo "${GREEN}✅ Database is ready to use${NC}"
+            fi
         else
             echo "${RED}❌ No running Oracle database container found${NC}"
             
