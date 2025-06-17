@@ -81,7 +81,7 @@ General utility and helper scripts:
 ## Features and Functions
 
 <details>
-<summary><strong>1. Configure Java Environment (Limited Access, No Sudo)</strong></summary>
+<summary><strong>1. Configure Java Environment</strong></summary>
 
 Configures the Java environment for WebLogic development without requiring sudo access.
 
