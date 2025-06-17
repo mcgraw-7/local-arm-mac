@@ -59,29 +59,38 @@ echo "${GREEN}✅ Scripts are now executable${NC}"
 
 # Setup options
 echo "${BLUE}=== Setup Options ===${NC}"
-echo "1. Configure Java environment (limited access, no sudo)"
-echo "2. Configure WebLogic-specific environment"
-echo "3. Verify Java standardization"
-echo "4. Update scripts (non-sudo mode)"
-echo "5. Configure Java environment for WebLogic"
-echo "6. Add VA Environment helper functions"
-echo "7. Add WebLogic status helper function"
-echo "8. Add VBMS deployment helper function"
-echo "9. Add WebLogic start with Oracle DB verification helper functions" 
-echo "10. Create WebLogic domain with Oracle DB verification"
-echo "11. Verify Oracle DB container for WebLogic" 
-echo "12. Verify Oracle WebLogic standardized directory structure"
-echo "13. Manage Oracle Database (with Apple Silicon support)"
-echo "14. Check Apple Silicon compatibility"
-echo "15. Clean up temporary files and artifacts"
-echo "16. View README Documentation"
-echo "17. Exit"
+echo "1. Check Apple Silicon compatibility"
+echo "2. Verify Oracle WebLogic standardized directory structure"
+echo "3. Configure Java environment (limited access, no sudo)"
+echo "4. Configure WebLogic-specific environment"
+echo "5. Verify Java standardization"
+echo "6. Manage Oracle Database (with Apple Silicon support)"
+echo "7. Verify Oracle DB container for WebLogic"
+echo "8. Create WebLogic domain with Oracle DB verification"
+echo "9. Add VA Environment helper functions"
+echo "10. Add WebLogic status helper function"
+echo "11. Add VBMS deployment helper function"
+echo "12. Add WebLogic start with Oracle DB verification helper functions"
+echo "13. Update scripts (non-sudo mode)"
+echo "14. Clean up temporary files and artifacts"
+echo "15. View README Documentation"
+echo "16. Exit"
 
-echo -n "Select an option (1-17): "
+echo -n "Select an option (1-16): "
 read option
 
 case $option in
     1)
+        echo "Checking Apple Silicon compatibility..."
+        echo "${BLUE}This will check your environment for Apple Silicon compatibility with Oracle and WebLogic${NC}"
+        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+        ;;
+    2)
+        echo "Verifying Oracle WebLogic standardized directory structure..."
+        echo "${BLUE}This will check if WebLogic is installed in the standardized directory${NC}"
+        "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
+        ;;
+    3)
         echo "${YELLOW}WARNING: This will modify multiple files including .zshrc and create Java wrapper scripts${NC}"
         echo -n "Do you want to continue? (y/n): "
         read confirm
@@ -92,7 +101,7 @@ case $option in
             echo "Operation cancelled."
         fi
         ;;
-    2)
+    4)
         echo "${YELLOW}WARNING: This will modify .zshrc and create WebLogic environment files${NC}"
         echo "The following will be added to your .zshrc:"
         echo "${BLUE}"
@@ -115,11 +124,46 @@ case $option in
             echo "Operation cancelled."
         fi
         ;;
-    3)
+    5)
         echo "Verifying Java standardization..."
         "$(dirname "$0")/scripts/utils/verify-standardization.sh"
         ;;
-    4)
+    6)
+        echo "Managing Oracle Database (with Apple Silicon support)..."
+        echo "${BLUE}This will help you manage Oracle Database with specific support for Apple Silicon${NC}"
+        "$(dirname "$0")/scripts/weblogic/manage-oracle-db.sh"
+        ;;
+    7)
+        echo "Verifying Oracle DB container for WebLogic..."
+        echo "${BLUE}This will check if Oracle DB is properly configured for WebLogic${NC}"
+        "$(dirname "$0")/scripts/weblogic/verify-oracle-db.sh"
+        ;;
+    8)
+        echo "Creating WebLogic domain with Oracle DB verification..."
+        echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
+        "$(dirname "$0")/scripts/weblogic/create-domain-m3-fixed.sh"
+        ;;
+    9)
+        echo "Adding VA Environment helper functions..."
+        echo "${BLUE}This will add the va_env() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-env-function.sh"
+        ;;
+    10)
+        echo "Adding WebLogic status helper function..."
+        echo "${BLUE}This will add the va_weblogic_status() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-weblogic-status-function.sh"
+        ;;
+    11)
+        echo "Adding VBMS deployment helper function..."
+        echo "${BLUE}This will add the va_deploy_vbms() function to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-deploy-vbms-function.sh"
+        ;;
+    12)
+        echo "Adding WebLogic start with Oracle DB verification helper functions..."
+        echo "${BLUE}This will add va_start_weblogic() and va_start_oracle_db() functions to your .zshrc file${NC}"
+        "$(dirname "$0")/scripts/utils/add-va-start-weblogic-function.sh"
+        ;;
+    13)
         echo "${YELLOW}WARNING: This will update multiple script files in your system${NC}"
         echo -n "Do you want to continue? (y/n): "
         read confirm
@@ -130,65 +174,14 @@ case $option in
             echo "Operation cancelled."
         fi
         ;;
-    5)
-        echo "Configuring Java environment for WebLogic..."
-        echo "${BLUE}This will set up the Java environment specifically for WebLogic${NC}"
-        "$(dirname "$0")/scripts/weblogic/weblogic-java-env-limited.sh"
-        ;;
-    6)
-        echo "Adding VA Environment helper functions..."
-        echo "${BLUE}This will add the va_env() function to your .zshrc file${NC}"
-        "$(dirname "$0")/scripts/utils/add-va-env-function.sh"
-        ;;
-    7)
-        echo "Adding WebLogic status helper function..."
-        echo "${BLUE}This will add the va_weblogic_status() function to your .zshrc file${NC}"
-        "$(dirname "$0")/scripts/utils/add-va-weblogic-status-function.sh"
-        ;;
-    8)
-        echo "Adding VBMS deployment helper function..."
-        echo "${BLUE}This will add the va_deploy_vbms() function to your .zshrc file${NC}"
-        "$(dirname "$0")/scripts/utils/add-va-deploy-vbms-function.sh"
-        ;;
-    9)
-        echo "Adding WebLogic start with Oracle DB verification helper functions..."
-        echo "${BLUE}This will add va_start_weblogic() and va_start_oracle_db() functions to your .zshrc file${NC}"
-        "$(dirname "$0")/scripts/utils/add-va-start-weblogic-function.sh"
-        ;;
-    10)
-        echo "Creating WebLogic domain with Oracle DB verification..."
-        echo "${BLUE}This will create a WebLogic domain after verifying Oracle DB container is running${NC}"
-        "$(dirname "$0")/scripts/weblogic/create-domain-m3-fixed.sh"
-        ;;
-    11)
-        echo "Verifying Oracle DB container for WebLogic..."
-        echo "${BLUE}This will check if Oracle DB is properly configured for WebLogic${NC}"
-        "$(dirname "$0")/scripts/weblogic/verify-oracle-db.sh"
-        ;;
-    12)
-        echo "Verifying Oracle WebLogic standardized directory structure..."
-        echo "${BLUE}This will check if WebLogic is installed in the standardized directory${NC}"
-        "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
-        ;;
-    13)
-        echo "Managing Oracle Database (with Apple Silicon support)..."
-        echo "${BLUE}This will help you manage Oracle Database with specific support for Apple Silicon${NC}"
-        "$(dirname "$0")/scripts/weblogic/manage-oracle-db.sh"
-        ;;
     14)
-        echo "Checking Apple Silicon compatibility..."
-        echo "${BLUE}This will check your environment for Apple Silicon compatibility with Oracle and WebLogic${NC}"
-        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
-        ;;
-    15)
         echo "Cleaning up temporary files and artifacts..."
         echo "${BLUE}This will help remove temporary files that should not be in the Git repository${NC}"
         "$(dirname "$0")/scripts/utils/cleanup-artifacts.sh"
         ;;
-    16)
+    15)
         echo "Displaying README documentation..."
         echo "${BLUE}This will display the README file with setup instructions${NC}"
-        
         # Try to use a markdown viewer if available, otherwise use less/cat
         if command -v glow &> /dev/null; then
             glow "$(dirname "$0")/README.md"
@@ -202,12 +195,12 @@ case $option in
             cat "$(dirname "$0")/README.md"
         fi
         ;;
-    17)
-        echo "Exiting..."
+    16)
+        echo "${YELLOW}Exiting setup script${NC}"
         exit 0
         ;;
     *)
-        echo "${RED}Invalid option. Please try again.${NC}"
+        echo "${RED}❌ Invalid option. Please try again.${NC}"
         exit 1
         ;;
 esac
