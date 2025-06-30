@@ -15,41 +15,16 @@ if [[ "$1" == "--auto" || "$1" == "-a" || "$AUTO_RUN_CHECKS" == "true" ]]; then
     AUTO_RUN=true
 fi
 
-echo "${BLUE}===================================================================${NC}"
-echo "${BLUE}         VA Core Local Development Environment Setup               ${NC}"
-echo "${BLUE}===================================================================${NC}"
-
-echo "This script provides essential tools for VA Core local development setup."
-echo ""
-
-# Detect Apple Silicon Mac
-if [ "$(uname -m)" = "arm64" ]; then
-    echo "${YELLOW}⚠️  DETECTED APPLE SILICON MAC (M1/M2/M3) ⚠️${NC}"
-    echo "Use option 2 to check Apple Silicon compatibility."
-    echo ""
-fi
-
-echo "${YELLOW}IMPORTANT:${NC} WebLogic must be installed in the Oracle standardized directory:"
-echo "${HOME}/dev/Oracle/Middleware/Oracle_Home"
-echo ""
-
 # Check if Oracle JDK exists
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
-echo -n "Checking Oracle JDK installation: "
-if [ -d "$ORACLE_JDK" ]; then
-    echo "${GREEN}✅ FOUND${NC}"
-else
-    echo "${RED}❌ NOT FOUND${NC}"
-    echo "${YELLOW}Oracle JDK 1.8.0_202 is required but not installed at the expected location.${NC}"
-    echo "Please install it and run this script again."
+if [ ! -d "$ORACLE_JDK" ]; then
+    echo "${RED}❌ Oracle JDK 1.8.0_202 not found at expected location${NC}"
     exit 1
 fi
 
-echo ""
-
 # If auto-run is enabled, execute option 1 directly
 if [ "$AUTO_RUN" = true ]; then
-    echo "${BLUE}Auto-run mode: Executing all verification checks...${NC}"
+    echo "${BLUE}Running all verification checks...${NC}"
     echo ""
     
     echo "${YELLOW}=== 1. Path Analysis ===${NC}"

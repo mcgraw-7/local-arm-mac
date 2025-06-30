@@ -8,21 +8,18 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Function to print a section header
+# Helper functions
 print_section() {
     echo "${BLUE}========== $1 ==========${NC}"
 }
 
-# Function to print a subsection header
 print_subsection() {
     echo "${CYAN}--- $1 ---${NC}"
 }
 
-# Function to print a path with status
 print_path() {
     local path="$1"
     local path_status="$2"
@@ -30,28 +27,20 @@ print_path() {
     
     if [ "$path_status" = "exists" ]; then
         echo "${GREEN}✅ $path${NC}"
-    elif [ "$path_status" = "missing" ]; then
-        echo "${RED}❌ $path${NC}"
+        echo "    $description"
     elif [ "$path_status" = "optional" ]; then
-        echo "${YELLOW}⚠️  $path${NC}"
+        if [ -d "$path" ] || [ -f "$path" ]; then
+            echo "${GREEN}✅ $path${NC}"
+            echo "    $description"
+        else
+            echo "${YELLOW}⚠️  $path (optional)${NC}"
+            echo "    $description"
+        fi
     else
-        echo "  $path"
-    fi
-    
-    if [ -n "$description" ]; then
+        echo "${RED}❌ $path${NC}"
         echo "    $description"
     fi
 }
-
-echo "${BLUE}===================================================================${NC}"
-echo "${BLUE}                 PATH ANALYSIS CONFIGURATION TOOL                  ${NC}"
-echo "${BLUE}===================================================================${NC}"
-echo ""
-echo "This tool analyzes system paths and categorizes them for:"
-echo "• Maven configuration and repositories"
-echo "• Java installations and environment"
-echo "• Oracle WebLogic and database components"
-echo ""
 
 # -------------------------------------
 # MAVEN PATH ANALYSIS

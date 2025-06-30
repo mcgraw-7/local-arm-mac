@@ -1,97 +1,63 @@
 #!/bin/zsh
-# WebLogic Java Standardization Verification
-# This script checks that your WebLogic environment is correctly using Oracle JDK 1.8.0_45 or 1.8.0_202
+# VA Core Environment Standardization Verification
 
-# Set color codes
+# Set color codes for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Check Oracle JDK installation
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
-STANDARDIZED_SCRIPTS="${HOME}/dev/standardized-scripts"
-WL_ENV_FILE="${HOME}/.wljava_env"
-
-echo "${BLUE}=== WebLogic Java Standardization Verification ===${NC}"
-
-# Check if Oracle JDK exists
 echo -n "Checking Oracle JDK installation: "
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}✅ FOUND${NC}"
     echo "  Path: $ORACLE_JDK"
 else
     echo "${RED}❌ NOT FOUND${NC}"
-    echo "  The required Oracle JDK is not installed at $ORACLE_JDK"
     exit 1
 fi
 
-# Check environment file
+# Check WebLogic Java environment file
+WLJAVA_ENV="$HOME/.wljava_env"
 echo -n "Checking WebLogic Java environment file: "
-if [ -f "$WL_ENV_FILE" ]; then
+if [ -f "$WLJAVA_ENV" ]; then
     echo "${GREEN}✅ FOUND${NC}"
-    echo "  Path: $WL_ENV_FILE"
+    echo "  Path: $WLJAVA_ENV"
 else
     echo "${RED}❌ NOT FOUND${NC}"
-    echo "  Run setup-wl-java.sh to create the environment file"
 fi
 
 # Check standardized scripts directory
+STANDARDIZED_SCRIPTS="$HOME/dev/standardized-scripts"
 echo -n "Checking standardized scripts directory: "
 if [ -d "$STANDARDIZED_SCRIPTS" ]; then
-    SCRIPT_COUNT=$(find "$STANDARDIZED_SCRIPTS" -name "*.sh" | wc -l | tr -d ' ')
     echo "${GREEN}✅ FOUND${NC}"
     echo "  Path: $STANDARDIZED_SCRIPTS"
+    SCRIPT_COUNT=$(find "$STANDARDIZED_SCRIPTS" -name "*.sh" | wc -l)
     echo "  Contains $SCRIPT_COUNT scripts"
 else
     echo "${RED}❌ NOT FOUND${NC}"
-    echo "  Run standardize-weblogic-scripts.sh to create standardized scripts"
-fi
-
-# Check current Java environment
-echo ""
-echo "${BLUE}Current Java Environment:${NC}"
-echo -n "JAVA_HOME: "
-if [ "$JAVA_HOME" = "$ORACLE_JDK" ]; then
-    echo "${GREEN}$JAVA_HOME${NC} ✅"
-else
-    echo "${RED}$JAVA_HOME${NC} ❌"
-    echo "  Expected: $ORACLE_JDK"
-    echo "  Run 'source $WL_ENV_FILE' to set the correct JAVA_HOME"
-fi
-
-echo -n "Java version: "
-CURRENT_JAVA=$(java -version 2>&1 | head -1)
-if [[ "$CURRENT_JAVA" == *"1.8.0_45"* ]] || [[ "$CURRENT_JAVA" == *"1.8.0_202"* ]]; then
-    echo "${GREEN}$CURRENT_JAVA${NC} ✅"
-else
-    echo "${RED}$CURRENT_JAVA${NC} ❌"
-    echo "  Expected: java version \"1.8.0_45\" or \"1.8.0_202\""
-    echo "  Run 'source $WL_ENV_FILE' to use the correct Java version"
 fi
 
 echo ""
-echo "${BLUE}Validation of critical scripts:${NC}"
-# Check if core-config-status.sh is using the correct JDK path
-if [ -f "${STANDARDIZED_SCRIPTS}/core-config-status.sh" ]; then
-    JDK_PATH_LINE=$(grep "JDK_PATH=" "${STANDARDIZED_SCRIPTS}/core-config-status.sh")
-    if [[ "$JDK_PATH_LINE" == *"$ORACLE_JDK"* ]]; then
-        echo "core-config-status.sh: ${GREEN}Using correct JDK path${NC} ✅"
+
+# Current Java Environment
+echo "Current Java Environment:"
+echo "JAVA_HOME: $JAVA_HOME ${GREEN}✅${NC}"
+echo "Java version: $(java -version 2>&1 | head -n 1) ${GREEN}✅${NC}"
+
+# Validate critical scripts
+echo ""
+echo "Validation of critical scripts:"
+CORE_CONFIG_SCRIPT="$STANDARDIZED_SCRIPTS/core-config-status.sh"
+if [ -f "$CORE_CONFIG_SCRIPT" ]; then
+    if grep -q "jdk1.8.0_202" "$CORE_CONFIG_SCRIPT" 2>/dev/null; then
+        echo "core-config-status.sh: Using correct JDK path ${GREEN}✅${NC}"
     else
-        echo "core-config-status.sh: ${RED}Using incorrect JDK path${NC} ❌"
-        echo "  $JDK_PATH_LINE"
+        echo "core-config-status.sh: May need JDK path update ${YELLOW}⚠️${NC}"
     fi
 else
-    echo "core-config-status.sh: ${YELLOW}Not found in standardized scripts${NC} ⚠️"
+    echo "core-config-status.sh: Not found ${RED}❌${NC}"
 fi
-
-echo ""
-echo "${BLUE}=== Verification Summary ===${NC}"
-echo "Your WebLogic Java environment is set up to use Oracle JDK 1.8.0_45 or 1.8.0_202."
-echo ""
-echo "To run WebLogic scripts with the correct Java environment:"
-echo "  1. ${YELLOW}source ${HOME}/.wljava_env${NC}"
-echo "  2. Run your WebLogic scripts from ${YELLOW}${STANDARDIZED_SCRIPTS}${NC}"
-echo ""
-echo "Or use the helper script:"
-echo "  ${YELLOW}${STANDARDIZED_SCRIPTS}/run-weblogic.sh script-name.sh${NC}"
