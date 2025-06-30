@@ -98,23 +98,49 @@ check_deployed_apps() {
 connect('weblogic', 'weblogic1', 't3://localhost:7001')
 print('\nDeployed Applications:')
 print('=====================')
-apps = cmo.getAppDeployments()
+cd('/AppDeployments')
+apps = ls()
 if len(apps) == 0:
     print('No applications deployed')
 else:
     for app in apps:
-        print('Application: ' + app.getName())
-        print('  State: ' + app.getState())
-        print('  Health: ' + app.getHealth())
-        print('  Type: ' + app.getType())
-        print('  Source: ' + app.getSourcePath())
-        print('  Target: ' + str(app.getTargets()))
+        if app.startswith('dr--'):
+            app = app[5:].strip()
+        print('Application: ' + app)
+        try:
+            cd('/AppDeployments/' + app)
+            state = get('State')
+            health = get('Health')
+            appType = get('Type')
+            targets = get('Targets')
+            deploymentOrder = get('DeploymentOrder')
+            print('  State: ' + state)
+            print('  Health: ' + health)
+            print('  Type: ' + appType)
+            print('  Targets: ' + str(targets))
+            print('  Deployment Order: ' + str(deploymentOrder))
+            
+            # Get source path if available
+            try:
+                sourcePath = get('SourcePath')
+                print('  Source: ' + sourcePath)
+            except:
+                print('  Source: [not available]')
+            
+            # Get version if available
+            try:
+                version = get('VersionIdentifier')
+                print('  Version: ' + version)
+            except:
+                print('  Version: [not available]')
+        except:
+            print('  [Error getting application details]')
         print('---')
 exit()
 EOF
         
         echo "Deployed Applications:"
-        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool"
+        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool" | grep -v "Warning: An insecure protocol"
         rm "$TEMP_SCRIPT"
     else
         echo -e "${YELLOW}⚠️  WLST not found at: $ORACLE_COMMON/common/bin/wlst.sh${NC}"
@@ -139,22 +165,44 @@ if len(ds) == 0:
     print('No JDBC data sources found')
 else:
     for d in ds:
+        if d.startswith('dr--'):
+            d = d[5:].strip()
         print('Data Source: ' + d)
-        cd('/JDBCSystemResources/' + d)
-        state = get('State')
-        print('  State: ' + state)
-        cd('/JDBCSystemResources/' + d + '/JDBCResource/' + d + '/JDBCDriverParams/' + d + '/Properties/' + d)
-        props = ls()
-        if len(props) > 0:
-            print('  Properties:')
-            for p in props:
-                print('    ' + p + ': ' + get(p))
+        try:
+            cd('/JDBCSystemResources/' + d)
+            state = get('State')
+            print('  State: ' + state)
+            
+            # Get JDBC URL and driver
+            cd('/JDBCSystemResources/' + d + '/JDBCResource/' + d + '/JDBCDriverParams/' + d)
+            url = get('Url')
+            driver = get('DriverName')
+            print('  URL: ' + url)
+            print('  Driver: ' + driver)
+            
+            # Get connection pool info
+            cd('/JDBCSystemResources/' + d + '/JDBCResource/' + d + '/JDBCConnectionPoolParams/' + d)
+            initialCapacity = get('InitialCapacity')
+            maxCapacity = get('MaxCapacity')
+            print('  Connection Pool:')
+            print('    Initial Capacity: ' + str(initialCapacity))
+            print('    Max Capacity: ' + str(maxCapacity))
+            
+            # Get test info
+            cd('/JDBCSystemResources/' + d + '/JDBCResource/' + d + '/JDBCConnectionPoolParams/' + d)
+            testConnectionsOnReserve = get('TestConnectionsOnReserve')
+            testTableName = get('TestTableName')
+            print('  Test Settings:')
+            print('    Test On Reserve: ' + str(testConnectionsOnReserve))
+            print('    Test Table: ' + testTableName)
+        except:
+            print('  [Error getting details]')
         print('---')
 exit()
 EOF
         
         echo "JDBC Data Sources:"
-        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool"
+        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool" | grep -v "Warning: An insecure protocol"
         rm "$TEMP_SCRIPT"
     else
         echo -e "${YELLOW}⚠️  WLST not found at: $ORACLE_COMMON/common/bin/wlst.sh${NC}"
@@ -179,27 +227,49 @@ if len(jms) == 0:
     print('No JMS resources found')
 else:
     for j in jms:
+        if j.startswith('dr--'):
+            j = j[5:].strip()
         print('JMS Module: ' + j)
-        cd('/JMSSystemResources/' + j)
-        state = get('State')
-        print('  State: ' + state)
-        cd('/JMSSystemResources/' + j + '/JMSResource/' + j)
-        queues = ls('Queues')
-        topics = ls('Topics')
-        if len(queues) > 0:
-            print('  Queues:')
-            for q in queues:
-                print('    - ' + q)
-        if len(topics) > 0:
-            print('  Topics:')
-            for t in topics:
-                print('    - ' + t)
+        try:
+            cd('/JMSSystemResources/' + j)
+            state = get('State')
+            print('  State: ' + state)
+            
+            # Get queues
+            cd('/JMSSystemResources/' + j + '/JMSResource/' + j)
+            queues = ls('Queues')
+            if len(queues) > 0:
+                print('  Queues:')
+                for q in queues:
+                    print('    Queue: ' + q)
+                    try:
+                        cd('/JMSSystemResources/' + j + '/JMSResource/' + j + '/Queues/' + q)
+                        jndiName = get('JNDIName')
+                        print('      JNDI Name: ' + jndiName)
+                    except:
+                        print('      [Error getting queue details]')
+            
+            # Get topics
+            cd('/JMSSystemResources/' + j + '/JMSResource/' + j)
+            topics = ls('Topics')
+            if len(topics) > 0:
+                print('  Topics:')
+                for t in topics:
+                    print('    Topic: ' + t)
+                    try:
+                        cd('/JMSSystemResources/' + j + '/JMSResource/' + j + '/Topics/' + t)
+                        jndiName = get('JNDIName')
+                        print('      JNDI Name: ' + jndiName)
+                    except:
+                        print('      [Error getting topic details]')
+        except:
+            print('  [Error getting module details]')
         print('---')
 exit()
 EOF
         
         echo "JMS Resources:"
-        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool"
+        "$ORACLE_COMMON/common/bin/wlst.sh" "$TEMP_SCRIPT" 2>/dev/null | grep -v "Initializing WebLogic Scripting Tool" | grep -v "Warning: An insecure protocol"
         rm "$TEMP_SCRIPT"
     else
         echo -e "${YELLOW}⚠️  WLST not found at: $ORACLE_COMMON/common/bin/wlst.sh${NC}"

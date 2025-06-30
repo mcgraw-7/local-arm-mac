@@ -133,12 +133,12 @@ for JDK_PATH in "${ORACLE_JDK_PATHS[@]}"; do
     if [ -d "$JDK_PATH" ]; then
         echo "${GREEN}✅ Found Oracle JDK at: ${JDK_PATH}${NC}"
         JDK_FOUND=true
-        
-        # Check architecture compatibility
+    
+    # Check architecture compatibility
         if file "$JDK_PATH/bin/java" 2>/dev/null | grep -q "x86_64"; then
-            echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
-            echo "This should work but might have performance implications"
-        fi
+        echo "${YELLOW}⚠️  This is an x86_64 JDK running through Rosetta 2${NC}"
+        echo "This should work but might have performance implications"
+    fi
         break
     fi
 done

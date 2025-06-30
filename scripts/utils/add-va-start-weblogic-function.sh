@@ -108,9 +108,9 @@ va_start_oracle_db() {
             else
                 echo "❌ Failed to start Oracle database container"
                 return 1
-            fi
-        else
-            echo "❌ No Oracle database container found"
+        fi
+    else
+        echo "❌ No Oracle database container found"
             echo "You need to create an Oracle database container first."
             echo "Options:"
             echo "1. Run Oracle database management script:"
@@ -118,15 +118,15 @@ va_start_oracle_db() {
             echo "2. Or pull and run the official Oracle image:"
             echo "   docker pull oracledb19c/oracle.19.3.0-ee"
             echo "   docker run -d --name vbms-dev-docker-19c -p 1521:1521 oracledb19c/oracle.19.3.0-ee"
-            return 1
-        fi
+        return 1
+    fi
     fi
 }
 
 EOF
 
-echo "✅ Added va_start_weblogic() function to .zshrc"
-
+    echo "✅ Added va_start_weblogic() function to .zshrc"
+    
 echo "\n=== Usage ==="
 echo "To start WebLogic server, run:"
 echo "  source ~/.zshrc   # To reload your shell configuration"

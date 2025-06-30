@@ -48,7 +48,7 @@ read OPTION
 case $OPTION in
     1)  # Check Oracle database container status
         echo "${BLUE}Checking Oracle database container status...${NC}"
-
+        
         # On Apple Silicon, check Docker context
         if [ "$(uname -m)" = "arm64" ]; then
             DOCKER_CONTEXT=$(docker context show 2>/dev/null)
