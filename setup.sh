@@ -9,6 +9,12 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Check for auto-run flags
+AUTO_RUN=false
+if [[ "$1" == "--auto" || "$1" == "-a" || "$AUTO_RUN_CHECKS" == "true" ]]; then
+    AUTO_RUN=true
+fi
+
 echo "${BLUE}===================================================================${NC}"
 echo "${BLUE}         VA Core Local Development Environment Setup               ${NC}"
 echo "${BLUE}===================================================================${NC}"
@@ -41,36 +47,84 @@ fi
 
 echo ""
 
+# If auto-run is enabled, execute option 1 directly
+if [ "$AUTO_RUN" = true ]; then
+    echo "${BLUE}Auto-run mode: Executing all verification checks...${NC}"
+    echo ""
+    
+    echo "${YELLOW}=== 1. Path Analysis ===${NC}"
+    "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
+    echo ""
+    
+    echo "${YELLOW}=== 2. Apple Silicon Compatibility ===${NC}"
+    "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+    echo ""
+    
+    echo "${YELLOW}=== 3. VA Core Environment Standardization ===${NC}"
+    "$(dirname "$0")/scripts/utils/verify-standardization.sh"
+    echo ""
+    
+    echo "${YELLOW}=== 4. Oracle Directory Structure ===${NC}"
+    "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
+    echo ""
+    
+    echo "${GREEN}✅ All verification checks completed!${NC}"
+    exit 0
+fi
+
 # Setup options
 echo "${BLUE}=== Available Tools ===${NC}"
-echo "1. Path Analysis (analyze system paths for Maven, Java, Oracle)"
-echo "2. Check Apple Silicon compatibility"
-echo "3. Verify VA Core environment standardization"
-echo "4. Verify Oracle directory structure"
-echo "5. View README Documentation"
-echo "6. Exit"
+echo "1. Run all verification checks"
+echo "2. Path Analysis (analyze system paths for Maven, Java, Oracle)"
+echo "3. Check Apple Silicon compatibility"
+echo "4. Verify VA Core environment standardization"
+echo "5. Verify Oracle directory structure"
+echo "6. View README Documentation"
+echo "7. Exit"
 
-echo -n "Select an option (1-6): "
+echo -n "Select an option (1-7): "
 read option
 
 case $option in
     1)
+        echo "${BLUE}Running all verification checks...${NC}"
+        echo ""
+        
+        echo "${YELLOW}=== 1. Path Analysis ===${NC}"
+        "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
+        echo ""
+        
+        echo "${YELLOW}=== 2. Apple Silicon Compatibility ===${NC}"
+        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+        echo ""
+        
+        echo "${YELLOW}=== 3. VA Core Environment Standardization ===${NC}"
+        "$(dirname "$0")/scripts/utils/verify-standardization.sh"
+        echo ""
+        
+        echo "${YELLOW}=== 4. Oracle Directory Structure ===${NC}"
+        "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
+        echo ""
+        
+        echo "${GREEN}✅ All verification checks completed!${NC}"
+        ;;
+    2)
         echo "Running Path Analysis Configuration Tool..."
         "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
         ;;
-    2)
+    3)
         echo "Checking Apple Silicon compatibility..."
         "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
         ;;
-    3)
+    4)
         echo "Verifying VA Core environment standardization..."
         "$(dirname "$0")/scripts/utils/verify-standardization.sh"
         ;;
-    4)
+    5)
         echo "Verifying Oracle directory structure..."
         "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
         ;;
-    5)
+    6)
         echo "Displaying README documentation..."
         if command -v glow &> /dev/null; then
             glow "$(dirname "$0")/README.md"
@@ -84,11 +138,11 @@ case $option in
             cat "$(dirname "$0")/README.md"
         fi
         ;;
-    6)
+    7)
         echo "${YELLOW}Exiting setup script${NC}"
         exit 0
         ;;
     *)
-        echo "${RED}Invalid option. Please select a valid option (1-6).${NC}"
+        echo "${RED}Invalid option. Please select a valid option (1-7).${NC}"
         ;;
 esac
