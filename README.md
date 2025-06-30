@@ -10,10 +10,10 @@ WebLogic **must** be installed in the Oracle standardized directory:
 ${HOME}/dev/Oracle/Middleware/Oracle_Home
 ```
 
-Oracle JDK 1.8.0_45 must be installed at:
+Oracle JDK 1.8.0_202 must be installed at:
 
 ```
-/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk
+/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk
 ```
 
 ## Quick Start
@@ -60,6 +60,6 @@ Run the setup script and select from the available options:
 ## System Requirements
 
 - macOS (Apple Silicon M1/M2/M3 or Intel)
-- Oracle JDK 1.8.0_45
+- Oracle JDK 1.8.0_202
 - WebLogic Server installation
 - Colima/Docker (for Oracle database container)

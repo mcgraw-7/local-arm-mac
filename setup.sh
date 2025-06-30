@@ -34,13 +34,13 @@ echo "${HOME}/dev/Oracle/Middleware/Oracle_Home"
 echo ""
 
 # Check if Oracle JDK exists
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
+ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 echo -n "Checking Oracle JDK installation: "
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}✅ FOUND${NC}"
 else
     echo "${RED}❌ NOT FOUND${NC}"
-    echo "${YELLOW}Oracle JDK 1.8.0_45 is required but not installed at the expected location.${NC}"
+    echo "${YELLOW}Oracle JDK 1.8.0_202 is required but not installed at the expected location.${NC}"
     echo "Please install it and run this script again."
     exit 1
 fi
