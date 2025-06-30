@@ -57,16 +57,6 @@ Run the setup script and select from the available options:
 ./setup.sh
 ```
 
-**Available Options:**
-
-1. **Run all verification checks** - Executes all verification scripts in sequence
-2. **Path Analysis** - Analyze system paths for Maven, Java, and Oracle components
-3. **Check Apple Silicon compatibility** - Verify compatibility with Oracle and WebLogic
-4. **Verify VA Core environment standardization** - Check environment matches VA Core requirements
-5. **Verify Oracle directory structure** - Ensure Oracle WebLogic is in standardized directories
-6. **View README Documentation** - Display this documentation
-7. **Exit** - Exit the setup script
-
 ## What It Does
 
 - **Path Analysis**: Analyzes and categorizes system paths for Maven, Java, and Oracle components
