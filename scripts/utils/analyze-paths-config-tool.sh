@@ -171,6 +171,7 @@ DOMAIN_BASE="$ORACLE_HOME/user_projects/domains"
 DOMAIN_CONFIG="$DOMAIN_BASE/*/config/config.xml"
 
 if [ -d "$DOMAIN_BASE" ]; then
+    found_domains=0
     echo "Available WebLogic domains:"
     for domain in "$DOMAIN_BASE"/*; do
         if [ -d "$domain" ]; then
@@ -180,8 +181,12 @@ if [ -d "$DOMAIN_BASE" ]; then
             else
                 print_path "$domain" "optional" "Domain: $domain_name (incomplete)"
             fi
+            found_domains=1
         fi
     done
+    if [ $found_domains -eq 0 ]; then
+        echo "  (none found)"
+    fi
 else
     print_path "$DOMAIN_BASE" "missing" "No WebLogic domains directory found"
 fi
