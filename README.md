@@ -1,8 +1,8 @@
-# local-arm-mac
+# VA Core Local Development Environment Setup
 
-Configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and Oracle configuration for Apple Silicon (M1/M2/M3) and Intel Macs. Reduces "it works on my machine" issues and streamlines developer onboarding.
+Configuration scripts for VA Core local development environment setup. Automates dependency checks, environment validation, and Oracle configuration for Apple Silicon (M1/M2/M3) and Intel Macs.
 
-## Important Directory Structure Requirements
+## Important Requirements
 
 WebLogic **must** be installed in the Oracle standardized directory:
 
@@ -10,57 +10,54 @@ WebLogic **must** be installed in the Oracle standardized directory:
 ${HOME}/dev/Oracle/Middleware/Oracle_Home
 ```
 
-No deviations from this directory structure are permitted. All scripts in this repository enforce this requirement to ensure proper functionality and compatibility with VA systems.
+Oracle JDK 1.8.0_45 must be installed at:
 
-## Getting Started
+```
+/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk
+```
 
-1. Clone or download this repository
-2. Make the setup script executable:
-   ```
+## Quick Start
+
+1. Make the setup script executable:
+
+   ```bash
    chmod +x setup.sh
    ```
-3. Run the setup script:
+
+2. Run all verification checks automatically:
+
+   ```bash
+   ./setup.sh --auto
    ```
+
+3. Or run interactively:
+   ```bash
    ./setup.sh
    ```
-4. Follow the on-screen prompts to configure your environment
 
 ## Usage
 
-### Interactive Mode
-
-Run the setup script and select from the available options:
-
-```
-./setup.sh
-```
-
 ### Auto-Run Mode
 
-Automatically run all verification checks without user interaction:
-
-**Command-line flags:**
+Automatically run all verification checks:
 
 ```bash
 ./setup.sh --auto
 # or
 ./setup.sh -a
-```
-
-**Environment variable:**
-
-```bash
+# or
 AUTO_RUN_CHECKS=true ./setup.sh
 ```
 
-**For the entire session:**
+### Interactive Mode
+
+Run the setup script and select from the available options:
 
 ```bash
-export AUTO_RUN_CHECKS=true
-./setup.sh  # Will auto-run every time
+./setup.sh
 ```
 
-### Available Options
+**Available Options:**
 
 1. **Run all verification checks** - Executes all verification scripts in sequence
 2. **Path Analysis** - Analyze system paths for Maven, Java, and Oracle components
@@ -70,37 +67,16 @@ export AUTO_RUN_CHECKS=true
 6. **View README Documentation** - Display this documentation
 7. **Exit** - Exit the setup script
 
-## Features and Functions
+## What It Does
 
-- **Path Analysis Configuration Tool**: Analyzes and categorizes system paths for Maven, Java, and Oracle components to verify against documentation
-- **Apple Silicon Compatibility Check**: Verify compatibility with Oracle and WebLogic on Apple Silicon
-- **Directory Structure Verification**: Ensure Oracle WebLogic is installed in standardized directories
-- **VA Core Standardization Verification**: Verify your environment matches VA Core requirements
+- **Path Analysis**: Analyzes and categorizes system paths for Maven, Java, and Oracle components
+- **Apple Silicon Compatibility**: Verifies compatibility with Oracle and WebLogic on Apple Silicon
+- **Environment Standardization**: Checks that your environment matches VA Core requirements
+- **Directory Structure**: Ensures Oracle WebLogic is installed in standardized directories
 
-## Apple Silicon Compatibility
+## System Requirements
 
-- Run the compatibility check script: `./scripts/utils/check-apple-silicon.sh`
-- For detailed information, see [Apple Silicon Compatibility Guide](docs/apple-silicon-compatibility.md)
-
-## Repository Structure
-
-```
-local-arm-mac/
-├── scripts/
-│   └── utils/        # Utility scripts for VA Core local setup
-├── docs/             # Documentation files
-├── config/           # Configuration templates
-├── templates/        # Template files for environment setup
-└── setup.sh          # Main setup script (entry point)
-```
-
-### Documentation Files
-
-- `docs/java-standardization-docs.md` - Detailed documentation of Java standardization
-- `docs/apple-silicon-compatibility.md` - Information about compatibility with Apple Silicon (ARM) Macs
-
-### System Requirements
-
-- macOS on Apple Silicon (M1/M2/M3) Mac or Intel Mac
-- Oracle JDK 1.8.0_45 installed at `/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk`
-- WebLogic Server installation (for WebLogic-related scripts)
+- macOS (Apple Silicon M1/M2/M3 or Intel)
+- Oracle JDK 1.8.0_45
+- WebLogic Server installation
+- Colima/Docker (for Oracle database container)
