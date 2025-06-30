@@ -198,23 +198,55 @@ else
 fi
 
 print_subsection "Oracle Database Paths"
-# Oracle database paths
-ORACLE_DB_CONTAINER="oracle-db"
+# Oracle database paths and status
+ORACLE_DB_CONTAINER="vbms-dev-docker-19c"
 ORACLE_DB_DATA="$HOME/dev/oracle-data"
 DOCKER_COMPOSE_PATH="$HOME/dev/docker-compose.yml"
 
 print_path "$ORACLE_DB_DATA" "$([ -d "$ORACLE_DB_DATA" ] && echo "exists" || echo "optional")" "Oracle database data directory"
 print_path "$DOCKER_COMPOSE_PATH" "$([ -f "$DOCKER_COMPOSE_PATH" ] && echo "exists" || echo "optional")" "Docker Compose file for Oracle DB"
 
-# Check if Oracle DB container is running
+# Check Docker and Colima status
 if command -v docker >/dev/null 2>&1; then
-    if docker ps | grep -q "$ORACLE_DB_CONTAINER"; then
-        print_path "Oracle DB Container" "exists" "Container is running"
+    echo ""
+    echo "Docker/Colima Status:"
+    
+    # Check if Colima is running
+    if command -v colima >/dev/null 2>&1; then
+        COlima_STATUS=$(colima status 2>/dev/null | grep "colima is running" || echo "not running")
+        if [[ "$COlima_STATUS" == *"running"* ]]; then
+            echo "  ${GREEN}✅ Colima is running${NC}"
+            # Get Colima details
+            COlima_ARCH=$(colima status 2>/dev/null | grep "arch:" | awk '{print $2}')
+            COlima_RUNTIME=$(colima status 2>/dev/null | grep "runtime:" | awk '{print $2}')
+            echo "    Architecture: $COlima_ARCH"
+            echo "    Runtime: $COlima_RUNTIME"
+        else
+            echo "  ${RED}❌ Colima is not running${NC}"
+        fi
     else
-        print_path "Oracle DB Container" "optional" "Container not running"
+        echo "  ${YELLOW}⚠️  Colima not installed${NC}"
     fi
+    
+    # Check Oracle DB container status
+    if docker ps -a --format "table {{.Names}}\t{{.Status}}" | grep -q "$ORACLE_DB_CONTAINER"; then
+        CONTAINER_STATUS=$(docker ps --format "table {{.Names}}\t{{.Status}}" | grep "$ORACLE_DB_CONTAINER" | awk '{print $2}')
+        if [[ "$CONTAINER_STATUS" == *"Up"* ]]; then
+            echo "  ${GREEN}✅ Oracle DB Container ($ORACLE_DB_CONTAINER) is running${NC}"
+        else
+            echo "  ${YELLOW}⚠️  Oracle DB Container ($ORACLE_DB_CONTAINER) exists but not running${NC}"
+            echo "    Status: $CONTAINER_STATUS"
+        fi
+    else
+        echo "  ${RED}❌ Oracle DB Container ($ORACLE_DB_CONTAINER) not found${NC}"
+    fi
+    
+    # Show all running containers
+    RUNNING_CONTAINERS=$(docker ps --format "{{.Names}}" | wc -l)
+    echo "  Total running containers: $RUNNING_CONTAINERS"
+    
 else
-    print_path "Docker" "missing" "Docker not available"
+    echo "  ${RED}❌ Docker not available${NC}"
 fi
 
 # -------------------------------------

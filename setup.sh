@@ -39,10 +39,6 @@ else
     exit 1
 fi
 
-# Make scripts executable
-echo "Making scripts executable..."
-find "$(dirname "$0")/scripts" -type f -name "*.sh" -exec chmod +x {} \;
-echo "${GREEN}✅ Scripts are now executable${NC}"
 echo ""
 
 # Setup options
