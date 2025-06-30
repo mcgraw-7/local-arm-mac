@@ -82,11 +82,40 @@ print_path "$MAVEN_LOCAL_REPO" "$([ -d "$MAVEN_LOCAL_REPO" ] && echo "exists" ||
 print_subsection "Maven Repository URLs"
 if [ -f "$MAVEN_SETTINGS" ]; then
     echo "Configured repositories in settings.xml:"
-    grep -A 1 "<url>" "$MAVEN_SETTINGS" | grep -v "<url>" | sed 's/<\/url>//' | sed 's/[ \t]*//' | while read url; do
-        if [ -n "$url" ]; then
-            echo "  - $url"
-        fi
-    done
+    # Use a more robust approach to extract repository URLs
+    if grep -q "<repository>" "$MAVEN_SETTINGS"; then
+        # Extract URLs from repository sections
+        awk '/<repository>/,/<\/repository>/ {
+            if ($0 ~ /<url>/) {
+                gsub(/.*<url>/, "")
+                gsub(/<\/url>.*/, "")
+                gsub(/^[ \t]+/, "")
+                gsub(/[ \t]+$/, "")
+                if (length($0) > 0) {
+                    print "  - " $0
+                }
+            }
+        }' "$MAVEN_SETTINGS"
+    else
+        echo "  - No custom repositories found (using Maven Central)"
+    fi
+    
+    # Also check for mirror configurations
+    if grep -q "<mirror>" "$MAVEN_SETTINGS"; then
+        echo ""
+        echo "Maven mirrors configured:"
+        awk '/<mirror>/,/<\/mirror>/ {
+            if ($0 ~ /<url>/) {
+                gsub(/.*<url>/, "")
+                gsub(/<\/url>.*/, "")
+                gsub(/^[ \t]+/, "")
+                gsub(/[ \t]+$/, "")
+                if (length($0) > 0) {
+                    print "  - " $0
+                }
+            }
+        }' "$MAVEN_SETTINGS"
+    fi
 else
     echo "${YELLOW}⚠️  No settings.xml found - using default Maven Central${NC}"
 fi

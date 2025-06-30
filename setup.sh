@@ -1,43 +1,31 @@
 #!/bin/zsh
-# Main setup script for Java/WebLogic environment standardization
-# This script serves as the entry point for configuring the Java environment for WebLogic
-# development on Apple Silicon Macs without requiring sudo access.
+# VA Core Local Development Environment Setup
+# This script provides essential tools for VA Core local development setup
 
 # Set color codes for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 echo "${BLUE}===================================================================${NC}"
-echo "${BLUE}         Java/WebLogic Environment Standardization Setup            ${NC}"
+echo "${BLUE}         VA Core Local Development Environment Setup               ${NC}"
 echo "${BLUE}===================================================================${NC}"
 
-# All documentation is in the README.md file
-
-echo "This script will help you set up your Java environment for WebLogic development."
+echo "This script provides essential tools for VA Core local development setup."
+echo ""
 
 # Detect Apple Silicon Mac
 if [ "$(uname -m)" = "arm64" ]; then
-    echo "${YELLOW}==============================================${NC}"
     echo "${YELLOW}⚠️  DETECTED APPLE SILICON MAC (M1/M2/M3) ⚠️${NC}"
-    echo "${YELLOW}==============================================${NC}"
-    echo "Running WebLogic on Apple Silicon requires special configuration."
-    echo ""
-    echo "${BLUE}Recommendations for Apple Silicon:${NC}"
-    echo "• Use option 14 to check your Apple Silicon compatibility now"
-    echo "• Use option 13 to manage Oracle DB with Colima support"
-    echo "• Verify Rosetta 2 is installed (softwareupdate --install-rosetta)"
-    echo "• Ensure you have at least 16GB RAM for optimal performance"
-    echo "• For detailed guidance, see: ${BLUE}docs/apple-silicon-compatibility.md${NC}"
+    echo "Use option 2 to check Apple Silicon compatibility."
     echo ""
 fi
 
 echo "${YELLOW}IMPORTANT:${NC} WebLogic must be installed in the Oracle standardized directory:"
 echo "${HOME}/dev/Oracle/Middleware/Oracle_Home"
-echo "No deviations from this directory structure are permitted."
+echo ""
 
 # Check if Oracle JDK exists
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
@@ -46,8 +34,7 @@ if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}✅ FOUND${NC}"
 else
     echo "${RED}❌ NOT FOUND${NC}"
-    echo "${YELLOW}Oracle JDK 1.8.0_45 is required but not installed at the expected location:${NC}"
-    echo "$ORACLE_JDK"
+    echo "${YELLOW}Oracle JDK 1.8.0_45 is required but not installed at the expected location.${NC}"
     echo "Please install it and run this script again."
     exit 1
 fi
@@ -56,9 +43,10 @@ fi
 echo "Making scripts executable..."
 find "$(dirname "$0")/scripts" -type f -name "*.sh" -exec chmod +x {} \;
 echo "${GREEN}✅ Scripts are now executable${NC}"
+echo ""
 
 # Setup options
-echo "${BLUE}=== Setup Options ===${NC}"
+echo "${BLUE}=== Available Tools ===${NC}"
 echo "1. Path Analysis (analyze system paths for Maven, Java, Oracle)"
 echo "2. Check Apple Silicon compatibility"
 echo "3. Verify VA Core environment standardization"
@@ -108,5 +96,3 @@ case $option in
         echo "${RED}Invalid option. Please select a valid option (1-6).${NC}"
         ;;
 esac
-
-echo "${GREEN}Setup completed!${NC}"
