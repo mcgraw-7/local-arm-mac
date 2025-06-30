@@ -198,17 +198,11 @@ else
 fi
 
 print_subsection "Oracle Database Paths"
-# Oracle database paths and status
+# Oracle database container status
 ORACLE_DB_CONTAINER="vbms-dev-docker-19c"
-ORACLE_DB_DATA="$HOME/dev/oracle-data"
-DOCKER_COMPOSE_PATH="$HOME/dev/docker-compose.yml"
-
-print_path "$ORACLE_DB_DATA" "$([ -d "$ORACLE_DB_DATA" ] && echo "exists" || echo "optional")" "Oracle database data directory"
-print_path "$DOCKER_COMPOSE_PATH" "$([ -f "$DOCKER_COMPOSE_PATH" ] && echo "exists" || echo "optional")" "Docker Compose file for Oracle DB"
 
 # Check Docker and Colima status
 if command -v docker >/dev/null 2>&1; then
-    echo ""
     echo "Docker/Colima Status:"
     
     # Check if Colima is running
