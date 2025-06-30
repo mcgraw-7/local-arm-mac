@@ -34,6 +34,51 @@ All scripts are now located in `scripts/utils/`:
    ```
 4. Follow the on-screen prompts to configure your environment
 
+## Usage
+
+### Interactive Mode
+
+Run the setup script and select from the available options:
+
+```
+./setup.sh
+```
+
+### Auto-Run Mode
+
+Automatically run all verification checks without user interaction:
+
+**Command-line flags:**
+
+```bash
+./setup.sh --auto
+# or
+./setup.sh -a
+```
+
+**Environment variable:**
+
+```bash
+AUTO_RUN_CHECKS=true ./setup.sh
+```
+
+**For the entire session:**
+
+```bash
+export AUTO_RUN_CHECKS=true
+./setup.sh  # Will auto-run every time
+```
+
+### Available Options
+
+1. **Run all verification checks** - Executes all verification scripts in sequence
+2. **Path Analysis** - Analyze system paths for Maven, Java, and Oracle components
+3. **Check Apple Silicon compatibility** - Verify compatibility with Oracle and WebLogic
+4. **Verify VA Core environment standardization** - Check environment matches VA Core requirements
+5. **Verify Oracle directory structure** - Ensure Oracle WebLogic is in standardized directories
+6. **View README Documentation** - Display this documentation
+7. **Exit** - Exit the setup script
+
 ## Features and Functions
 
 - **Path Analysis Configuration Tool**: Analyzes and categorizes system paths for Maven, Java, and Oracle components to verify against documentation
