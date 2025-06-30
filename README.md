@@ -63,3 +63,7 @@ Run the setup script and select from the available options:
 - Oracle JDK 1.8.0_202
 - WebLogic Server installation
 - Colima/Docker (for Oracle database container)
+
+## Documentation
+
+- **[JDK Compatibility Issue](docs/jdk-compatibility-issue.md)** - WebLogic JDK 17 vs JDK 8 compatibility problem and solution
