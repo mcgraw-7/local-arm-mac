@@ -12,15 +12,6 @@ ${HOME}/dev/Oracle/Middleware/Oracle_Home
 
 No deviations from this directory structure are permitted. All scripts in this repository enforce this requirement to ensure proper functionality and compatibility with VA systems.
 
-## Script Organization
-
-All scripts are now located in `scripts/utils/`:
-
-- `analyze-paths-config-tool.sh` - Analyzes and categorizes paths for Maven, Java, and Oracle components
-- `check-apple-silicon.sh` - Checks Apple Silicon compatibility
-- `verify-standardization.sh` - Verifies VA Core environment standardization
-- `verify-oracle-directory.sh` - Verifies Oracle directory structure
-
 ## Getting Started
 
 1. Clone or download this repository
