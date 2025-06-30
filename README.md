@@ -57,13 +57,6 @@ Run the setup script and select from the available options:
 ./setup.sh
 ```
 
-## What It Does
-
-- **Path Analysis**: Analyzes and categorizes system paths for Maven, Java, and Oracle components
-- **Apple Silicon Compatibility**: Verifies compatibility with Oracle and WebLogic on Apple Silicon
-- **Environment Standardization**: Checks that your environment matches VA Core requirements
-- **Directory Structure**: Ensures Oracle WebLogic is installed in standardized directories
-
 ## System Requirements
 
 - macOS (Apple Silicon M1/M2/M3 or Intel)
