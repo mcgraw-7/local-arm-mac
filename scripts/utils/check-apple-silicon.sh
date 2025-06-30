@@ -73,17 +73,19 @@ else
     echo "Install with: softwareupdate --install-rosetta"
 fi
 
-# Oracle JDK check
+# Check Oracle JDK
 echo ""
 echo "${BLUE}Checking Oracle JDK...${NC}"
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home"
-
+ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}✅ Found Oracle JDK at: $ORACLE_JDK${NC}"
     
     # Check architecture
-    if file "$ORACLE_JDK/bin/java" 2>/dev/null | grep -q "x86_64"; then
+    JDK_ARCH=$(file "$ORACLE_JDK/bin/java" | grep -o "x86_64\|arm64")
+    if [ "$JDK_ARCH" = "x86_64" ]; then
         echo "${GREEN}✅ Oracle JDK is x86_64 (will run via Rosetta 2)${NC}"
+    else
+        echo "${YELLOW}⚠️  Oracle JDK architecture: $JDK_ARCH${NC}"
     fi
 else
     echo "${RED}❌ Oracle JDK not found at expected location${NC}"
