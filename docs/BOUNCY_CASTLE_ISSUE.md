@@ -10,7 +10,7 @@ When building and deploying the VBMS Core multi-module Maven project (targeting 
 ## Root Cause
 
 - **Bouncy Castle 1.67+** introduced multi-release JARs, which are not compatible with WebLogic 12.1.3. This caused class loading issues and runtime exceptions.
-- The project referenced `bctsp-jdk15on`, which does not exist in Bouncy Castle 1.64 or any 1.x version, leading to Maven errors about missing dependency versions.
+- The project referenced `bctsp-jdk15on`, which does not exist in Bouncy Castle 1.60 or any 1.x version, leading to Maven errors about missing dependency versions.
 
 ## Solution
 
@@ -19,11 +19,11 @@ When building and deploying the VBMS Core multi-module Maven project (targeting 
    - `bcpkix-jdk15on`
    - `bcmail-jdk15on`
 2. **Remove all references to `bctsp-jdk15on`** from every module POM, as it does not exist in 1.64.
-3. **Verify** that no submodule POMs reference `bctsp-jdk15on` and that all Bouncy Castle dependencies use version 1.64.
+3. **Verify** that no submodule POMs reference `bctsp-jdk15on` and that all Bouncy Castle dependencies use version 1.60.
 
 ## Steps Taken
 
-- Updated the root POM to manage Bouncy Castle versions at 1.64.
+- Updated the root POM to manage Bouncy Castle versions at 1.60.
 - Removed `bctsp-jdk15on` from the root and all submodule POMs.
 - Searched and confirmed no remaining references to `bctsp-jdk15on`.
 - Rebuilt the project to ensure all modules use only supported Bouncy Castle artifacts.
@@ -33,6 +33,6 @@ When building and deploying the VBMS Core multi-module Maven project (targeting 
 - [WebLogic 12.1.3 Documentation](https://docs.oracle.com/middleware/1213/wls/index.html)
 
 ## Recommendation
-- Always use Bouncy Castle 1.64 for WebLogic 12.1.3 deployments.
+- Always use Bouncy Castle 1.60 for WebLogic 12.1.3 deployments.
 - Avoid multi-release JARs and non-existent artifacts in dependency management.
 - If upgrading WebLogic, re-evaluate Bouncy Castle compatibility.
