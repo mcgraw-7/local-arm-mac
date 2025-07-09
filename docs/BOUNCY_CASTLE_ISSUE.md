@@ -14,11 +14,11 @@ When building and deploying the VBMS Core multi-module Maven project (targeting 
 
 ## Solution
 
-1. **Force all Bouncy Castle dependencies to version 1.64** in the root POM:
+1. **Force all Bouncy Castle dependencies to version 1.60** in the root POM:
    - `bcprov-jdk15on`
    - `bcpkix-jdk15on`
    - `bcmail-jdk15on`
-2. **Remove all references to `bctsp-jdk15on`** from every module POM, as it does not exist in 1.64.
+2. **Remove all references to `bctsp-jdk15on`** from every module POM, as it does not exist in 1.60.
 3. **Verify** that no submodule POMs reference `bctsp-jdk15on` and that all Bouncy Castle dependencies use version 1.60.
 
 ## Steps Taken
