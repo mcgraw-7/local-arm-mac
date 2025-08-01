@@ -26,18 +26,18 @@ print_path() {
     local description="$3"
     
     if [ "$path_status" = "exists" ]; then
-        echo "${GREEN}✅ $path${NC}"
+        echo "${GREEN} $path${NC}"
         echo "    $description"
     elif [ "$path_status" = "optional" ]; then
         if [ -d "$path" ] || [ -f "$path" ]; then
-            echo "${GREEN}✅ $path${NC}"
+            echo "${GREEN} $path${NC}"
             echo "    $description"
         else
-            echo "${YELLOW}⚠️  $path (optional)${NC}"
+            echo "${YELLOW}⚠  $path (optional)${NC}"
             echo "    $description"
         fi
     else
-        echo "${RED}❌ $path${NC}"
+        echo "${RED} $path${NC}"
         echo "    $description"
     fi
 }
@@ -106,7 +106,7 @@ if [ -f "$MAVEN_SETTINGS" ]; then
         }' "$MAVEN_SETTINGS"
     fi
 else
-    echo "${YELLOW}⚠️  No settings.xml found - using default Maven Central${NC}"
+    echo "${YELLOW}  No settings.xml found - using default Maven Central${NC}"
 fi
 
 # -------------------------------------
@@ -135,12 +135,12 @@ if command -v java >/dev/null 2>&1; then
     
     # Check if it's the expected Java 8
     if [[ "$JAVA_VERSION" == *"1.8"* ]]; then
-        echo "${GREEN}✅ Java 8 detected - compatible with WebLogic${NC}"
+        echo "${GREEN} Java 8 detected - compatible with WebLogic${NC}"
     else
-        echo "${YELLOW}⚠️  Non-Java 8 version detected - may cause WebLogic issues${NC}"
+        echo "${YELLOW}  Non-Java 8 version detected - may cause WebLogic issues${NC}"
     fi
 else
-    echo "${RED}❌ Java not found in PATH${NC}"
+    echo "${RED} Java not found in PATH${NC}"
 fi
 
 print_subsection "Java Environment Variables"
@@ -203,30 +203,30 @@ if command -v docker >/dev/null 2>&1; then
     if command -v colima >/dev/null 2>&1; then
         COlima_STATUS=$(colima status 2>/dev/null | grep "colima is running" || echo "not running")
         if [[ "$COlima_STATUS" == *"running"* ]]; then
-            echo "  ${GREEN}✅ Colima is running${NC}"
+            echo "  ${GREEN} Colima is running${NC}"
             # Get Colima details
             COlima_ARCH=$(colima status 2>/dev/null | grep "arch:" | awk '{print $2}')
             COlima_RUNTIME=$(colima status 2>/dev/null | grep "runtime:" | awk '{print $2}')
             echo "    Architecture: $COlima_ARCH"
             echo "    Runtime: $COlima_RUNTIME"
         else
-            echo "  ${RED}❌ Colima is not running${NC}"
+            echo "  ${RED} Colima is not running${NC}"
         fi
     else
-        echo "  ${YELLOW}⚠️  Colima not installed${NC}"
+        echo "  ${YELLOW}  Colima not installed${NC}"
     fi
     
     # Check Oracle DB container status
     if docker ps -a --format "table {{.Names}}\t{{.Status}}" | grep -q "$ORACLE_DB_CONTAINER"; then
         CONTAINER_STATUS=$(docker ps --format "table {{.Names}}\t{{.Status}}" | grep "$ORACLE_DB_CONTAINER" | awk '{print $2}')
         if [[ "$CONTAINER_STATUS" == *"Up"* ]]; then
-            echo "  ${GREEN}✅ Oracle DB Container ($ORACLE_DB_CONTAINER) is running${NC}"
+            echo "  ${GREEN} Oracle DB Container ($ORACLE_DB_CONTAINER) is running${NC}"
         else
-            echo "  ${YELLOW}⚠️  Oracle DB Container ($ORACLE_DB_CONTAINER) exists but not running${NC}"
+            echo "  ${YELLOW}  Oracle DB Container ($ORACLE_DB_CONTAINER) exists but not running${NC}"
             echo "    Status: $CONTAINER_STATUS"
         fi
     else
-        echo "  ${RED}❌ Oracle DB Container ($ORACLE_DB_CONTAINER) not found${NC}"
+        echo "  ${RED} Oracle DB Container ($ORACLE_DB_CONTAINER) not found${NC}"
     fi
     
     # Show all running containers
@@ -234,7 +234,7 @@ if command -v docker >/dev/null 2>&1; then
     echo "  Total running containers: $RUNNING_CONTAINERS"
     
 else
-    echo "  ${RED}❌ Docker not available${NC}"
+    echo "  ${RED} Docker not available${NC}"
 fi
 
 # -------------------------------------
@@ -276,9 +276,9 @@ echo "$PATH" | tr ':' '\n' | sed 's/^/  /' | while read path_entry; do
             continue
         fi
         if [ -d "$path_entry" ]; then
-            echo "${GREEN}  ✅ $path_entry${NC}"
+            echo "${GREEN}   $path_entry${NC}"
         else
-            echo "${RED}  ❌ $path_entry (not found)${NC}"
+            echo "${RED}   $path_entry (not found)${NC}"
         fi
     fi
 done
@@ -295,7 +295,7 @@ echo "DOMAIN_HOME: $DOMAIN_HOME"
 # -------------------------------------
 print_section "SUMMARY AND RECOMMENDATIONS"
 
-echo "${GREEN}✅ Path analysis completed successfully!${NC}"
+echo "${GREEN} Path analysis completed successfully!${NC}"
 echo ""
 echo "All critical paths have been analyzed and categorized."
 echo "Review the output above to verify your configuration."
