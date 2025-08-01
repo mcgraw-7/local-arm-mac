@@ -1,8 +1,8 @@
-# WebLogic JDK Compatibility Issue: JDK 17 vs JDK 8
+# WebLogic JDK Compatibility
 
 ## Problem Description
 
-WebLogic 12.2.1.4.0 was failing to start with critical errors when using JDK 17 instead of the required JDK 8.
+WebLogic using wrong version of java 
 
 ### Error Symptoms
 
@@ -13,17 +13,6 @@ WebLogic 12.2.1.4.0 was failing to start with critical errors when using JDK 17 
 
 Caused By: java.lang.NullPointerException: Cannot invoke "java.lang.reflect.Method.invoke(Object, Object[])" because "weblogic.utils.io.ObjectStreamClass.GET_FIELD_METHOD" is null
 ```
-
-### Root Cause
-
-The WebLogic startup script was using the macOS command `/usr/libexec/java_home -v 1.8` to dynamically determine the Java 8 home directory. However, this command was incorrectly returning the Java 17 path instead of Java 8, even though Java 8 was installed.
-
-**Why this happened:**
-
-- Multiple Java versions were installed on the system
-- Java 8 wasn't properly registered with macOS or was missing metadata
-- The dynamic lookup was unreliable and returned JDK 17 as the "default" Java 8
-
 ### Verification
 
 You can verify this issue by running:
