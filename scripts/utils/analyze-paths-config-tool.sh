@@ -45,7 +45,7 @@ print_path() {
 # -------------------------------------
 # MAVEN PATH ANALYSIS
 # -------------------------------------
-print_section "MAVEN PATH ANALYSIS"
+print_section "MAVEN"
 
 print_subsection "Maven Installation Paths"
 # Check Maven installation
@@ -112,7 +112,7 @@ fi
 # -------------------------------------
 # JAVA PATH ANALYSIS
 # -------------------------------------
-print_section "JAVA PATH ANALYSIS"
+print_section "JAVA"
 
 print_subsection "Java Installation Paths"
 # Check Java installations
@@ -151,7 +151,7 @@ echo "JRE_HOME: $JRE_HOME"
 # -------------------------------------
 # ORACLE PATH ANALYSIS
 # -------------------------------------
-print_section "ORACLE PATH ANALYSIS"
+print_section "ORACLE"
 
 print_subsection "Oracle Middleware Paths"
 # Oracle WebLogic paths
@@ -237,35 +237,11 @@ else
     echo "  ${RED} Docker not available${NC}"
 fi
 
-# -------------------------------------
-# VBMS SPECIFIC PATHS
-# -------------------------------------
-print_section "VBMS SPECIFIC PATHS"
-
-print_subsection "VBMS Application Paths"
-# VBMS application paths
-VBMS_CORE="$HOME/dev/vbms-core"
-VBMS_UI="$HOME/dev/bip-vbms-core-vet-info-profile-ui"
-VBMS_API="$HOME/dev/bip-veteran-api"
-VBMS_ANALYTICS="$HOME/dev/vbms-core/vbms-analytics"
-
-print_path "$VBMS_CORE" "$([ -d "$VBMS_CORE" ] && echo "exists" || echo "optional")" "VBMS Core application"
-print_path "$VBMS_UI" "$([ -d "$VBMS_UI" ] && echo "exists" || echo "optional")" "VBMS UI application"
-print_path "$VBMS_API" "$([ -d "$VBMS_API" ] && echo "exists" || echo "optional")" "VBMS API application"
-print_path "$VBMS_ANALYTICS" "$([ -d "$VBMS_ANALYTICS" ] && echo "exists" || echo "optional")" "VBMS Analytics"
-
-print_subsection "Deployment Paths"
-# Deployment paths
-DEPLOYMENTS_DIR="$HOME/dev/deployments"
-APPS_DIR="$HOME/dev/apps"
-
-print_path "$DEPLOYMENTS_DIR" "$([ -d "$DEPLOYMENTS_DIR" ] && echo "exists" || echo "optional")" "WebLogic deployments directory"
-print_path "$APPS_DIR" "$([ -d "$APPS_DIR" ] && echo "exists" || echo "optional")" "Applications directory"
 
 # -------------------------------------
 # ENVIRONMENT PATH ANALYSIS
 # -------------------------------------
-print_section "ENVIRONMENT PATH ANALYSIS"
+print_section "ENVIRONMENT"
 
 print_subsection "PATH Environment Variable"
 echo "Current PATH entries:"
@@ -290,17 +266,3 @@ echo "M2_HOME: $M2_HOME"
 echo "JAVA_HOME: $JAVA_HOME"
 echo "DOMAIN_HOME: $DOMAIN_HOME"
 
-# -------------------------------------
-# SUMMARY AND RECOMMENDATIONS
-# -------------------------------------
-print_section "SUMMARY AND RECOMMENDATIONS"
-
-echo "${GREEN} Path analysis completed successfully!${NC}"
-echo ""
-echo "All critical paths have been analyzed and categorized."
-echo "Review the output above to verify your configuration."
-
-echo ""
-echo "${BLUE}===================================================================${NC}"
-echo "${BLUE}                 PATH ANALYSIS COMPLETE                           ${NC}"
-echo "${BLUE}===================================================================${NC}" 
