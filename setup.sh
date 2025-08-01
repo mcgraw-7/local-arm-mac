@@ -18,7 +18,7 @@ fi
 # Check if Oracle JDK exists
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 if [ ! -d "$ORACLE_JDK" ]; then
-    echo "${RED}❌ Oracle JDK 1.8.0_202 not found at expected location${NC}"
+    echo "${RED} Oracle JDK 1.8.0_202 not found at expected location${NC}"
     exit 1
 fi
 
@@ -43,7 +43,7 @@ if [ "$AUTO_RUN" = true ]; then
     "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
     echo ""
     
-    echo "${GREEN}✅ All verification checks completed!${NC}"
+    echo "${GREEN} All verification checks completed!${NC}"
     exit 0
 fi
 
@@ -81,7 +81,7 @@ case $option in
         "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
         echo ""
         
-        echo "${GREEN}✅ All verification checks completed!${NC}"
+        echo "${GREEN} All verification checks completed!${NC}"
         ;;
     2)
         echo "Running Path Analysis Configuration Tool..."
