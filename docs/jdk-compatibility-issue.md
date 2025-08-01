@@ -2,7 +2,7 @@
 
 ## Problem Description
 
-WebLogic using wrong version of java 
+after running `mvn clean install` in `vbms-core/vmbs-install-weblogic` weblogic does not use the correct path for java 
 
 ### Error Symptoms
 
