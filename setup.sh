@@ -1,6 +1,6 @@
 #!/bin/zsh
 # VA Core Local Development Environment Setup
-# This script provides essential tools for VA Core local development setup
+# This script checks for correct paths and environment variables
 
 # Set color codes for output
 GREEN='\033[0;32m'
@@ -18,7 +18,7 @@ fi
 # Check if Oracle JDK exists
 ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
 if [ ! -d "$ORACLE_JDK" ]; then
-    echo "${RED} Oracle JDK 1.8.0_202 not found at expected location${NC}"
+    echo "${RED}Oracle JDK 1.8.0_202 not found at expected location${NC}"
     exit 1
 fi
 
@@ -31,8 +31,8 @@ if [ "$AUTO_RUN" = true ]; then
     "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
     echo ""
     
-    echo "${YELLOW}=== 2. Apple Silicon Compatibility ===${NC}"
-    "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+    echo "${YELLOW}=== 2. WebLogic Environment ===${NC}"
+    "$(dirname "$0")/scripts/utils/check-weblogic.sh"
     echo ""
     
     echo "${YELLOW}=== 3. VA Core Environment Standardization ===${NC}"
@@ -43,7 +43,7 @@ if [ "$AUTO_RUN" = true ]; then
     "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
     echo ""
     
-    echo "${GREEN} All verification checks completed!${NC}"
+    echo "${GREEN}All verification checks completed!${NC}"
     exit 0
 fi
 
@@ -51,7 +51,7 @@ fi
 echo "${BLUE}=== Available Tools ===${NC}"
 echo "1. Run all verification checks"
 echo "2. Path Analysis (analyze system paths for Maven, Java, Oracle)"
-echo "3. Check Apple Silicon compatibility"
+echo "3. Check WebLogic environment"
 echo "4. Verify VA Core environment standardization"
 echo "5. Verify Oracle directory structure"
 echo "6. View README Documentation"
@@ -69,8 +69,8 @@ case $option in
         "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
         echo ""
         
-        echo "${YELLOW}=== 2. Apple Silicon Compatibility ===${NC}"
-        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+        echo "${YELLOW}=== 2. WebLogic Environment ===${NC}"
+        "$(dirname "$0")/scripts/utils/check-weblogic.sh"
         echo ""
         
         echo "${YELLOW}=== 3. VA Core Environment Standardization ===${NC}"
@@ -81,15 +81,15 @@ case $option in
         "$(dirname "$0")/scripts/utils/verify-oracle-directory.sh"
         echo ""
         
-        echo "${GREEN} All verification checks completed!${NC}"
+        echo "${GREEN}All verification checks completed!${NC}"
         ;;
     2)
         echo "Running Path Analysis Configuration Tool..."
         "$(dirname "$0")/scripts/utils/analyze-paths-config-tool.sh"
         ;;
     3)
-        echo "Checking Apple Silicon compatibility..."
-        "$(dirname "$0")/scripts/utils/check-apple-silicon.sh"
+        echo "Checking WebLogic environment..."
+        "$(dirname "$0")/scripts/utils/check-weblogic.sh"
         ;;
     4)
         echo "Verifying VA Core environment standardization..."
