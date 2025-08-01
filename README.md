@@ -64,6 +64,11 @@ Run the setup script and select from the available options:
 - WebLogic Server installation
 - Colima/Docker (for Oracle database container)
 
+## Links
+
+- https://boozallen.enterprise.slack.com/docs/T02UXS1N2/F08UG28LKS6
+
 ## Documentation
 
 - **[JDK Compatibility Issue](docs/jdk-compatibility-issue.md)** - WebLogic JDK 17 vs JDK 8 compatibility problem and solution
+- **[Core DB Notes](https://boozallen.enterprise.slack.com/docs/T02UXS1N2/F08UG28LKS6)** 
