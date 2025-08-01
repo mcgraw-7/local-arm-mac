@@ -105,40 +105,6 @@ JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
    # Should show normal startup messages, no JDK 17 errors
    ```
 
-## Why This Was Necessary
-
-### WebLogic Compatibility
-
-- **WebLogic 12.2.1.4.0** is **NOT compatible** with Java 17
-- Java 17 causes critical startup failures with errors like:
-  - `ExceptionInInitializerError`
-  - `IIOPClientService` issues
-  - Serialization problems
-  - Reflection API incompatibilities
-
-### System Reliability
-
-- Dynamic Java home lookup was unreliable on macOS
-- Multiple Java installations can confuse the system
-- Hardcoding ensures consistent behavior
-
-## Key Takeaways
-
-### For Critical Applications
-
-For critical applications like WebLogic that require specific Java versions:
-
-1. **Hardcode JAVA_HOME** rather than rely on dynamic system lookups
-2. **Use specific version numbers** (e.g., `1.8.0_202`) instead of generic versions (e.g., `1.8`)
-3. **Test thoroughly** after making Java-related changes
-4. **Document the specific Java version** required for each application
-
-### Best Practices
-
-- Always verify the Java version being used by WebLogic
-- Monitor startup logs for Java-related errors
-- Keep a record of which Java version each application requires
-- Consider using environment-specific configurations
 
 ## Related Files
 
@@ -147,8 +113,6 @@ For critical applications like WebLogic that require specific Java versions:
 - **Log File:** `/Users/michaelmcgraw/dev/Oracle/Middleware/Oracle_Home/user_projects/domains/P2-DEV/servers/AdminServer/logs/AdminServer.log`
 
 ## Troubleshooting
-
-### If the issue persists:
 
 1. Check if there are multiple startup scripts
 2. Verify no environment variables are overriding JAVA_HOME
@@ -172,7 +136,3 @@ ps aux | grep java | grep weblogic
 ```
 
 ---
-
-**Last Updated:** June 30, 2025  
-**Issue Resolution:** ✅ Fixed  
-**WebLogic Status:** ✅ Running with JDK 8
