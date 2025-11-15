@@ -13,7 +13,7 @@ echo ""
 
 # Check Oracle JDK
 echo "${YELLOW}Checking Oracle JDK...${NC}"
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN}Found Oracle JDK at: $ORACLE_JDK${NC}"
     

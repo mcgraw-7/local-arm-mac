@@ -15,7 +15,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Constants
-readonly ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+readonly ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 readonly MIN_DISK_SPACE_GB=20
 readonly MIN_MEMORY_GB=8
 

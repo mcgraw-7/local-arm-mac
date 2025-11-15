@@ -9,7 +9,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Check Oracle JDK installation
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 echo -n "Checking Oracle JDK installation: "
 if [ -d "$ORACLE_JDK" ]; then
     echo "${GREEN} FOUND${NC}"

@@ -16,7 +16,7 @@ NC='\033[0m'
 
 # Constants - Based on verified working configuration
 readonly ORACLE_JDK_ARM64="${HOME}/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
-readonly ORACLE_JDK_X86="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+readonly ORACLE_JDK_X86="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 readonly MW_HOME_DEFAULT="${HOME}/dev/Oracle/Middleware/Oracle_Home"
 readonly DOMAINS_HOME_DEFAULT="${HOME}/dev/Oracle/Middleware/user_projects/domains"
 

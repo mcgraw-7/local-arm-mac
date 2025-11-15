@@ -26,7 +26,7 @@ Common issues and solutions for VA Core local development environment setup.
 **Solution:**
 ```bash
 # Set JAVA_HOME in ~/.zshrc
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 export PATH="${JAVA_HOME}/bin:${PATH}"
 
 # Reload shell configuration
@@ -53,7 +53,7 @@ Expected: 1.8.0_202
 ./scripts/utils/java-versions.sh
 
 # Set correct JAVA_HOME
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 
 # Quick fix
 ./scripts/utils/quick-fix.sh --java-home
@@ -88,7 +88,7 @@ java -version
 
 3. **Set JAVA_HOME:**
    ```bash
-   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+   export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
    ```
 
 ---
@@ -173,7 +173,7 @@ Error: Could not create the Java Virtual Machine
    ```bash
    cat ~/.wljava_env
    # Should contain:
-   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+   export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
    ```
 
 4. **Start with correct Java:**
@@ -200,7 +200,7 @@ See [BOUNCY_CASTLE_ISSUE.md](BOUNCY_CASTLE_ISSUE.md) for detailed solution.
 ```bash
 # Ensure using Oracle JDK 1.8.0_202, not OpenJDK
 echo $JAVA_HOME
-# Should be: /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
+# Should be: $HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home
 
 # Restart WebLogic with correct Java
 ```
@@ -289,7 +289,7 @@ Java binary is arm64 but x86_64 required
 **Solution:**
 ```bash
 # Check Java architecture
-file /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin/java
+file $HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home/bin/java
 
 # Oracle JDK 1.8.0_202 should be x86_64
 # If arm64, reinstall correct version
@@ -409,7 +409,7 @@ Variables work in current session but disappear after restart
    nano ~/.zshrc
    
    # Add these lines:
-   export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+   export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
    export MW_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
    export WLS_HOME="${MW_HOME}/wlserver"
    export PATH="${JAVA_HOME}/bin:${PATH}"
@@ -680,7 +680,7 @@ echo $JAVA_HOME
 
 ```bash
 # Java
-/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home
+$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home
 
 # WebLogic
 ~/dev/Oracle/Middleware/Oracle_Home

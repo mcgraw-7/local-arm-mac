@@ -16,7 +16,7 @@ if [[ "$1" == "--auto" || "$1" == "-a" || "$AUTO_RUN_CHECKS" == "true" ]]; then
 fi
 
 # Check if Oracle JDK exists
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 if [ ! -d "$ORACLE_JDK" ]; then
     echo "${RED}Oracle JDK 1.8.0_202 not found at expected location${NC}"
     exit 1

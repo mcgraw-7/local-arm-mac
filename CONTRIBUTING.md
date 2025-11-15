@@ -175,7 +175,7 @@ fi
 
 ```bash
 # Use uppercase for constants
-readonly ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
+readonly ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk"
 readonly MIN_DISK_SPACE_GB=10
 
 # Use lowercase for local variables
@@ -288,7 +288,7 @@ NC='\033[0m'
 
 # Constants
 readonly SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-readonly ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
+readonly ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk"
 
 # Functions
 function usage() {
@@ -441,11 +441,11 @@ export JAVA_HOME=""
 
 # Good
 # Oracle JDK must be at this specific path for WebLogic compatibility
-readonly ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
+readonly ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk"
 
 # Bad
 # Set Oracle JDK path
-readonly ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
+readonly ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk"
 ```
 
 ### Documentation Updates

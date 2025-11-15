@@ -10,11 +10,13 @@ WebLogic **must** be installed in the Oracle standardized directory:
 ${HOME}/dev/Oracle/Middleware/Oracle_Home
 ```
 
-Oracle JDK 1.8.0_202 must be installed at:
+ARM64 Zulu JDK 8 must be installed at:
 
 ```
-/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk
+${HOME}/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk
 ```
+
+**Note**: Download Zulu JDK 8 ARM64 from [Azul's website](https://www.azul.com/downloads/?version=java-8-lts&os=macos&architecture=arm-64-bit&package=jdk)
 
 ## Quick Start
 
@@ -59,14 +61,35 @@ Run the setup script and select from the available options:
 
 ## System Requirements
 
-- macOS (Apple Silicon M1/M2/M3 or Intel)
-- Oracle JDK 1.8.0_202
-- WebLogic Server installation
+- macOS (Apple Silicon M1/M2/M3/M4 recommended)
+- ARM64 Zulu JDK 8 (version 1.8.0_472 or later)
+- WebLogic Server 12.2.1.4.0
+- Maven 3.9.9+
 - Colima/Docker (for Oracle database container)
 
 ## Links
 
-- https://boozallen.enterprise.slack.com/docs/T02UXS1N2/F08UG28LKS6
+- **[VBMS Core Deployment Guide](https://github.com/department-of-veterans-affairs/vbms-core/blob/development/DEPLOYMENT-GUIDE.md)** - Complete deployment strategy
+- **[Core DB Notes](https://boozallen.enterprise.slack.com/docs/T02UXS1N2/F08UG28LKS6)** - Slack Canvas with core database notes
+
+## Critical Configuration
+
+### Environment Variables (~/.zshrc)
+
+```bash
+# Java Home - ARM64 Zulu JDK 8
+export JAVA_HOME="${HOME}/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+# Maven Options - CRITICAL for preventing GC overhead errors
+export MAVEN_OPTS="-Xms512m -Xmx8000m"
+
+# Oracle/WebLogic Homes
+export ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
+export DOMAINS_HOME="${HOME}/dev/Oracle/Middleware/user_projects/domains"
+```
+
+Apply changes: `source ~/.zshrc`
 
 ## Documentation
 

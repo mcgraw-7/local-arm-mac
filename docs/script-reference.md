@@ -68,12 +68,12 @@ Comprehensive analysis of PATH, JAVA_HOME, and environment configuration.
 **Output:**
 ```
 === Java Environment Configuration ===
-JAVA_HOME: /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home ✅
+JAVA_HOME: $HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home ✅
 Current Java: java version "1.8.0_202" ✅
 
 === PATH Analysis ===
 PATH entries containing 'java':
-  1. /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin
+  1. $HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home/bin
 ```
 
 **Exit Codes:**
@@ -255,7 +255,7 @@ List all installed Java versions.
 Available Java Versions:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[PASS] /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk
+[PASS] $HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk
    Version: 1.8.0_202
    Architecture: x86_64
    Currently active: YES
@@ -476,7 +476,7 @@ Scripts may generate log files in:
 
 ```bash
 # Java
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+export JAVA_HOME="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 
 # WebLogic
 export MW_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"

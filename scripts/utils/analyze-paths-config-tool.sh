@@ -118,7 +118,7 @@ print_subsection "Java Installation Paths"
 # Check Java installations
 JAVA_PATH=$(which java)
 JAVA_HOME_VALUE="$JAVA_HOME"
-JDK_8_PATH="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk"
+JDK_8_PATH="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk"
 JDK_11_PATH="$HOME/dev/jdk-11.0.26.jdk"
 JDK_8_ALT_PATH="$HOME/dev/jdk1.8.0_181"
 

@@ -12,7 +12,7 @@ NC='\033[0m' # No Color
 ORACLE_HOME="$HOME/dev/Oracle/Middleware/Oracle_Home"
 WEBLOGIC_HOME="$ORACLE_HOME/wlserver"
 DOMAIN_HOME="$ORACLE_HOME/user_projects/domains"
-ORACLE_JDK="/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home"
+ORACLE_JDK="$HOME/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk/Contents/Home"
 
 # Check Oracle Home directory
 echo -n "Checking Oracle Home directory: "
