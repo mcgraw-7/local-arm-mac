@@ -1,4 +1,4 @@
-# 📚 Script Reference
+# Script Reference
 
 Complete reference for all scripts in the local-arm-mac toolkit.
 
@@ -102,19 +102,19 @@ Detect and validate Apple Silicon (ARM64) compatibility.
 
 **Output Example:**
 ```
-✅ Detected Apple Silicon Mac (arm64)
+[PASS] Detected Apple Silicon Mac (arm64)
 
 Checking Colima status...
-✅ Colima is installed
-✅ Colima is running
-✅ Colima is running with x86_64 architecture
+[PASS] Colima is installed
+[PASS] Colima is running
+[PASS] Colima is running with x86_64 architecture
 
 Checking Docker...
-✅ Docker is installed
-✅ Docker is working correctly
+[PASS] Docker is installed
+[PASS] Docker is working correctly
 
 Checking Rosetta 2...
-✅ Rosetta 2 is installed
+[PASS] Rosetta 2 is installed
 ```
 
 **Exit Codes:**
@@ -178,14 +178,14 @@ Comprehensive system health diagnostic.
 **Location:** `scripts/utils/`
 
 **Checks:**
-- ✅ Java installation and version
-- ✅ WebLogic installation and status
-- ✅ Environment variables
-- ✅ Directory structure
-- ✅ Required tools (git, docker, colima)
-- ✅ Network connectivity
-- ✅ Disk space
-- ✅ Memory availability
+- [PASS] Java installation and version
+- [PASS] WebLogic installation and status
+- [PASS] Environment variables
+- [PASS] Directory structure
+- [PASS] Required tools (git, docker, colima)
+- [PASS] Network connectivity
+- [PASS] Disk space
+- [PASS] Memory availability
 
 **Usage:**
 ```bash
@@ -194,25 +194,25 @@ Comprehensive system health diagnostic.
 
 **Output:**
 ```
-🏥 System Health Check
+[HEALTH] System Health Check
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Java Environment         ✅ PASS
-WebLogic Installation    ✅ PASS
-Environment Variables    ⚠️  WARNING
-Directory Structure      ✅ PASS
-Required Tools          ✅ PASS
-Network Connectivity    ✅ PASS
-Disk Space              ✅ PASS (127 GB available)
-Memory                  ✅ PASS (8 GB available)
+Java Environment         [PASS] PASS
+WebLogic Installation    [PASS] PASS
+Environment Variables    [WARN]  WARNING
+Directory Structure      [PASS] PASS
+Required Tools          [PASS] PASS
+Network Connectivity    [PASS] PASS
+Disk Space              [PASS] PASS (127 GB available)
+Memory                  [PASS] PASS (8 GB available)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Overall Status: ⚠️  WARNINGS FOUND
+Overall Status: [WARN]  WARNINGS FOUND
 
-⚠️  Warnings:
+[WARN]  Warnings:
   - MW_HOME not set in current shell
   
-💡 Recommendations:
+[TIP] Recommendations:
   - Add MW_HOME to ~/.zshrc
   - Run: export MW_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
 ```
@@ -255,7 +255,7 @@ List all installed Java versions.
 Available Java Versions:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✅ /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk
+[PASS] /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk
    Version: 1.8.0_202
    Architecture: x86_64
    Currently active: YES
@@ -381,11 +381,11 @@ Auto-fix common environment issues.
 **Location:** `scripts/utils/`
 
 **Fixes:**
-- ✅ JAVA_HOME misconfiguration
-- ✅ Missing PATH entries
-- ✅ WebLogic environment variables
-- ✅ Missing directories
-- ✅ Incorrect file permissions
+- [PASS] JAVA_HOME misconfiguration
+- [PASS] Missing PATH entries
+- [PASS] WebLogic environment variables
+- [PASS] Missing directories
+- [PASS] Incorrect file permissions
 
 **Usage:**
 ```bash
@@ -424,12 +424,12 @@ Check WebLogic Server running status.
 WebLogic Server Status
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-AdminServer:    ✅ RUNNING (PID: 12345)
+AdminServer:    [PASS] RUNNING (PID: 12345)
   Port:         7001
   Memory:       2.1 GB / 4.0 GB
   Uptime:       3h 24m
 
-ManagedServer1: ❌ STOPPED
+ManagedServer1: [FAIL] STOPPED
 ```
 
 **Exit Codes:**

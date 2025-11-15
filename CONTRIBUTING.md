@@ -2,7 +2,7 @@
 
 Thank you for your interest in contributing! This document provides guidelines and best practices for contributing to the VA Core local development environment toolkit.
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
@@ -147,10 +147,10 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Usage
-echo "${GREEN}✅ Success${NC}"
-echo "${RED}❌ Error${NC}"
-echo "${YELLOW}⚠️  Warning${NC}"
-echo "${BLUE}ℹ️  Info${NC}"
+echo "${GREEN}[PASS] Success${NC}"
+echo "${RED}[FAIL] Error${NC}"
+echo "${YELLOW}[WARN]  Warning${NC}"
+echo "${BLUE}[INFO]  Info${NC}"
 ```
 
 #### Error Handling
@@ -160,13 +160,13 @@ Always handle errors:
 ```bash
 # Check if file exists
 if [ ! -f "$CONFIG_FILE" ]; then
-    echo "${RED}❌ Configuration file not found: $CONFIG_FILE${NC}"
+    echo "${RED}[FAIL] Configuration file not found: $CONFIG_FILE${NC}"
     exit 1
 fi
 
 # Check command success
 if ! command -v java >/dev/null 2>&1; then
-    echo "${RED}❌ Java not found in PATH${NC}"
+    echo "${RED}[FAIL] Java not found in PATH${NC}"
     exit 2
 fi
 ```
@@ -195,10 +195,10 @@ function check_java_version() {
     local java_version=$("${JAVA_HOME}/bin/java" -version 2>&1 | head -n 1)
     
     if [[ "$java_version" == *"1.8.0_202"* ]]; then
-        echo "${GREEN}✅ Java version correct${NC}"
+        echo "${GREEN}[PASS] Java version correct${NC}"
         return 0
     else
-        echo "${RED}❌ Java version incorrect${NC}"
+        echo "${RED}[FAIL] Java version incorrect${NC}"
         return 1
     fi
 }
@@ -314,7 +314,7 @@ function main() {
     
     # Your code
     
-    echo "${GREEN}✅ Complete${NC}"
+    echo "${GREEN}[PASS] Complete${NC}"
 }
 
 # Parse arguments
@@ -343,17 +343,17 @@ main
 ```bash
 function validate_java_home() {
     if [ -z "${JAVA_HOME:-}" ]; then
-        echo "${RED}❌ JAVA_HOME not set${NC}"
+        echo "${RED}[FAIL] JAVA_HOME not set${NC}"
         return 1
     fi
     
     if [ ! -d "$JAVA_HOME" ]; then
-        echo "${RED}❌ JAVA_HOME directory does not exist: $JAVA_HOME${NC}"
+        echo "${RED}[FAIL] JAVA_HOME directory does not exist: $JAVA_HOME${NC}"
         return 1
     fi
     
     if [ ! -x "${JAVA_HOME}/bin/java" ]; then
-        echo "${RED}❌ Java executable not found or not executable${NC}"
+        echo "${RED}[FAIL] Java executable not found or not executable${NC}"
         return 1
     fi
     
@@ -365,14 +365,14 @@ function validate_java_home() {
 
 ```bash
 # Use consistent symbols
-✅ # Success
-❌ # Error
-⚠️  # Warning
-ℹ️  # Info
-🔍 # Searching/Analyzing
-💾 # Backup/Save
-🔧 # Fix/Tool
-🏥 # Health Check
+[PASS] # Success
+[FAIL] # Error
+[WARN] # Warning
+[INFO] # Info
+[SCAN] # Searching/Analyzing
+[SAVE] # Backup/Save
+[FIX]  # Fix/Tool
+[HLTH] # Health Check
 
 # Use separators for sections
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -380,8 +380,8 @@ echo "System Health Check"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # Align output
-printf "%-30s %s\n" "Java Version:" "${GREEN}✅ PASS${NC}"
-printf "%-30s %s\n" "WebLogic Status:" "${RED}❌ FAIL${NC}"
+printf "%-30s %s\n" "Java Version:" "${GREEN}[PASS] PASS${NC}"
+printf "%-30s %s\n" "WebLogic Status:" "${RED}[FAIL] FAIL${NC}"
 ```
 
 ## Testing

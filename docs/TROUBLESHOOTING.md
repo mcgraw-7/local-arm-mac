@@ -1,4 +1,4 @@
-# 🔧 Troubleshooting Guide
+# Troubleshooting Guide
 
 Common issues and solutions for VA Core local development environment setup.
 
@@ -16,11 +16,11 @@ Common issues and solutions for VA Core local development environment setup.
 
 ## Java Issues
 
-### ❌ JAVA_HOME not set
+### JAVA_HOME not set
 
 **Symptom:**
 ```
-❌ JAVA_HOME not set or incorrect
+[FAIL] JAVA_HOME not set or incorrect
 ```
 
 **Solution:**
@@ -39,7 +39,7 @@ java -version
 
 ---
 
-### ❌ Wrong Java Version
+### [FAIL] Wrong Java Version
 
 **Symptom:**
 ```
@@ -64,11 +64,11 @@ java -version
 
 ---
 
-### ❌ Oracle JDK Not Found
+### [FAIL] Oracle JDK Not Found
 
 **Symptom:**
 ```
-❌ Oracle JDK 1.8.0_202 not found at expected location
+[FAIL] Oracle JDK 1.8.0_202 not found at expected location
 ```
 
 **Solution:**
@@ -93,7 +93,7 @@ java -version
 
 ---
 
-### ❌ Multiple Java Versions Conflicting
+### [FAIL] Multiple Java Versions Conflicting
 
 **Symptom:**
 ```
@@ -122,11 +122,11 @@ source ~/.zshrc
 
 ## WebLogic Issues
 
-### ❌ WebLogic Not Found
+### [FAIL] WebLogic Not Found
 
 **Symptom:**
 ```
-❌ WebLogic installation not found
+[FAIL] WebLogic installation not found
 ```
 
 **Solution:**
@@ -150,7 +150,7 @@ source ~/.zshrc
 
 ---
 
-### ❌ WebLogic Won't Start
+### [FAIL] WebLogic Won't Start
 
 **Symptom:**
 ```
@@ -185,7 +185,7 @@ Error: Could not create the Java Virtual Machine
 
 ---
 
-### ❌ Bouncy Castle Provider Error
+### [FAIL] Bouncy Castle Provider Error
 
 **Symptom:**
 ```
@@ -207,7 +207,7 @@ echo $JAVA_HOME
 
 ---
 
-### ❌ Domain Configuration Issues
+### [FAIL] Domain Configuration Issues
 
 **Symptom:**
 ```
@@ -236,7 +236,7 @@ Domain configuration appears corrupted
 
 ## Apple Silicon Issues
 
-### ❌ Oracle Database Won't Run (ARM64)
+### [FAIL] Oracle Database Won't Run (ARM64)
 
 **Symptom:**
 ```
@@ -261,11 +261,11 @@ docker run --rm -it --platform linux/amd64 oraclelinux:8 uname -m
 
 ---
 
-### ❌ Rosetta 2 Not Installed
+### [FAIL] Rosetta 2 Not Installed
 
 **Symptom:**
 ```
-❌ Rosetta 2 is not installed
+[FAIL] Rosetta 2 is not installed
 ```
 
 **Solution:**
@@ -279,7 +279,7 @@ softwareupdate --install-rosetta --agree-to-license
 
 ---
 
-### ❌ Java Architecture Mismatch
+### [FAIL] Java Architecture Mismatch
 
 **Symptom:**
 ```
@@ -302,11 +302,11 @@ file /Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/bin/java
 
 ## Docker/Colima Issues
 
-### ❌ Colima Not Running
+### [FAIL] Colima Not Running
 
 **Symptom:**
 ```
-❌ Colima is not running
+[FAIL] Colima is not running
 Cannot connect to Docker daemon
 ```
 
@@ -324,7 +324,7 @@ docker info
 
 ---
 
-### ❌ Docker Command Not Found
+### [FAIL] Docker Command Not Found
 
 **Symptom:**
 ```
@@ -348,7 +348,7 @@ docker --version
 
 ---
 
-### ❌ Docker Permission Denied
+### [FAIL] Docker Permission Denied
 
 **Symptom:**
 ```
@@ -370,7 +370,7 @@ docker ps
 
 ---
 
-### ❌ Colima Architecture Wrong
+### [FAIL] Colima Architecture Wrong
 
 **Symptom:**
 ```
@@ -394,7 +394,7 @@ colima status | grep arch
 
 ## Environment Variables
 
-### ❌ Environment Variables Not Persisting
+### [FAIL] Environment Variables Not Persisting
 
 **Symptom:**
 ```
@@ -427,11 +427,11 @@ Variables work in current session but disappear after restart
 
 ---
 
-### ❌ MW_HOME Not Set
+### [FAIL] MW_HOME Not Set
 
 **Symptom:**
 ```
-❌ MW_HOME environment variable not set
+[FAIL] MW_HOME environment variable not set
 ```
 
 **Solution:**
@@ -451,7 +451,7 @@ source ~/.zshrc
 
 ## Path Issues
 
-### ❌ Wrong Java in PATH
+### [FAIL] Wrong Java in PATH
 
 **Symptom:**
 ```
@@ -477,7 +477,7 @@ java -version
 
 ---
 
-### ❌ Path Contains Duplicates
+### [FAIL] Path Contains Duplicates
 
 **Symptom:**
 ```
@@ -498,7 +498,7 @@ PATH has multiple Java entries
 
 ## Script Errors
 
-### ❌ Permission Denied
+### [FAIL] Permission Denied
 
 **Symptom:**
 ```
@@ -520,7 +520,7 @@ ls -la setup.sh
 
 ---
 
-### ❌ Script Not Found
+### [FAIL] Script Not Found
 
 **Symptom:**
 ```
@@ -543,7 +543,7 @@ cd /path/to/local-arm-mac
 
 ---
 
-### ❌ Color Codes Not Working
+### [FAIL] Color Codes Not Working
 
 **Symptom:**
 ```
