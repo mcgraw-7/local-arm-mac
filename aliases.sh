@@ -56,56 +56,53 @@ alias vbms-scripts="cd ${LOCAL_ARM_MAC_DIR}/scripts/utils"
 alias vbms-docs="cd ${LOCAL_ARM_MAC_DIR}/docs"
 
 # Help function
-function vbms-help() {
-    cat << 'EOF'
-VA Core Local Development Aliases
-
-SETUP & DIAGNOSTICS:
-  vbms-setup          - Run interactive setup
-  vbms-auto           - Run all checks automatically
-  vbms-health         - System health check
-  vbms-check          - Alias for health check
-
-JAVA:
-  vbms-java           - Check Java installation
-  vbms-java-versions  - List all Java versions
-  vbms-java-test      - Test Java switching
-
-WEBLOGIC:
-  vbms-wl             - Check WebLogic environment
-  vbms-wl-status      - Check WebLogic server status
-
-CONFIGURATION:
-  vbms-paths          - Analyze PATH and JAVA_HOME
-  vbms-config         - Show complete configuration
-  vbms-compare        - Compare configurations
-  vbms-verify         - Verify standardization
-  vbms-verify-oracle  - Verify Oracle directory
-
-APPLE SILICON:
-  vbms-arm            - Check Apple Silicon compatibility
-  vbms-mac            - Alias for Apple Silicon check
-
-BACKUP & RESTORE:
-  vbms-backup         - Create environment backup
-  vbms-restore        - Restore from backup
-  vbms-backups        - List available backups
-
-QUICK FIX:
-  vbms-fix            - Auto-fix all issues
-  vbms-fix-java       - Fix JAVA_HOME only
-  vbms-fix-wl         - Fix WebLogic only
-  vbms-fix-dry        - Dry run (show what would be fixed)
-
-NAVIGATION:
-  vbms-cd             - Go to local-arm-mac directory
-  vbms-scripts        - Go to scripts/utils directory
-  vbms-docs           - Go to docs directory
-
-HELP:
-  vbms-help           - Show this help message
-
-EOF
+vbms-help() {
+    echo "VA Core Local Development Aliases"
+    echo ""
+    echo "SETUP & DIAGNOSTICS:"
+    echo "  vbms-setup          - Run interactive setup"
+    echo "  vbms-auto           - Run all checks automatically"
+    echo "  vbms-health         - System health check"
+    echo "  vbms-check          - Alias for health check"
+    echo ""
+    echo "JAVA:"
+    echo "  vbms-java           - Check Java installation"
+    echo "  vbms-java-versions  - List all Java versions"
+    echo "  vbms-java-test      - Test Java switching"
+    echo ""
+    echo "WEBLOGIC:"
+    echo "  vbms-wl             - Check WebLogic environment"
+    echo "  vbms-wl-status      - Check WebLogic server status"
+    echo ""
+    echo "CONFIGURATION:"
+    echo "  vbms-paths          - Analyze PATH and JAVA_HOME"
+    echo "  vbms-config         - Show complete configuration"
+    echo "  vbms-compare        - Compare configurations"
+    echo "  vbms-verify         - Verify standardization"
+    echo "  vbms-verify-oracle  - Verify Oracle directory"
+    echo ""
+    echo "APPLE SILICON:"
+    echo "  vbms-arm            - Check Apple Silicon compatibility"
+    echo "  vbms-mac            - Alias for Apple Silicon check"
+    echo ""
+    echo "BACKUP & RESTORE:"
+    echo "  vbms-backup         - Create environment backup"
+    echo "  vbms-restore        - Restore from backup"
+    echo "  vbms-backups        - List available backups"
+    echo ""
+    echo "QUICK FIX:"
+    echo "  vbms-fix            - Auto-fix all issues"
+    echo "  vbms-fix-java       - Fix JAVA_HOME only"
+    echo "  vbms-fix-wl         - Fix WebLogic only"
+    echo "  vbms-fix-dry        - Dry run (show what would be fixed)"
+    echo ""
+    echo "NAVIGATION:"
+    echo "  vbms-cd             - Go to local-arm-mac directory"
+    echo "  vbms-scripts        - Go to scripts/utils directory"
+    echo "  vbms-docs           - Go to docs directory"
+    echo ""
+    echo "HELP:"
+    echo "  vbms-help           - Show this help message"
 }
 
 # Print success message when sourced
