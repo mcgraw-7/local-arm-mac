@@ -20,21 +20,33 @@ ${HOME}/Library/Java/JavaVirtualMachines/zulu-8-arm.jdk
 
 ## Quick Start
 
-1. Make the setup script executable:
+1. Clone and setup:
 
    ```bash
-   chmod +x setup.sh
+   git clone https://github.com/mcgraw-7/local-arm-mac.git ~/dev/local-arm-mac
+   cd ~/dev/local-arm-mac
+   chmod +x setup.sh scripts/**/*.sh
    ```
 
-2. Run all verification checks automatically:
+2. Load global aliases (add to ~/.zshrc):
 
    ```bash
+   # VA Core development aliases
+   source ~/dev/local-arm-mac/aliases.sh
+   ```
+
+3. Apply changes:
+
+   ```bash
+   source ~/.zshrc
+   ```
+
+4. Run verification:
+
+   ```bash
+   vbms-auto
+   # or
    ./setup.sh --auto
-   ```
-
-3. Or run interactively:
-   ```bash
-   ./setup.sh
    ```
 
 ## Usage
@@ -87,9 +99,44 @@ export MAVEN_OPTS="-Xms512m -Xmx8000m"
 # Oracle/WebLogic Homes
 export ORACLE_HOME="${HOME}/dev/Oracle/Middleware/Oracle_Home"
 export DOMAINS_HOME="${HOME}/dev/Oracle/Middleware/user_projects/domains"
+
+# VA Core development aliases
+source ~/dev/local-arm-mac/aliases.sh
 ```
 
 Apply changes: `source ~/.zshrc`
+
+## Usage with Aliases
+
+After sourcing `aliases.sh`, you can use convenient shortcuts:
+
+```bash
+# Quick diagnostics
+vbms-health           # Full system health check
+vbms-auto             # Run all verification checks
+
+# Java management
+vbms-java             # Check Java installation
+vbms-java-versions    # List all installed Java versions
+
+# WebLogic
+vbms-wl               # Check WebLogic environment
+vbms-wl-status        # Check server status
+
+# Quick fixes
+vbms-fix              # Auto-fix all issues
+vbms-fix-java         # Fix JAVA_HOME only
+vbms-fix-dry          # Dry run (show what would be fixed)
+
+# Backup
+vbms-backup           # Create environment backup
+vbms-backups          # List available backups
+
+# Help
+vbms-help             # Show all available commands
+```
+
+See `vbms-help` for complete list of aliases.
 
 ## Documentation
 

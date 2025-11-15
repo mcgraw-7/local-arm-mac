@@ -1,0 +1,112 @@
+#!/bin/zsh
+# Global Aliases for VA Core Local Development Scripts
+# Source this file in your ~/.zshrc: source ~/dev/local-arm-mac/aliases.sh
+
+# Color output
+alias_success='\033[0;32m'
+alias_nc='\033[0m'
+
+# Base directory
+LOCAL_ARM_MAC_DIR="${HOME}/dev/local-arm-mac"
+
+# Quick access aliases
+alias vbms-setup="${LOCAL_ARM_MAC_DIR}/setup.sh"
+alias vbms-auto="${LOCAL_ARM_MAC_DIR}/setup.sh --auto"
+
+# Health and diagnostics
+alias vbms-health="${LOCAL_ARM_MAC_DIR}/scripts/utils/health-check.sh"
+alias vbms-check="${LOCAL_ARM_MAC_DIR}/scripts/utils/health-check.sh"
+
+# Java utilities
+alias vbms-java="${LOCAL_ARM_MAC_DIR}/scripts/utils/java-check.sh"
+alias vbms-java-versions="${LOCAL_ARM_MAC_DIR}/scripts/utils/java-versions.sh"
+alias vbms-java-test="${LOCAL_ARM_MAC_DIR}/scripts/utils/test-java-switching.sh"
+
+# WebLogic utilities
+alias vbms-wl="${LOCAL_ARM_MAC_DIR}/scripts/utils/check-weblogic.sh"
+alias vbms-wl-status="${LOCAL_ARM_MAC_DIR}/scripts/weblogic/check-weblogic-status.sh"
+
+# Path and configuration analysis
+alias vbms-paths="${LOCAL_ARM_MAC_DIR}/scripts/utils/analyze-paths-config-tool.sh"
+alias vbms-config="${LOCAL_ARM_MAC_DIR}/scripts/utils/show-complete-configuration.sh"
+alias vbms-compare="${LOCAL_ARM_MAC_DIR}/scripts/utils/compare-configuration.sh"
+
+# Verification and standardization
+alias vbms-verify="${LOCAL_ARM_MAC_DIR}/scripts/utils/verify-standardization.sh"
+alias vbms-verify-oracle="${LOCAL_ARM_MAC_DIR}/scripts/utils/verify-oracle-directory.sh"
+
+# Apple Silicon specific
+alias vbms-arm="${LOCAL_ARM_MAC_DIR}/scripts/utils/check-apple-silicon.sh"
+alias vbms-mac="${LOCAL_ARM_MAC_DIR}/scripts/utils/check-apple-silicon.sh"
+
+# Backup and restore
+alias vbms-backup="${LOCAL_ARM_MAC_DIR}/scripts/utils/env-backup.sh"
+alias vbms-restore="${LOCAL_ARM_MAC_DIR}/scripts/utils/env-backup.sh --restore"
+alias vbms-backups="${LOCAL_ARM_MAC_DIR}/scripts/utils/env-backup.sh --list"
+
+# Quick fix utilities
+alias vbms-fix="${LOCAL_ARM_MAC_DIR}/scripts/utils/quick-fix.sh"
+alias vbms-fix-java="${LOCAL_ARM_MAC_DIR}/scripts/utils/quick-fix.sh --java-home"
+alias vbms-fix-wl="${LOCAL_ARM_MAC_DIR}/scripts/utils/quick-fix.sh --weblogic"
+alias vbms-fix-dry="${LOCAL_ARM_MAC_DIR}/scripts/utils/quick-fix.sh --dry-run"
+
+# Navigation
+alias vbms-cd="cd ${LOCAL_ARM_MAC_DIR}"
+alias vbms-scripts="cd ${LOCAL_ARM_MAC_DIR}/scripts/utils"
+alias vbms-docs="cd ${LOCAL_ARM_MAC_DIR}/docs"
+
+# Help function
+function vbms-help() {
+    cat << 'EOF'
+VA Core Local Development Aliases
+
+SETUP & DIAGNOSTICS:
+  vbms-setup          - Run interactive setup
+  vbms-auto           - Run all checks automatically
+  vbms-health         - System health check
+  vbms-check          - Alias for health check
+
+JAVA:
+  vbms-java           - Check Java installation
+  vbms-java-versions  - List all Java versions
+  vbms-java-test      - Test Java switching
+
+WEBLOGIC:
+  vbms-wl             - Check WebLogic environment
+  vbms-wl-status      - Check WebLogic server status
+
+CONFIGURATION:
+  vbms-paths          - Analyze PATH and JAVA_HOME
+  vbms-config         - Show complete configuration
+  vbms-compare        - Compare configurations
+  vbms-verify         - Verify standardization
+  vbms-verify-oracle  - Verify Oracle directory
+
+APPLE SILICON:
+  vbms-arm            - Check Apple Silicon compatibility
+  vbms-mac            - Alias for Apple Silicon check
+
+BACKUP & RESTORE:
+  vbms-backup         - Create environment backup
+  vbms-restore        - Restore from backup
+  vbms-backups        - List available backups
+
+QUICK FIX:
+  vbms-fix            - Auto-fix all issues
+  vbms-fix-java       - Fix JAVA_HOME only
+  vbms-fix-wl         - Fix WebLogic only
+  vbms-fix-dry        - Dry run (show what would be fixed)
+
+NAVIGATION:
+  vbms-cd             - Go to local-arm-mac directory
+  vbms-scripts        - Go to scripts/utils directory
+  vbms-docs           - Go to docs directory
+
+HELP:
+  vbms-help           - Show this help message
+
+EOF
+}
+
+# Print success message when sourced
+echo "${alias_success}✓${alias_nc} VA Core development aliases loaded. Type 'vbms-help' for available commands."
